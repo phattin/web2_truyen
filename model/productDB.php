@@ -2,6 +2,22 @@
     require 'connectDB.php';
     class productDB{
         // Lấy danh sách tất cả sản phẩm
+        private $conn;
+        // Lấy tổng số sản phẩm để tính số trang
+        public function getTotalProducts() {
+            $result = $this->conn->query("SELECT COUNT(*) AS total FROM product");
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        }
+    
+        // Lấy danh sách sản phẩm có phân trang
+        public function getProductsByPage($limit, $offset) {
+            $stmt = $this->conn->prepare("SELECT * FROM product LIMIT ? OFFSET ?");
+            $stmt->bind_param("ii", $limit, $offset);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
         public function getAllProduct(){
             //Mở database
             $conn = connectDB::getConnection();
@@ -77,5 +93,6 @@
         
             return $success;
         }
+        
     }
 ?>
