@@ -1,0 +1,11 @@
+ID	Title	Author	Publisher	Genre	Price (VND)	Stock	Description	Cover Image
+1	One Piece	Eiichiro Oda	Shueisha	Adventure	25000	50	Câu chuyện về Luffy và băng hải tặc Mũ Rơm tìm kiếm kho báu One Piece.	onepiece.jpg
+2	Attack on Titan	Hajime Isayama	Kodansha	Action	30000	40	Thế giới nơi nhân loại chiến đấu chống lại Titan khổng lồ.	aot.jpg
+3	Demon Slayer	Koyoharu Gotouge	Shueisha	Fantasy	28000	30	Hành trình diệt quỷ của Tanjiro và em gái Nezuko.	demonslayer.jpg
+4	Naruto	Masashi Kishimoto	Shueisha	Adventure	27000	60	Câu chuyện về Naruto Uzumaki, một ninja trẻ tuổi với ước mơ trở thành Hokage.	naruto.jpg
+5	Jujutsu Kaisen	Gege Akutami	Shueisha	Supernatural	29000	25	Một thế giới nơi chú thuật sư chiến đấu chống lại nguyền hồn.	jjk.jpg
+6	Tokyo Revengers	Ken Wakui	Kodansha	Action	26000	35	Takemichi quay ngược thời gian để cứu bạn gái mình khỏi một băng đảng khét tiếng.	tokyorevengers.jpg
+7	My Hero Academia	Kohei Horikoshi	Shueisha	Superhero	30000	20	Câu chuyện về Midoriya Izuku và con đường trở thành anh hùng chuyên nghiệp.	mha.jpg
+8	Chainsaw Man	Tatsuki Fujimoto	Shueisha	Horror	27000	28	Denji, một thợ săn quỷ, hợp nhất với quỷ cưa máy để sinh tồn.	chainsawman.jpg
+9	Black Clover	Yūki Tabata	Shueisha	Fantasy	28000	45	Asta, một cậu bé không có phép thuật, quyết tâm trở thành Ma Pháp Đế.	blackclover.jpg
+10	Spy x Family	Tatsuya Endo	Shueisha	Comedy	29000	33	Một điệp viên, một sát thủ và một cô bé có năng lực ngoại cảm tạo nên một gia đình giả.	spyxfamily.jpg
