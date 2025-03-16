@@ -63,7 +63,7 @@ header .container {
 /* CSS cho nút đăng nhập và đăng ký */
 .btn-login, .btn-register {
     display: inline-block;
-    padding: 12px 24px;
+    padding: 10px 24px;
     font-size: 16px;
     font-weight: bold;
     text-transform: uppercase;
@@ -81,29 +81,31 @@ header .container {
     background: linear-gradient(135deg, #ff416c, #ff4b2b);
     color: white;
     border: none;
-    margin-left: 25px;
+    margin-left: 16px;
+   
+
 }
 
 .btn-login:hover {
     background: linear-gradient(135deg, #ff4b2b, #ff416c);
     transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(255, 65, 108, 0.4);
+    box-shadow: 0 4px 10px rgba(255, 227, 233, 0.4);
 }
 
 /* Nút Đăng ký */
 .btn-register {
     background: white;
     color: #ff4b2b;
-    border: 2px solid #ff4b2b;
+    /* border: 2px solid #ff4b2b; */
     text-decoration: none;
 
 }
 
 .btn-register:hover {
-    background: #ff4b2b;
+   
     color: white;
     transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(241, 241, 241, 0.4);
+    box-shadow: 0 4px 10px rgba(255, 227, 233, 0.4);
 }
 
 
@@ -293,3 +295,6 @@ footer h3 {
 footer p {
     margin: 5px 0;
 }
+
+
+/* //header trong khi đăng nhập */

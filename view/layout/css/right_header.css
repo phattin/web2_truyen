@@ -1,0 +1,54 @@
+/* Phần user menu */
+.user-menu {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 140px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.user-info i {
+    font-size: 20px;
+    color: #333;
+}
+
+/* Dropdown menu ẩn mặc định */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #074b80;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 180px;
+    padding: 5px 0;
+    z-index: 10;
+    margin-left: 30px;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 10px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: #ff4b2b;
+    color: white;
+}
+
+/* Khi hover vào user-menu thì dropdown hiện */
+.user-menu:hover .dropdown-menu {
+    display: block;
+}
