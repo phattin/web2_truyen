@@ -1,7 +1,7 @@
 <?php
 $file_path = $_SERVER["DOCUMENT_ROOT"] . "/webbantruyen/model/connectDB.php";
 if (file_exists($file_path)) {
-    require $file_path;
+    require_once $file_path;
 } else {
     die("Lỗi: Không tìm thấy file connectDB.php!");
 }

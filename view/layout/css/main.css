@@ -146,15 +146,22 @@ nav ul li a:hover {
     background: #34495e;
 }
 
-.dropdown-menu {
+div.dropdown-menu {
     display: none;
     position: absolute;
+    width: 900px;
     top: 100%;
-    left: 0;
+    left: -50px;
     background: #074b80;
     list-style: none;
-    padding: 0;
+    padding: 20px;
     min-width: 150px;
+}
+ul.dropdown-menu-list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 400px;
 }
 
 .dropdown-menu li a {
