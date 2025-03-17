@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 15, 2025 lúc 10:47 AM
+-- Thời gian đã tạo: Th3 17, 2025 lúc 06:14 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -192,9 +192,44 @@ CREATE TABLE `genre` (
 --
 
 INSERT INTO `genre` (`GenreID`, `GenreName`) VALUES
-('G001', 'Hài hước'),
-('G002', 'Trinh thám'),
-('G003', 'Phiêu lưu');
+('G001', 'Comedy'),
+('G002', 'Detective'),
+('G003', 'Adventure'),
+('G004', 'Action'),
+('G005', 'Anime'),
+('G006', 'Isekai'),
+('G007', 'Ancient'),
+('G008', 'Doujinshi'),
+('G009', 'Drama'),
+('G010', 'Boylove'),
+('G011', 'Fantasy'),
+('G012', 'Gender Bender'),
+('G013', 'Historical'),
+('G014', 'Horror'),
+('G015', 'Live action'),
+('G016', 'Manga'),
+('G017', 'Manhua'),
+('G018', 'Manhwa'),
+('G019', 'Martial Arts'),
+('G020', 'Mecha'),
+('G021', 'Mystery'),
+('G022', 'Psychological'),
+('G023', 'Romance'),
+('G024', 'School Life'),
+('G025', 'Sci-fi'),
+('G026', 'Shoujo'),
+('G027', 'Shoujo Ai'),
+('G028', 'Shounen'),
+('G029', 'Shounen Ai'),
+('G030', 'Xuyên không'),
+('G031', 'Slice of Life'),
+('G032', 'Sports'),
+('G033', 'Supernatural'),
+('G034', 'Kids'),
+('G035', 'Tragedy'),
+('G036', 'Truyện Màu'),
+('G037', 'Webtoon'),
+('G038', 'Tu tiên');
 
 -- --------------------------------------------------------
 
@@ -256,7 +291,8 @@ CREATE TABLE `product` (
   `ProductImg` varchar(255) NOT NULL,
   `Author` varchar(50) NOT NULL,
   `Publisher` varchar(50) NOT NULL,
-  `Quantity` int(11) NOT NULL,
+  `Quantity` int(5) NOT NULL,
+  `ImportPrice` int(10) NOT NULL,
   `ROS` double NOT NULL,
   `Description` varchar(500) NOT NULL,
   `SupplierID` varchar(10) NOT NULL,
@@ -267,9 +303,17 @@ CREATE TABLE `product` (
 -- Đang đổ dữ liệu cho bảng `product`
 --
 
-INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `ROS`, `Description`, `SupplierID`, `Status`) VALUES
-('P001', 'Truyện Doremon', 'doremon.jpg', 'Fujiko F. Fujio', 'NXB Kim Đồng', 100, 1.2, 'Truyện tranh hài hước', 'S001', 'Hiện'),
-('P002', 'Truyện Conan', 'conan.jpg', 'Gosho Aoyama', 'NXB Kim Đồng', 80, 1.5, 'Truyện trinh thám nổi tiếng', 'S002', 'Hiện');
+INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `ImportPrice`, `ROS`, `Description`, `SupplierID`, `Status`) VALUES
+('P001', 'Truyện Doremon', 'doremon.jpg', 'Fujiko F. Fujio', 'NXB Kim Đồng', 100, 20000, 1.2, 'Truyện tranh hài hước', 'S001', 'Hiện'),
+('P002', 'Truyện Conan', 'conan.jpg', 'Gosho Aoyama', 'NXB Kim Đồng', 80, 40000, 1.5, 'Truyện trinh thám nổi tiếng', 'S002', 'Hiện'),
+('P003', 'Truyện One Piece', 'onepiece.jpg', 'Eiichiro Oda', 'NXB Kim Đồng', 120, 22500, 1.3, 'Truyện phiêu lưu hành động', 'S003', 'Hiện'),
+('P004', 'Truyện Naruto', 'naruto.jpg', 'Masashi Kishimoto', 'NXB Kim Đồng', 90, 27400, 1.4, 'Truyện ninja hấp dẫn', 'S004', 'Hiện'),
+('P005', 'Truyện Dragon Ball', 'dragonball.jpg', 'Akira Toriyama', 'NXB Kim Đồng', 110, 25000, 1.6, 'Truyện võ thuật viễn tưởng', 'S005', 'Hiện'),
+('P006', 'Truyện Attack on Titan', 'aot.jpg', 'Hajime Isayama', 'NXB Kim Đồng', 70, 48000, 1.8, 'Truyện hành động kịch tính', 'S006', 'Hiện'),
+('P007', 'Truyện Tokyo Revengers', 'tokyo.jpg', 'Ken Wakui', 'NXB Kim Đồng', 85, 118000, 1.7, 'Truyện du hành thời gian', 'S007', 'Hiện'),
+('P008', 'Truyện Jujutsu Kaisen', 'jujutsu.jpg', 'Gege Akutami', 'NXB Kim Đồng', 95, 150000, 1.5, 'Truyện chiến đấu huyền bí', 'S008', 'Hiện'),
+('P009', 'Truyện Black Clover', 'blackclover.jpg', 'Yūki Tabata', 'NXB Kim Đồng', 75, 60000, 1.3, 'Truyện phép thuật hành động', 'S009', 'Hiện'),
+('P010', 'Truyện Fairy Tail', 'fairytail.jpg', 'Hiro Mashima', 'NXB Kim Đồng', 88, 100000, 1.4, 'Truyện phiêu lưu phép thuật', 'S010', 'Hiện');
 
 -- --------------------------------------------------------
 
@@ -401,7 +445,15 @@ CREATE TABLE `supplier` (
 
 INSERT INTO `supplier` (`SupplierID`, `SupplierName`, `Phone`, `Email`, `Address`, `Status`) VALUES
 ('S001', 'Nhà cung cấp A', '0123456789', 'nhaccA@gmail.com', 'Hà Nội', 'Hiện'),
-('S002', 'Nhà cung cấp B', '0987654321', 'nhaccB@gmail.com', 'TP. Hồ Chí Minh', 'Hiện');
+('S002', 'Nhà cung cấp B', '0987654321', 'nhaccB@gmail.com', 'TP. Hồ Chí Minh', 'Hiện'),
+('S003', 'Nhà cung cấp 3', '', '', '', ''),
+('S004', 'Nhà cung cấp 4', '', '', '', ''),
+('S005', 'Nhà cung cấp 5', '', '', '', ''),
+('S006', 'Nhà cung cấp 6', '', '', '', ''),
+('S007', 'Nhà cung cấp 7', '', '', '', ''),
+('S008', 'Nhà cung cấp 8', '', '', '', ''),
+('S009', 'Nhà cung cấp 9', '', '', '', ''),
+('S010', 'Nhà cung cấp 10', '', '', '', '');
 
 --
 -- Chỉ mục cho các bảng đã đổ

@@ -1,58 +1,44 @@
-<main class="container">
-    <div class="product-grid">
-        <?php
-            require 'model/productDB.php';
+<?php
+    require 'model/connectDB.php';
+    $conn = connectDB::getConnection();
 
-            $productDB = new productDB();
-            
-            // Lấy danh sách sản phẩm
-            $products = $productDB->getAllProduct();
-            foreach ($products as $product){
-                echo '
-                        <div class="product-item">
-                            <img src="view/layout/images/jjk.jpg">
-                            <h3>'.$product['ProductName'].'</h3>
-                            <p class="price">'.$product['ROS'].' VND</p>
-                            <button class="btn-add-to-cart">Thêm vào giỏ hàng</button>
-                        </div>
-                    ';
-            }
-                // echo '
-                //         <div class="product-item">
-                //             <img src="view/layout/images/jjk.jpg" alt="Product 1">
-                //             <h3>Truyện 1</h3>
-                //             <p class="price">100,000 VND</p>
-                //             <button class="btn-add-to-cart">Thêm</button>
-                //         </div>
-                //         <div class="product-item">
-                //             <img src="view/layout/images/aot.jpg" alt="Product 2">
-                //             <h3>Truyện 2</h3>
-                //             <p class="price">120,000 VND</p>
-                //             <button class="btn-add-to-cart">Thêm</button>
-                //         </div>
-                //         <div class="product-item">
-                //             <img src="view/layout/images/mha.jpg" alt="Product 3">
-                //             <h3>Truyện 3</h3>
-                //             <p class="price">150,000 VND</p>
-                //             <button class="btn-add-to-cart">Thêm </button>
-                //         </div><div class="product-item">
-                //             <img src="view/layout/images/spyxfamily.jpg" alt="Product 3">
-                //             <h3>Truyện 3</h3>
-                //             <p class="price">150,000 VND</p>
-                //             <button class="btn-add-to-cart">Thêm </button>
-                //         </div><div class="product-item">
-                //             <img src="view/layout/images/naruto.jpg" alt="Product 3">
-                //             <h3>Truyện 3</h3>
-                //             <p class="price">150,000 VND</p>
-                //             <button class="btn-add-to-cart">Thêm </button>
-                //         </div><div class="product-item">
-                //             <img src="view/layout/images/chainsawman.jpg" alt="Product 3">
-                //             <h3>Truyện 3</h3>
-                //             <p class="price">150,000 VND</p>
-                //             <button class="btn-add-to-cart">Thêm </button>
-                //         </div>
-                //         <!-- Thêm các sản phẩm khác tại đây -->
-                //         ';
-        ?>
-    </div>  
+    $limit = 9;
+    $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+    $offset = ($page - 1) * $limit;
+
+    $result = $conn->query("SELECT * FROM product LIMIT $limit OFFSET $offset");
+    $total_products = $conn->query("SELECT COUNT(*) AS total FROM product")->fetch_assoc()['total'];
+    $total_pages = ceil($total_products / $limit);
+
+    connectDB::closeConnection($conn);
+?>
+
+<main class="container">
+<div class="product-grid">
+    <?php while ($product = $result->fetch_assoc()): ?>
+        <div class="product-item">
+            <a href="index.php?page=product_detail&id=<?= $product['ProductID'] ?>">
+                <img src="view/layout/images/<?= $product['ProductImg'] ?>" alt="<?= $product['ProductName'] ?>">
+            </a>
+            <h3><?= $product['ProductName'] ?></h3>
+            <p class="price"><?= number_format(round((int)$product['ImportPrice']*(float)$product['ROS'],-3), 0, '.', '.') ?> VNĐ</p>
+            <button class="btn-add-to-cart">Thêm vào giỏ hàng</button>
+        </div>
+    <?php endwhile; ?>
+</div>
+
+
+    <!-- Phân trang -->
+    <div class="pagination">
+        <?php if ($page > 1): ?>
+            <a href="?page=<?= $page - 1 ?>" class="btn-pagination">❮</a>
+        <?php endif; ?>
+        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+            <a href="?page=<?= $i ?>" class="btn-pagination <?= ($i == $page) ? 'active' : '' ?>"><?= $i ?></a>
+        <?php endfor; ?>
+        <?php if ($page < $total_pages): ?>
+            <a href="?page=<?= $page + 1 ?>" class="btn-pagination">❯</a>
+        <?php endif; ?>
+    </div>
 </main>
+            

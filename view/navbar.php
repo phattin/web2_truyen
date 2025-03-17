@@ -3,7 +3,7 @@
         <nav>
             <div class="container">
                 <ul>
-                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="index.php?trangChu">Trang chủ</a></li>
                     <li class="dropdown">
                         <a href="#">Thể loại ▼</a>
                         <ul class="dropdown-menu">

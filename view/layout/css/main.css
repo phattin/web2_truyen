@@ -63,7 +63,7 @@ header .container {
 /* CSS cho nút đăng nhập và đăng ký */
 .btn-login, .btn-register {
     display: inline-block;
-    padding: 12px 24px;
+    padding: 10px 24px;
     font-size: 16px;
     font-weight: bold;
     text-transform: uppercase;
@@ -81,29 +81,31 @@ header .container {
     background: linear-gradient(135deg, #ff416c, #ff4b2b);
     color: white;
     border: none;
-    margin-left: 25px;
+    margin-left: 16px;
+   
+
 }
 
 .btn-login:hover {
     background: linear-gradient(135deg, #ff4b2b, #ff416c);
     transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(255, 65, 108, 0.4);
+    box-shadow: 0 4px 10px rgba(255, 227, 233, 0.4);
 }
 
 /* Nút Đăng ký */
 .btn-register {
     background: white;
     color: #ff4b2b;
-    border: 2px solid #ff4b2b;
+    /* border: 2px solid #ff4b2b; */
     text-decoration: none;
 
 }
 
 .btn-register:hover {
-    background: #ff4b2b;
+   
     color: white;
     transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(241, 241, 241, 0.4);
+    box-shadow: 0 4px 10px rgba(255, 227, 233, 0.4);
 }
 
 
@@ -113,6 +115,7 @@ header .container {
 .banner img {
     width: 100%;
     height: 300px;
+    margin: 0 0 0 0;
 }
 
 /* Navigation Bar */
@@ -148,7 +151,7 @@ nav ul li a:hover {
     position: absolute;
     top: 100%;
     left: 0;
-    background: #34495e;
+    background: #074b80;
     list-style: none;
     padding: 0;
     min-width: 150px;
@@ -169,7 +172,7 @@ main {
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Tối đa 3 sản phẩm trên mỗi hàng */
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
 
@@ -187,15 +190,18 @@ main {
 }
 
 .product-item img {
-    width: 70%; /* Đặt chiều rộng cố định */
-    height: 80%; /* Đặt chiều cao cố định */
-    object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+    width: 70%;
+    height: 80%;
+    object-fit: cover;
     border-radius: 8px;
-    transition: transform 0.3s ease; /* Thêm hiệu ứng chuyển đổi */
+
+}
+.product-item img {
+    transition: transform 0.3s ease-in-out; /* Hiệu ứng mượt */
 }
 
 .product-item img:hover {
-    transform: scale(1.05); /* Hiệu ứng phóng to khi hover */
+    transform: scale(1.05);
 }
 
 .product-item h3 {
@@ -204,48 +210,74 @@ main {
 }
 
 .product-item .price {
-    font-size: 16px;
-    color: #074b80; /* Màu xanh dương xám */
-    margin: 10px 0;
+    font-size: 20px;
+    color: #074b80;
+    margin: 5px 0;
 }
 
 .product-item .btn-add-to-cart {
     padding: 10px 15px;
-    background: #074b80; /* Màu xanh dương xám */
+    background: #074b80;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background 0.3s ease;
 }
-
-.product-item .btn-add-to-cart:hover {
-    background: #2c3e50;
-}
-
 .pagination {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 20px;
+    gap: 10px;
 }
 
-.pagination button {
-    padding: 10px 15px;
-    margin: 0 5px;
-    border: none;
-    background: #074b80; /* Màu xanh dương xám */
-    color: #fff;
-    cursor: pointer;
-    border-radius: 4px;
+.btn-pagination {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    background: #074b80;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid transparent;
 }
 
-.pagination button:hover {
-    background: #2c3e50;
+.btn-pagination:hover {
+    background: #052f5f;
+    transform: scale(1.1);
+    border-color: #fff;
 }
 
+.pagination span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #074b80;
+    padding: 8px 15px;
+    border: 2px solid #074b80;
+    margin: 20px;
+    border-radius: 8px;
+    background-color: white;
+}
+
+/* Nếu là trang hiện tại thì đổi màu */
 .pagination .active {
     background: #2c3e50;
+    border-color: #fff;
 }
+
+/* Cấu hình riêng cho nút chuyển trang */
+.pagination .btn-prev,
+.pagination .btn-next {
+    font-size: 20px;
+    padding: 6px 18px;
+    display: inline-flex;
+}
+
 
 /* Footer */
 footer {
@@ -263,3 +295,6 @@ footer h3 {
 footer p {
     margin: 5px 0;
 }
+
+
+/* //header trong khi đăng nhập */

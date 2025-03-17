@@ -1,7 +1,28 @@
 <?php
-    require 'connectDB.php';
+    $file_path = $_SERVER["DOCUMENT_ROOT"] . "/webbantruyen/model/connectDB.php";
+    if (file_exists($file_path)) {
+        require $file_path;
+    } else {
+        die("Lỗi: Không tìm thấy file connectDB.php!");
+    }
     class productDB{
         // Lấy danh sách tất cả sản phẩm
+        private $conn;
+        // Lấy tổng số sản phẩm để tính số trang
+        public function getTotalProducts() {
+            $result = $this->conn->query("SELECT COUNT(*) AS total FROM product");
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        }
+    
+        // Lấy danh sách sản phẩm có phân trang
+        public function getProductsByPage($limit, $offset) {
+            $stmt = $this->conn->prepare("SELECT * FROM product LIMIT ? OFFSET ?");
+            $stmt->bind_param("ii", $limit, $offset);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
         public function getAllProduct(){
             //Mở database
             $conn = connectDB::getConnection();
@@ -19,15 +40,15 @@
         }
 
         // Thêm sản phẩm mới
-        public function addProduct($id, $name, $img, $author, $publisher, $quantity, $ros, $description, $supplierID, $status) {
+        public function addProduct($id, $name, $img, $author, $publisher, $quantity, $importPrice, $ros, $description, $supplierID, $status) {
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "INSERT INTO product (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `ROS`, `Description`, `SupplierID`, `Status`) 
+            $strSQL = "INSERT INTO product (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `ImportPrice, `ROS`, `Description`, `SupplierID`, `Status`) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
-            $stmt->bind_param("sssssiiisi", $id, $name, $img, $author, $publisher, $quantity, $ros, $description, $supplierID, $status);
+            $stmt->bind_param("sssssiiiisi", $id, $name, $img, $author, $publisher, $quantity, $importPrice,  $ros, $description, $supplierID, $status);
             //Thực hiện chức năng
             $success = $stmt->execute();
 
@@ -38,17 +59,17 @@
         }
 
         //Sửa sản phẩm
-        public function updateProduct($id, $name, $img, $author, $publisher, $quantity, $ros, $description, $supplierID, $status) {
+        public function updateProduct($id, $name, $img, $author, $publisher, $quantity, $importPrice, $ros, $description, $supplierID, $status) {
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "UPDATE product SET ProductName = ?, ProductImg = ?, Author = ?, Publisher = ?, Quantity = ?, ROS = ?, Description = ?, SupplierID = ?, Status = ? 
+            $strSQL = "UPDATE product SET ProductName = ?, ProductImg = ?, Author = ?, Publisher = ?, Quantity = ?, ImportPrice = ? , ROS = ?, `Description` = ?, SupplierID = ?, `Status` = ? 
                        WHERE ProductID = ?";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
             if (!$stmt) 
                 die("Lỗi chuẩn bị SQL: " . $conn->error);
-            $stmt->bind_param("ssssiisisi", $name, $img, $author, $publisher, $quantity, $ros, $description, $supplierID, $status, $id);
+            $stmt->bind_param("ssssiissisi", $name, $img, $author, $publisher, $quantity, $importPrice, $ros, $description, $supplierID, $status, $id);
             //Thực hiện chức năng
             $success = $stmt->execute();
             //Đóng kết nối
@@ -63,7 +84,7 @@
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "UPDATE product SET Status = ? WHERE ProductID = ?";
+            $strSQL = "UPDATE product SET `Status` = ? WHERE ProductID = ?";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
             if (!$stmt) 
@@ -77,5 +98,6 @@
         
             return $success;
         }
+        
     }
 ?>

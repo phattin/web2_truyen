@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background: linear-gradient(to bottom, #221fd9, #4bb3b6);
+    color: white;
+}
+
+
+.product-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #4bb3b6, #615fcf);
+    color: white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.product-img img {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+    margin-right: 80px;
+}
+
+.product-info {
+    margin-left: 20px;
+}
+
+.product-info h1 {
+    font-size: 28px;
+    color: #f1c40f;
+}
+
+.product-info p {
+    font-size: 16px;
+    margin: 8px 0;
+}
+
+.product-buttons {
+    margin-top: 20px;
+}
+
+.buy-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.buy-btn:hover {
+    background-color: #c0392b;
+}
