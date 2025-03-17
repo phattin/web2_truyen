@@ -1,5 +1,5 @@
 <?php
-$file_path = $_SERVER["DOCUMENT_ROOT"] . "/WEB2/model/connectDB.php";
+$file_path = $_SERVER["DOCUMENT_ROOT"] . "/webbantruyen/model/connectDB.php";
 if (file_exists($file_path)) {
     require $file_path;
 } else {

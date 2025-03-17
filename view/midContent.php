@@ -21,7 +21,7 @@
                 <img src="view/layout/images/<?= $product['ProductImg'] ?>" alt="<?= $product['ProductName'] ?>">
             </a>
             <h3><?= $product['ProductName'] ?></h3>
-            <p class="price"><?= $product['ROS'] ?> $</p>
+            <p class="price"><?= number_format(round((int)$product['ImportPrice']*(float)$product['ROS'],-3), 0, '.', '.') ?> VNĐ</p>
             <button class="btn-add-to-cart">Thêm vào giỏ hàng</button>
         </div>
     <?php endwhile; ?>

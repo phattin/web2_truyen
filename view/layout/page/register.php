@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . "/WEB2/model/connectDB.php");
+include($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php");
 
 $conn = connectDB::getConnection(); // Lấy kết nối CSDL
 

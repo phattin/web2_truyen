@@ -1,6 +1,6 @@
 <?php
 session_start();
-include($_SERVER['DOCUMENT_ROOT'] . "/WEB2/model/connectDB.php");
+include($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php");
 
 $conn = connectDB::getConnection();
 
@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <script>
                     setTimeout(function() {
-                        window.location.href = '/WEB2/index.php?trangChu';
+                        window.location.href = '/webbantruyen/index.php?trangChu';
                     }, 2000);
                 </script>";    
             exit();
