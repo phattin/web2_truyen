@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     setTimeout(function() {
                         window.location.href = '/webbantruyen/index.php?trangChu';
                     }, 2000);
-                </script>";    
+                </script>";
             exit();
         } else {
             echo "<script>alert('Sai mật khẩu!');</script>";
@@ -101,12 +101,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="view/layout/css/transformLoginAnimation.">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/sign_in.css">
+    <style>
+        .close-btn {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            color: black;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 0 0 0 15px;
+            /* Bo góc trái trên và góc dưới */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            /* Hiệu ứng đổ bóng */
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: white;
+            background: red;
+            /* Chuyển nền đỏ khi hover */
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <div class="form-container">
+    <div class="container" style="position: relative;">
+        <div class="form-container" >
+             <div class="close-btn" onclick="goBack()">✖</div>
+
             <h2>Đăng nhập</h2>
 
             <form id="login-form" method="POST">
@@ -145,6 +172,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             });
         });
+        function goBack() {
+            window.history.back();
+        }
     </script>
 
 </body>

@@ -15,7 +15,7 @@
 <?php
 $page = isset($_GET['page']) ? $_GET['page'] : "home";
 
-if ($page == 'login' || $page == 'register') {
+if ($page == 'login' || $page == 'register' || $page == 'profile') {
     include("view/layout/page/$page.php");
 } else {
     include_once("view/header.php");
@@ -23,8 +23,7 @@ if ($page == 'login' || $page == 'register') {
     include_once("view/navbar.php");
 
     if ($page == 'trangChu') {
-        include_once("index.php");
-
+        include_once("home.php");
     }
     // chi tiet san pham
     elseif ($page == 'product_detail') {
