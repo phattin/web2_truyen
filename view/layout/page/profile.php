@@ -77,11 +77,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     $conn->commit();
                     $_SESSION['username'] = $newUsername;
-                    echo "<script>alert('✅ Cập nhật thành công!'); window.location.href='profile.php';</script>";
+                    echo "<script>alert('✅ Cập nhật thành công!'); window.location.href='index.php?page=profile';</script>";
                     exit();
                 } catch (Exception $e) {
                     $conn->rollback();
-                    echo "<script>alert('" . addslashes($e->getMessage()) . "'); window.location.href='profile.php';</script>";
+                    echo "<script>alert('" . addslashes($e->getMessage()) . "'); window.location.href='index.php?page=profile';</script>";
                     exit();
                 }
             }
@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die("❌ Lỗi kiểm tra dữ liệu trùng: " . $conn->error);
         }
     } else {
-        echo "<script>alert('⚠️ Vui lòng nhập đầy đủ thông tin!'); window.location.href='profile.php';</script>";
+        echo "<script>alert('⚠️ Vui lòng nhập đầy đủ thông tin!'); window.location.href='index.php?page=profile';</script>";
         exit();
     }
 }
