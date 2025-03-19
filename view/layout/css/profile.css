@@ -1,0 +1,166 @@
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: rgb(224, 223, 223);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            min-height: 630px;
+            margin: 50px auto;
+            background: rgb(238, 242, 244);
+            color: black;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: translateY(-3px);
+        }
+
+        h2 {
+            font-size: 31px;
+            margin-bottom: 20px;
+            color: #074b80;
+        }
+
+        .profile-info {
+            text-align: left;
+            font-size: 23px;
+        }
+
+        .profile-info p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .profile-info input {
+            border: none;
+            font-size: 18px;
+            width: 65%;
+            padding: 8px;
+            border-bottom: 2px solid #ccc;
+            transition: 0.3s ease-in-out;
+            margin-bottom: 10px;
+        }
+
+        .profile-info input:focus {
+            border-bottom: 2px solid #074b80;
+            outline: none;
+        }
+
+        .btn-edit {
+            padding: 8px 12px;
+            background: #074b80;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .profile-info p {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            /* Điều chỉnh khoảng cách giữa nhãn và input */
+        }
+
+        .profile-info strong {
+            width: 180px;
+            /* Cố định chiều rộng để các nhãn thẳng hàng */
+            text-align: left;
+            /* Căn trái để không bị lệch */
+            margin-bottom: 20px;
+        }
+
+        .profile-info input {
+            flex-grow: 1;
+            /* Mở rộng input để có độ dài đều nhau */
+            border: none;
+            border-bottom: 2px solid #ccc;
+            padding: 8px;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+
+        .btn-edit:hover {
+            background: #063763;
+            margin-bottom: 10px;
+        }
+
+        .btn-save {
+            width: 25%;
+            padding: 14px;
+            background: #074b80;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+            display: none;
+            margin-top: 30px;
+        }
+
+        .btn-save:hover {
+            background: rgb(5, 51, 87);
+        }
+
+        /* Căn chỉnh Tổng chi tiêu và giá tiền về cùng một hàng */
+        .profile-info p:last-child {
+            display: flex;
+            justify-content: flex-start;
+            font-size: 23px;
+
+            font-weight: bold;
+            align-items: center;
+        }
+
+        /* Thu nhỏ nút "Cập nhật" và căn giữa */
+        .btn-save {
+            width: 25%;
+            /* Giảm kích thước */
+            padding: 12px;
+            margin: 30px auto 0 auto;
+            /* Căn giữa */
+            display: block;
+            text-align: center;
+        }
+
+
+        /* back */
+        .container{
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: black;
+            transition: color 0.3s ease;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 0 0 0 15px; /* Bo góc trái trên và góc dưới */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Hiệu ứng đổ bóng nhẹ */
+        }
+        
+        .close-btn:hover {
+            color: red;
+            background: #f8d7da; /* Đổi nền khi hover */
+        }
+        
+        

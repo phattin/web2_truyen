@@ -30,7 +30,7 @@ session_start();
                     <i class="fa-solid fa-user"></i> 
                 </div>
                 <div class="dropdown-menu">
-                    <a href="profile.php">Thông tin cá nhân</a>
+                    <a href="index.php?page=profile">Thông tin cá nhân</a>
                     <a href="view/layout/page/logout.php" class="btn-logout" onclick="return confirm('Bạn có chắc muốn đăng xuất?');">Đăng xuất</a>
                 </div>
             </div>
