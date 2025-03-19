@@ -29,7 +29,7 @@ $conn->close();
                 <li><a href="admin_home.php">Trang chủ</a></li>
                 <li><a href="add_employee.php">Thêm nhân viên</a></li>
                 <li><a href="permissions.php">Quyền</a></li>
-                <li><a href="logout.php">Đăng xuất</a></li>
+                <li><a href="view/layout/page/logout.php" onclick="return confirm('Bạn có chắc muốn đăng xuất?');" >Đăng xuất</a></li>
             </ul>
         </nav>
         
