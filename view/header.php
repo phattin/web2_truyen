@@ -20,7 +20,7 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
             <div class="search-bar">
                 <input type="text" id="find-product" placeholder="Tìm truyện...">
-                <i class="fa-solid fa-magnifying-glass" onclick="document.querySelector('main.container').scrollIntoView({ behavior: 'smooth' })"></i>
+                <i class="fa-solid fa-magnifying-glass" onclick="if(document.querySelector('main.container') != null) document.querySelector('main.container').scrollIntoView({ behavior: 'smooth' })"></i>
             </div>
 
             <?php if (isset($_SESSION['username'])): ?>
@@ -41,33 +41,40 @@ if (session_status() === PHP_SESSION_NONE) {
                 <div class="auth-buttons">
                     <a href="index.php?page=register" class="btn-register" style="color:#ff4b2b;text-decoration: none;">Đăng ký</a>
                     <a href="index.php?page=login" class="btn-login">Đăng nhập</a>
+                    <a href="index.php?page=cart" class="btn-cart">
+                        <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
+                    </a>
                 </div>
             <?php endif; ?>
         </div>
     </header>
     <script>
     document.getElementById("find-product").addEventListener("keydown", function(event) {
+        if (document.querySelector('main.container')) {
             //Ấn Enter thì cuộn xuống sản phẩm
             if(event.key == 'Enter')
                 document.querySelector('main.container').scrollIntoView({ behavior: 'smooth' })
             const sanPham = document.getElementById("find-product").value.trim().toLowerCase();
-            // Lọc sản phẩm từ mảng products có sẵn từ PHP
-            const productsFound = products.filter(product => product['ProductName'].toLowerCase().includes(sanPham));
-            
-            // Gửi kết quả qua PHP bằng AJAX
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "/webbantruyen/view/midContent.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.send("productsFound=" + encodeURIComponent(JSON.stringify(productsFound)));
+            if(products != null){
+                // Lọc sản phẩm từ mảng products có sẵn từ PHP
+                const productsFound = products.filter(product => product['ProductName'].toLowerCase().includes(sanPham));
+                
+                // Gửi kết quả qua PHP bằng AJAX
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/webbantruyen/view/midContent.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send("productsFound=" + encodeURIComponent(JSON.stringify(productsFound)));
 
-            // Xử lý phản hồi từ PHP
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    document.querySelector("main.container").innerHTML = xhr.responseText;
-                } else {
-                    console.error("Lỗi AJAX:", xhr.statusText);
-                }
-            };
+                // Xử lý phản hồi từ PHP
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        document.querySelector("main.container").innerHTML = xhr.responseText;
+                    } else {
+                        console.error("Lỗi AJAX:", xhr.statusText);
+                    }
+                };
+            }
+        }
     });
     </script>
 </body>

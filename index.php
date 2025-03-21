@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRUYEN</title>
-    <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="view/layout/css/main.css">
     <link rel="stylesheet" href="./view/layout/font/fontawesome-free-6.7.2-web/css/all.min.css">
@@ -16,7 +15,7 @@
     $page = isset($_GET['page']) ? $_GET['page'] : "home";
     if ($page == 'admin') {
         include_once("view/admin/admin.php");
-    } elseif ($page == 'login' || $page == 'register' || $page == 'profile') {
+    } elseif ($page == 'login' || $page == 'register' || $page == 'profile' || $page == 'cart') {
         include("view/layout/page/$page.php");
     } else {
         include_once("view/header.php");
