@@ -39,6 +39,6 @@ $conn->close();
             
         </main>
     </div>
-    <script src="../layout/js/Admin_ajax.js"></script>
+    <script src="/webbantruyen/view/layout/js/Admin_ajax.js"></script>
 </body>
 </html>
