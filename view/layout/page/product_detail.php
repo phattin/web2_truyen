@@ -75,7 +75,9 @@ if (isset($_GET['id'])) {
             </div>
         </div>
     </div>
-
+    <script>
+        document.querySelector('.product-container').scrollIntoView({ behavior: 'smooth' })
+    </script>
 </body>
 
 </html>
