@@ -5,19 +5,19 @@ function Swicth($x){
     }
     switch ($x) {
         case 2:
-            xhttp.open("GET", "employee.php", true);
+            xhttp.open("GET", "view/admin/employee.php", true);
             xhttp.send();
             break;
         case 3:
-            xhttp.open("GET", "guest.php", true);
+            xhttp.open("GET", "view/admin/guest.php", true);
             xhttp.send();
             break;
         case 4:
-            xhttp.open("GET", "product.php", true);
+            xhttp.open("GET", "view/admin/product.php", true);
             xhttp.send();
             break;
         default:
-            xhttp.open("GET", "admin_home.php", true);
+            xhttp.open("GET", "view/admin/admin_home.php", true);
             xhttp.send();
     }
 }
