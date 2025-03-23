@@ -41,18 +41,27 @@ if (session_status() === PHP_SESSION_NONE)
 ?>
 
 <main class="container">
-    <div class="product-grid">
-        <?php foreach ($result as $product): ?>
-            <div class="product-item">
-                <a href="index.php?page=product_detail&id=<?= $product['ProductID'] ?>">
-                    <img src="view/layout/images/<?= $product['ProductImg'] ?>" alt="<?= $product['ProductName'] ?>">
-                </a>
-                <h3><?= $product['ProductName'] ?></h3>
-                <p class="price"><?= number_format(round((int)$product['ImportPrice'] * (float)$product['ROS'], -3), 0, '.', '.') ?> VNĐ</p>
-                <button class="btn-add-to-cart">Thêm vào giỏ hàng</button>
-            </div>
-        <?php endforeach; ?>
-    </div>
+<div class="product-grid">
+    <?php foreach ($result as $product): ?>
+        <div class="product-item">
+            <a href="index.php?page=product_detail&id=<?= $product['ProductID'] ?>">
+                <img src="view/layout/images/<?= $product['ProductImg'] ?>" alt="<?= $product['ProductName'] ?>">
+            </a>
+            <h3><?= $product['ProductName'] ?></h3>
+            <p class="price"><?= number_format(round((int)$product['ImportPrice'] * (float)$product['ROS'], -3), 0, '.', '.') ?> VNĐ</p>
+            
+            <!-- Form gửi dữ liệu sản phẩm đến cart.php -->
+            <form action="view/layout/page/cart.php" method="POST">
+                <input type="hidden" name="id" value="<?= $product['ProductID'] ?>">
+                <input type="hidden" name="name" value="<?= $product['ProductName'] ?>">
+                <input type="hidden" name="price" value="<?= round((int)$product['ImportPrice'] * (float)$product['ROS'], -3) ?>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="button" class="btn-add-to-cart" data-id="<?= $product['ProductID'] ?>">Thêm vào giỏ hàng</button>
+            </form>
+        </div>
+    <?php endforeach; ?>
+</div>
+
 
     <!-- Phân trang -->
     <?php if ($total_pages > 1): ?>

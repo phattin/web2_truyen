@@ -13,7 +13,9 @@
 <body>
 <?php
     $page = isset($_GET['page']) ? $_GET['page'] : "home";
-    if ($page == 'admin') {
+    if($page =='cart_view'){
+        include_once("view/layout/page/cart_view.php");
+    } elseif ($page == 'admin') {
         include_once("view/admin/admin.php");
     } elseif ($page == 'login' || $page == 'register' || $page == 'profile' || $page == 'cart') {
         include("view/layout/page/$page.php");
