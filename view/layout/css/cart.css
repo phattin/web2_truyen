@@ -1,0 +1,110 @@
+/* --- Hiển thị thông báo khi thêm vào giỏ hàng --- */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s, transform 0.5s;
+    z-index: 1000;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.toast.error {
+    background: #dc3545;
+}
+
+/* --- Giỏ hàng cố định trên góc phải màn hình --- */
+#cart-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 1000;
+    order: -1; /* Đưa giỏ hàng lên trước */
+    margin-right: 10px;
+}
+#cart-icon img {
+    width: 100%;
+    height: auto;
+}
+
+/* --- Ảnh bay vào giỏ hàng --- */
+.fly-to-cart {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    z-index: 9999;
+    transition: all 1s ease-in-out;
+}
+
+/* Hiển thị số lượng sản phẩm trên icon giỏ hàng */
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Hiệu ứng rung cho icon giỏ hàng */
+.shake {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-container {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Khoảng cách giữa các phần tử */
+}
+
+.btn-cart {
+    order: -1; /* Đưa giỏ hàng lên trước */
+}
+
+
+.auth-buttons, .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
