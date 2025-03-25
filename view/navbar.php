@@ -1,11 +1,11 @@
 <?php
-    require 'model/genreDB.php';
+    require_once 'model/genreDB.php';
     $genres = genreDB::getAllGenre();
 ?>
 <nav>
     <div class="container">
         <ul>
-            <li><a href="index.php?trangChu">Trang chủ</a></li>
+            <li><a href="index.php?page=home" onclick="setActive(this)">Trang chủ</a></li>
             <li class="dropdown">
                 <a>Thể loại ▼</a>
                 <div class="dropdown-menu">

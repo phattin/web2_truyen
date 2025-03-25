@@ -1,5 +1,9 @@
 <?php
-    require_once 'model/productDB.php';
+    // Kiểm tra session
+if (session_status() === PHP_SESSION_NONE)
+    session_start();
+
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/webbantruyen/model/productDB.php';
     $conn = connectDB::getConnection();
 
     $limit = 9;
@@ -16,29 +20,48 @@
     if ($genre != '')
         $products = productDB::getProductHasGenre($genre);
 
+    // Gửi mảng vào để tìm kiếm
+    echo "<script>const products = " . json_encode($products) . ";</script>";
+
+    // Lấy sản phẩm đã tìm kiếm
+    // Kiểm tra nếu có dữ liệu gửi đến
+    if (isset($_POST["productsFound"]))
+        $productsFound = json_decode($_POST["productsFound"], true);
+    else 
+        $productsFound = $products;
+
     // Lấy sản phẩm cho trang hiện tại
-    $result = array_slice($products, $offset, $limit);
+    $result = array_slice($productsFound, $offset, $limit);
 
     // Tổng số trang
-    $total_products = count($products);
+    $total_products = count($productsFound);
     $total_pages = ceil($total_products / $limit);
 
     connectDB::closeConnection($conn);
 ?>
 
 <main class="container">
-    <div class="product-grid">
-        <?php foreach ($result as $product): ?>
-            <div class="product-item">
-                <a href="index.php?page=product_detail&id=<?= $product['ProductID'] ?>">
-                    <img src="view/layout/images/<?= $product['ProductImg'] ?>" alt="<?= $product['ProductName'] ?>">
-                </a>
-                <h3><?= $product['ProductName'] ?></h3>
-                <p class="price"><?= number_format(round((int)$product['ImportPrice'] * (float)$product['ROS'], -3), 0, '.', '.') ?> VNĐ</p>
-                <button class="btn-add-to-cart">Thêm vào giỏ hàng</button>
-            </div>
-        <?php endforeach; ?>
-    </div>
+<div class="product-grid">
+    <?php foreach ($result as $product): ?>
+        <div class="product-item">
+            <a href="index.php?page=product_detail&id=<?= $product['ProductID'] ?>">
+                <img src="view/layout/images/<?= $product['ProductImg'] ?>" alt="<?= $product['ProductName'] ?>">
+            </a>
+            <h3><?= $product['ProductName'] ?></h3>
+            <p class="price"><?= number_format(round((int)$product['ImportPrice'] * (float)$product['ROS'], -3), 0, '.', '.') ?> VNĐ</p>
+            
+            <!-- Form gửi dữ liệu sản phẩm đến cart.php -->
+            <form action="view/layout/page/cart.php" method="POST">
+                <input type="hidden" name="id" value="<?= $product['ProductID'] ?>">
+                <input type="hidden" name="name" value="<?= $product['ProductName'] ?>">
+                <input type="hidden" name="price" value="<?= round((int)$product['ImportPrice'] * (float)$product['ROS'], -3) ?>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="button" class="btn-add-to-cart" data-id="<?= $product['ProductID'] ?>">Thêm vào giỏ hàng</button>
+            </form>
+        </div>
+    <?php endforeach; ?>
+</div>
+
 
     <!-- Phân trang -->
     <?php if ($total_pages > 1): ?>

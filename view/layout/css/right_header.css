@@ -11,9 +11,10 @@
     align-items: center;
     gap: 8px;
     padding: 10px 20px;
-
     border-radius: 5px;
-    background-color: #2e2c2c;
+    background-color: #ffffff;
+    color: black;
+    font-weight:500 ;
 }
 
 .user-info i {
@@ -52,3 +53,4 @@
 .user-menu:hover .dropdown-menu {
     display: block;
 }
+

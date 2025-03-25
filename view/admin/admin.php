@@ -14,25 +14,31 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ Admin</title>
-    <link rel="stylesheet" href="view/layout/css/adminHome.css">
+    <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminHome.css">
 
+ 
 </head>
 
 <body>
-    <header>
-        <h2>Xin chào <?php echo htmlspecialchars($username); ?>!</h2>
-    </header>
     <div class="container">
+        <header>
+            <h2>Xin chào <?php echo htmlspecialchars($username); ?>!</h2>
+        </header>
         <nav class="sidebar">
             <h3>Chức năng</h3>
             <ul>
-                <li><a href="admin_home.php">Trang chủ</a></li>
-                <li><a href="add_employee.php">Thêm nhân viên</a></li>
-                <li><a href="permissions.php">Quyền</a></li>
-                <li><a href="view/layout/page/logout.php" onclick="return confirm('Bạn có chắc muốn đăng xuất?');" >Đăng xuất</a></li>
+                <li onclick="Swicth(1)"><a>Trang chủ</a></li>
+                <li onclick="Swicth(2)"><a>Quản lý nhân viên</a></li>
+                <li onclick="Swicth(3)"><a>Quản lý khách hàng</a></li>
+                <li onclick="Swicth(4)"><a>Quản lý sản phẩm</a></li>
+                <li onclick="Swicth(5)"><a>Phân quyền</a></li>
+                <li><a href="/webbantruyen/view/layout/page/logout.php" onclick="return confirm('Bạn có chắc muốn đăng xuất?');" >Đăng xuất</a></li>
             </ul>
         </nav>
-        
+        <main id="content">
+            
+        </main>
     </div>
+    <script src="/webbantruyen/view/layout/js/Admin_ajax.js"></script>
 </body>
 </html>

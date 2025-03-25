@@ -62,6 +62,31 @@
         
             return $success;
         }
+
+        //Lấy thể loại của sản phẩm
+        public static function getGenresOfProduct($id) {
+            // Mở database
+            $conn = connectDB::getConnection();
+            // Lệnh SQL đúng
+            $strSQL = "SELECT * 
+                       FROM genre
+                       JOIN genre_detail ON genre.GenreID = genre_detail.GenreID 
+                       WHERE genre_detail.ProductID = ?";
+        
+            // Thực hiện SQL
+            $stmt = $conn->prepare($strSQL);
+            $stmt->bind_param("s", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            // Lưu danh sách sản phẩm
+            $genreList = [];
+            while ($row = $result->fetch_assoc()) 
+                $genreList[] = $row;
+            // Đóng kết nối
+            connectDB::closeConnection($conn);
+            return $genreList;
+        }
+
         
     }
 ?>
