@@ -27,11 +27,11 @@ $conn->close();
         <nav class="sidebar">
             <h3>Chức năng</h3>
             <ul>
-                <li onclick="Swicth(1)"><a>Trang chủ</a></li>
-                <li onclick="Swicth(2)"><a>Quản lý nhân viên</a></li>
-                <li onclick="Swicth(3)"><a>Quản lý khách hàng</a></li>
-                <li onclick="Swicth(4)"><a>Quản lý sản phẩm</a></li>
-                <li onclick="Swicth(5)"><a>Phân quyền</a></li>
+                <li onclick="switchModule(1)"><a>Trang chủ</a></li>
+                <li onclick="switchModule(2)"><a>Quản lý nhân viên</a></li>
+                <li onclick="switchModule(3)"><a>Quản lý khách hàng</a></li>
+                <li onclick="switchModule(4)"><a>Quản lý sản phẩm</a></li>
+                <li onclick="switchModule(5)"><a>Phân quyền</a></li>
                 <li><a href="/webbantruyen/view/layout/page/logout.php" onclick="return confirm('Bạn có chắc muốn đăng xuất?');" >Đăng xuất</a></li>
             </ul>
         </nav>
