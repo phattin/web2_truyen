@@ -325,11 +325,11 @@ main {
 }
 /* Footer */
 footer {
-  background: #074b80; /* Màu xanh dương xám */
-  color: #fff;
-  padding: 20px 0;
-  text-align: center;
-  margin-top: 60px;
+    background: #074b80; /* Màu xanh dương xám */
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 60px;
 }
 
 footer h3 {
