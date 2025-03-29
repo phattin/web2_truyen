@@ -1,4 +1,4 @@
-function Swicth($x){
+function switchModule($x){
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function() {
         document.getElementById("content").innerHTML = this.responseText;
