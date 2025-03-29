@@ -2,7 +2,6 @@
 include($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php");
 
 $conn = connectDB::getConnection(); // Lấy kết nối CSDL
-
 $error = "";   // Khởi tạo biến lỗi
 $success = ""; // Khởi tạo biến thành công
 
@@ -31,7 +30,7 @@ function generateCustomerID($conn)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $email = $_POST['email'];
-    $password = $_POST['password']; // Lưu mật khẩu dưới dạng plain text (KHÔNG KHUYẾN KHÍCH)
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Mã hóa mật khẩu
     $roleID = 'R3'; // Người dùng mặc định
     $status = 'Hiện';
 
@@ -138,7 +137,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 
 
 
