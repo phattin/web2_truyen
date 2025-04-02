@@ -2,9 +2,9 @@ Array
 (
     [0] => Array
         (
-            [id] => P002
-            [name] => Truyện Conan
-            [price] => 60000
+            [id] => P005
+            [name] => Truyện Dragon Ball
+            [price] => 40000
             [quantity] => 1
         )
 
