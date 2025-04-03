@@ -25,9 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Debug kiểm tra session
-    file_put_contents('debug_cart.log', print_r($_SESSION['cart'], true));
-
+    
     echo json_encode(["success" => true, "cart_count" => count($_SESSION['cart'])]);
     exit();
 }

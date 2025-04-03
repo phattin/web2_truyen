@@ -2,17 +2,17 @@ Array
 (
     [0] => Array
         (
-            [id] => P005
-            [name] => Truyện Dragon Ball
-            [price] => 40000
+            [id] => P002
+            [name] => Truyện Conan
+            [price] => 60000
             [quantity] => 1
         )
 
     [1] => Array
         (
-            [id] => P002
-            [name] => Truyện Conan
-            [price] => 60000
+            [id] => P003
+            [name] => Truyện One Piece
+            [price] => 29000
             [quantity] => 1
         )
 
