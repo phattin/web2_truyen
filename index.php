@@ -37,7 +37,7 @@
             echo '</main>';
         } else {
             echo '<main class="container">';
-            // include_once("view/midContent.php");
+            include_once("view/midContent.php");
             echo '</main>';
         }
 

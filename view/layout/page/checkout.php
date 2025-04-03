@@ -1,3 +1,15 @@
+<?php
+session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/webbantruyen/model/customerDB.php';
+// Kiểm tra nếu có dữ liệu từ form
+if (isset($_POST['productsCheckout']) && isset($_POST['totalAllPrice'])) {
+    $productsCheckout = json_decode($_POST['productsCheckout'], true); // Chuyển chuỗi JSON thành mảng
+    $totalAllPrice = $_POST['totalAllPrice'];
+}
+if (isset($_SESSION['username']))
+    $customer = customerDB::getCustomerByUsername($_SESSION['username']);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,15 +26,15 @@
                 <h3>THÔNG TIN THANH TOÁN</h3>
                 <form>
                     <div class="payment-customer-title">
-                        <strong>Tên: </strong><span class="payment-customer-name">Nguyễn Văn A</span>
+                        <strong>Tên: </strong><span class="payment-customer-name"><?= $customer['Fullname'] ?></span>
                     </div>
                     <div class="payment-customer-title">
-                        <strong>Email: </strong><span class="payment-customer-email">asd@</span>
+                        <strong>Email: </strong><span class="payment-customer-email"><?= $customer['Email'] ?></span>
                     </div>
-                    <label for="phone-payment">Số điện thoại:</label><br />
-                    <input type="number" id="phone-payment" placeholder="Số điện thoại" required /><br />
-                    <label for="address-payment">Địa chỉ: (Nếu thay đổi địa chỉ vui lòng nhập lại)</label><br />
-                    <input type="text" id="address-payment" placeholder="Nhập địa chỉ" required /><br />
+                    <label for="phone-payment">Số điện thoại: <span style="color:red">(*)</span></label><br />
+                    <input type="number" id="phone-payment" placeholder="Số điện thoại" value="<?= $customer['Phone'] ?>" required /><br />
+                    <label for="address-payment">Địa chỉ: <span style="color:red">(*)</span></label><br />
+                    <input type="text" id="address-payment" placeholder="Nhập địa chỉ" value="<?= $customer['Address'] ?>" required /><br />
                     <label for="note-payment">Ghi chú đơn hàng (tùy chọn)</label> <br />
                     <textarea id="note-payment"
                         placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay địa chỉ giao hàng chi tiết"></textarea>
@@ -36,7 +48,7 @@
                             <th colspan="2" class="payment-heading">ĐƠN HÀNG CỦA BẠN</th>
                             <th>
                                 <strong>Ngày đặt:
-                                    <span class="payment-date">22/09/2005</span></strong>
+                                    <span class="payment-date"><?= date("Y-m-d") ?></span></strong>
                             </th>
                         </tr>
                         <tr class="order-header">
@@ -49,22 +61,37 @@
                             <th class="payment-price"></th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+<?php
+                        // Lặp qua từng sản phẩm trong giỏ hàng và hiển thị thông tin
+                        foreach ($productsCheckout as $product) {
+                            $productName = htmlspecialchars($product['name']);
+                            $productQuantity = htmlspecialchars($product['quantity']);
+                            $productPrice = htmlspecialchars($product['price']);
+                            $totalPrice = htmlspecialchars($product['totalPrice']);
+                        ?>
+                            <tr class="payment-product-item">
+                                <td class="payment-product-name"><?= $productName ?></td>
+                                <td class="payment-quantity"><?= $productQuantity ?></td>
+                                <td class="payment-price"><?= $totalPrice ?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
                     <tfoot>
                         <tr style="border-top: 1px solid #ddd">
                             <td colspan="2">Tổng tạm tính:</td>
                             <td>
-                                <span class="payment-total-product-price-value">1.200.200</span><sup>đ</sup>
+                                <span class="payment-total-product-price-value"><?= $totalAllPrice ?></span>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2">Giao hàng:</td>
-                            <td>Giao hàng miễn phí</td>
+                            <td colspan="2">Khuyến mãi:</td>
+                            <td>Không</td>
                         </tr>
                         <tr>
                             <td colspan="2">Tổng đơn:</td>
                             <td>
-                                <span class="payment-total-price-value">12.000.0000</span><sup>đ</sup>
+                                <span class="payment-total-price-value"><?= $totalAllPrice ?></span>
                             </td>
                         </tr>
                     </tfoot>
