@@ -38,6 +38,9 @@ if (session_status() === PHP_SESSION_NONE)
     $total_pages = ceil($total_products / $limit);
 
     connectDB::closeConnection($conn);
+
+    // Trả về HTML thay vì tải lại trang
+    ob_start();
 ?>
 
 <main class="container">
@@ -50,7 +53,7 @@ if (session_status() === PHP_SESSION_NONE)
             <h3><?= $product['ProductName'] ?></h3>
             <p class="price"><?= number_format(round((int)$product['ImportPrice'] * (float)$product['ROS'], -3), 0, '.', '.') ?> VNĐ</p>
             
-            <!-- Form gửi dữ liệu sản phẩm đến cart.php -->
+            // Form gửi dữ liệu sản phẩm đến cart.php 
             <form action="view/layout/page/cart.php" method="POST">
                 <input type="hidden" name="id" value="<?= $product['ProductID'] ?>">
                 <input type="hidden" name="name" value="<?= $product['ProductName'] ?>">
@@ -63,7 +66,7 @@ if (session_status() === PHP_SESSION_NONE)
 </div>
 
 
-    <!-- Phân trang -->
+    // Phân trang 
     <?php if ($total_pages > 1): ?>
         <div class="pagination">
             <?php
@@ -82,3 +85,8 @@ if (session_status() === PHP_SESSION_NONE)
         </div>
     <?php endif; ?>
 </main>
+
+<?php
+$response = ob_get_clean();
+echo $response;
+?>

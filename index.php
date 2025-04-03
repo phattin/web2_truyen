@@ -7,9 +7,11 @@
     <title>TRUYEN</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="view/layout/css/main.css">
+    <link rel="stylesheet" href="./view/layout/css/checkout.css">
     <link rel="stylesheet" href="./view/layout/font/fontawesome-free-6.7.2-web/css/all.min.css">
 </head>
-
+<script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
+<script src="/webbantruyen/view/layout/js/product_ajax.js"></script>
 <body>
 <?php
     $page = isset($_GET['page']) ? $_GET['page'] : "home";
@@ -30,9 +32,13 @@
 
         // Chi tiết sản phẩm
         elseif ($page == 'product_detail') {
+            echo '<main class="container">';
             include_once("view/layout/page/product_detail.php");
+            echo '</main>';
         } else {
-            include_once("view/midContent.php");
+            echo '<main class="container">';
+            // include_once("view/midContent.php");
+            echo '</main>';
         }
 
         include_once("view/footer.php");

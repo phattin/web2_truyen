@@ -70,7 +70,7 @@ session_start();
     </table>
 
     <br>
-    <a href="checkout.php" class="btn btn-checkout">Thanh toán</a>
+    <a href="/webbantruyen/view/layout/page/checkout.php" class="btn btn-checkout">Thanh toán</a>
     <a href="index.php?page=home" class="btn btn-continue">Tiếp tục mua hàng</a>
 </div>
 
