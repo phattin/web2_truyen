@@ -1,8 +1,8 @@
 .payment {
   display: flex;
   background-color: #faf5f5;
-  z-index: 100000;
-  overflow: auto;
+  z-index: 1000;
+  /* overflow: auto; */
 }   
 .payment-box {
   padding: 30px;
@@ -124,8 +124,15 @@ th.payment-heading {
 .payment input {
   padding: 5px;
   width: 200px;
+  border: 1px solid black;
 }
 
+.payment input[type="text"]:hover,
+.payment input[type="number"]:hover,
+.payment textarea#note-payment:hover
+{
+  border: 1px solid black;
+}
 /* AI */
 .payment select {
   padding: 5px;

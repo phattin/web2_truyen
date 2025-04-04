@@ -1,0 +1,43 @@
+
+
+.payment-box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+}
+
+.payment-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.payment-table th, .payment-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.payment-table th {
+    background-color: #f4f4f4;
+}
+
+.payment-submit-background {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.submit-payment-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-payment-btn:hover {
+    background-color: #45a049;
+}

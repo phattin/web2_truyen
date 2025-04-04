@@ -1,10 +1,12 @@
 <?php
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webbantruyen/model/customerDB.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/webbantruyen/model/salesInvoiceDB.php';
 // Kiểm tra nếu có dữ liệu từ form
 if (isset($_POST['productsCheckout']) && isset($_POST['totalAllPrice'])) {
     $productsCheckout = json_decode($_POST['productsCheckout'], true); // Chuyển chuỗi JSON thành mảng
     $totalAllPrice = $_POST['totalAllPrice'];
+    $saleID = salesInvoiceDB::getIncreaseSalesInvoiceID(); // Lấy mã hóa đơn mới
 }
 if (isset($_SESSION['username']))
     $customer = customerDB::getCustomerByUsername($_SESSION['username']);
@@ -33,8 +35,16 @@ if (isset($_SESSION['username']))
                     </div>
                     <label for="phone-payment">Số điện thoại: <span style="color:red">(*)</span></label><br />
                     <input type="number" id="phone-payment" placeholder="Số điện thoại" value="<?= $customer['Phone'] ?>" required /><br />
+                    <input type="radio" id="oldPhone" name="phoneShip" value="oldPhone" style="width: 10px" checked />
+                    <label for="oldPhone">Số điện thoại của tài khoản</label> <br />
+                    <input type="radio" id="newPhone" name="phoneShip" value="newPhone" style="width: 10px" />
+                    <label for="newPhone">Số điện thoại khác</label><br />
                     <label for="address-payment">Địa chỉ: <span style="color:red">(*)</span></label><br />
                     <input type="text" id="address-payment" placeholder="Nhập địa chỉ" value="<?= $customer['Address'] ?>" required /><br />
+                    <input type="radio" id="oldAddress" name="AddressShip" value="oldAddress" style="width: 10px" checked />
+                    <label for="oldAddress">Địa chỉ của tài khoản</label> <br />
+                    <input type="radio" id="newAddress" name="AddressShip" value="newAddress" style="width: 10px" />
+                    <label for="newAddress">Địa chỉ khác</label><br />
                     <label for="note-payment">Ghi chú đơn hàng (tùy chọn)</label> <br />
                     <textarea id="note-payment"
                         placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay địa chỉ giao hàng chi tiết"></textarea>
@@ -86,7 +96,8 @@ if (isset($_SESSION['username']))
                         </tr>
                         <tr>
                             <td colspan="2">Khuyến mãi:</td>
-                            <td>Không</td>
+                            <td id="idKhuyenMai" style="display: none;">PR00</td>
+                            <td id="tenKhuyenMai">Không</td>
                         </tr>
                         <tr>
                             <td colspan="2">Tổng đơn:</td>
@@ -99,11 +110,11 @@ if (isset($_SESSION['username']))
 
                 <h3>Phương thức thanh toán</h3>
                 <div>
-                    <input type="radio" id="cash-on-delivery" name="payment" value="tm" />
+                    <input type="radio" id="cash-on-delivery" name="payment" value="Tiền mặt" checked/>
                     <label for="cash-on-delivery">Thanh toán khi nhận hàng</label>
                 </div>
                 <div>
-                    <input type="radio" id="atm-payment" name="payment" value="atm" />
+                    <input type="radio" id="atm-payment" name="payment" value="Đã chuyển khoản" />
                     <label for="atm-payment">Thanh toán bằng ATM</label>
                     <div id="atm-options">
                         <label for="bank">Chọn ngân hàng:</label>
@@ -125,6 +136,141 @@ if (isset($_SESSION['username']))
             </form>
         </div>
     </div>
-    <script src="../js/checkout.js"></script>
+    <script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
+    <script>
+        
+        const COD = document.querySelector("#cash-on-delivery");
+        const atmOptions = document.getElementById("atm-options");
+        const atmPayment = document.querySelector("#atm-payment");
+        
+        atmPayment.addEventListener("click", togglePaymentOptions);
+        function togglePaymentOptions() {
+            atmOptions.style.display = "block";
+        }
+        
+        COD.addEventListener("click", toggleCOD);
+        function toggleCOD() {
+            atmOptions.style.display = "none";
+        }
+
+        //Lua chon sdt
+        
+        const phoneInput = document.getElementById("phone-payment");
+        const oldPhoneRadio = document.getElementById("oldPhone");
+        const newPhoneRadio = document.getElementById("newPhone");
+        console.log(oldPhoneRadio, newPhoneRadio);
+        const customerPhone = "<?= $customer['Phone'] ?>"; // Lấy số điện thoại từ PHP
+
+
+        function updatePhoneInput() {
+            if (oldPhoneRadio.checked) {
+                phoneInput.value = customerPhone;
+                phoneInput.readOnly = true;
+            } else {
+                phoneInput.value = "";
+                phoneInput.readOnly = false;
+            }
+        }
+
+        // Gọi khi trang tải lần đầu
+        updatePhoneInput();
+
+        // Lắng nghe sự kiện thay đổi radio
+        oldPhoneRadio.addEventListener("change", updatePhoneInput);
+        newPhoneRadio.addEventListener("change", updatePhoneInput);
+
+        //Lua chon address
+        
+        const addressInput = document.getElementById("address-payment");
+        const oldAddressRadio = document.getElementById("oldAddress");
+        const newAddressRadio = document.getElementById("newAddress");
+        console.log(oldAddressRadio, newAddressRadio);
+        const customerAddress = "<?= $customer['Address'] ?>"; // Lấy số điện thoại từ PHP
+
+
+        function updateAddressInput() {
+            if (oldAddressRadio.checked) {
+                addressInput.value = customerAddress;
+                addressInput.readOnly = true;
+            } else {
+                addressInput.value = "";
+                addressInput.readOnly = false;
+            }
+        }
+
+        // Gọi khi trang tải lần đầu
+        updateAddressInput();
+
+        // Lắng nghe sự kiện thay đổi radio
+        oldAddressRadio.addEventListener("change", updateAddressInput);
+        newAddressRadio.addEventListener("change", updateAddressInput);
+
+    </script>
+    <script>
+        $(document).on("click",'.submit-payment-btn', function (event) {
+        event.preventDefault();
+        // Lấy giá trị 
+        const salesID = "<?= $saleID ?>"; // Lấy mã hóa đơn từ PHP
+        const phone = document.getElementById("phone-payment").value;
+        const address = document.getElementById("address-payment").value;
+        const note = document.getElementById("note-payment").value;
+        const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+        const totalPrice = "<?= $totalAllPrice ?>"; // Lấy giá trị tổng tiền từ PHP
+        const date = document.querySelector(".payment-date").innerText;
+        const promotionID = document.getElementById("idKhuyenMai").innerText; 
+        const customerID = "<?= $customer['CustomerID'] ?>"; // Lấy mã khách hàng từ PHP
+
+        // Kiểm tra xem tất cả các trường đã được điền chưa
+        if (phone === "" || address === "") {
+            alert("Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+        const regex = /^[0-9]{10}$/; // Kiểm tra định dạng số điện thoại
+        if (!regex.test(phone)) {
+            alert("Số điện thoại không hợp lệ! Vui lòng nhập lại.");
+            return;
+        }
+        // Gửi dữ liệu đến server bằng AJAX
+        $.ajax({
+            url: "/webbantruyen/handle/checkoutHandle.php",
+            type: "POST",
+            data: {
+                salesID: salesID,
+                productsCheckout: JSON.stringify(<?= json_encode($productsCheckout) ?>),
+                totalPrice: totalPrice,
+                phone: phone,
+                address: address,
+                note: note,
+                paymentMethod: paymentMethod,
+                date: date,
+                promotionID: promotionID,
+                customerID: customerID
+            },
+            success: function (response) {
+                // Xử lý phản hồi từ server nếu cần
+                alert("Đặt hàng thành công!");
+                var dataTest = {
+                salesID: salesID,
+                productsCheckout: JSON.stringify(<?= json_encode($productsCheckout) ?>),
+                totalPrice: totalPrice,
+                phone: phone,
+                address: address,
+                note: note,
+                paymentMethod: paymentMethod,
+                date: date,
+                promotionID: promotionID,
+                customerID: customerID
+            }
+                console.log("Dữ liệu đã gửi:", dataTest);
+                // window.location.href = "index.php?page=home"; // Chuyển hướng về trang chủ sau khi đặt hàng thành công
+            },
+            error: function (xhr, status, error) {
+                console.error("Lỗi:", error);
+                alert("Có lỗi xảy ra trong quá trình đặt hàng. Vui lòng thử lại.");
+            }
+        });
+    });
+        
+    </script>
 </body>
 </html>
