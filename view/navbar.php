@@ -5,21 +5,21 @@
 <nav>
     <div class="container">
         <ul>
-            <li><a href="index.php?page=home" onclick="setActive(this)">Trang chủ</a></li>
+            <li><div class="menu-item" data-page="home" onclick="setActive(this)">Trang chủ</div></li>
             <li class="dropdown">
-                <a>Thể loại ▼</a>
+                <div class="menu-item" >Thể loại ▼</div>
                 <div class="dropdown-menu">
                     <ul class="dropdown-menu-list">
                         <?php
                         foreach ($genres as $genre) {
-                            echo '<li><a href="?genre='.$genre["GenreID"].'">'.$genre["GenreName"].'</a></li>';
+                            echo '<li data-mode="genre" data-genre="'.$genre["GenreID"].'" class="menu-list-genre"><div>'.$genre["GenreName"].'</div></li>';
                         }
                         ?>
                     </ul>
                 </div>
             </li>
-            <li><a href="#">Hot</a></li>
-            <li><a href="#">New</a></li>
+            <li><div class="menu-item" data-page="Hot">Hot</div></li>
+            <li><div class="menu-item" data-page="New">New</div></li>
         </ul>
     </div>
 </nav>

@@ -40,6 +40,30 @@
             return $productList;
         }
 
+        // Lấy thông tin sản phẩm theo mã sản phẩm
+        public static function getProductByID($productID) {
+            // Mở database
+            $conn = connectDB::getConnection();
+            // Lệnh SQL đúng
+            $strSQL = "SELECT * FROM product WHERE ProductID = ?";
+        
+            // Thực hiện SQL
+            $stmt = $conn->prepare($strSQL);
+            $stmt->bind_param("s", $productID);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            // Lưu thông tin sản phẩm
+            $product = null;
+            if ($result->num_rows > 0)
+                $product = $result->fetch_assoc();
+        
+            // Đóng kết nối
+            connectDB::closeConnection($conn);
+        
+            return $product;
+        }
+
         public static function getProductHasGenre($id) {
             // Mở database
             $conn = connectDB::getConnection();
@@ -109,12 +133,12 @@
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "UPDATE product SET `Status` = ? WHERE ProductID = ?";
+            $strSQL = "UPDATE product SET `Status` = 'Ẩn' WHERE ProductID = ?";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
             if (!$stmt) 
                 die("Lỗi chuẩn bị SQL: " . $conn->error);
-            $stmt->bind_param("ss", "Ẩn", $id);
+            $stmt->bind_param("s", $id);
             //Thực hiện chức năng
             $success = $stmt->execute();
             //Đóng kết nối

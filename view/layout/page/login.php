@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
 
-        if ($password == $user['Password']) { // Nếu dùng hash, thay bằng password_verify()
+        if (password_verify($password, $user['Password'])) { // So sánh mật khẩu đã mã hóa
             $_SESSION['username'] = $user['Username'];
             $_SESSION['email'] = $user['Email'];
             $_SESSION['role'] = $user['RoleID'];

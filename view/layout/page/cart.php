@@ -5,7 +5,8 @@ header('Content-Type: application/json');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'] ?? null;
     $name = $_POST['name'] ?? null;
-    $price = $_POST['price'] ?? null;
+    $priceUnFormat = $_POST['price'] ?? null;
+    $price = preg_replace('/[^0-9]/', '', $priceUnFormat) ?? null;
     $quantity = $_POST['quantity'] ?? 1;
 
     if ($id && $name && $price) {
