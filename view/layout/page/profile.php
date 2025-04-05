@@ -171,6 +171,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
 
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector("form").addEventListener("submit", function (e) {
+                const phoneInput = document.querySelector("input[name='phone']");
+                const phone = phoneInput.value.trim();
+
+                // Kiểm tra số điện thoại phải đủ 10 chữ số
+                if (!/^\d{10}$/.test(phone)) {
+                    e.preventDefault();
+                    alert("Số điện thoại phải có đúng 10 chữ số!");
+                    phoneInput.focus();
+                    return false;
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -29,7 +29,10 @@ function generateCustomerID($conn)
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
+    $fullname = $_POST['fullname'];
     $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Mã hóa mật khẩu
     $roleID = 'R3'; // Người dùng mặc định
     $status = 'Hiện';
@@ -63,9 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $customerID = generateCustomerID($conn);
 
             // Thêm vào bảng customer
-            $sql_customer = "INSERT INTO customer (CustomerID, Username, Email) VALUES (?, ?, ?)";
+            $sql_customer = "INSERT INTO customer (CustomerID, Username, Fullname, Email, Phone, Address) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql_customer);
-            $stmt->bind_param("sss", $customerID, $username, $email);
+            $stmt->bind_param("ssssss", $customerID, $username, $fullname, $email, $phone, $address);
 
             if ($stmt->execute()) {
                 echo "<style>
@@ -197,8 +200,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required>
                 </div>
                 <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="fullname" id="fullname" placeholder="Họ và tên" required>
+                </div>
+                <div class="input-group">
                     <i class="fas fa-envelope"></i>
                     <input type="email" name="email" id="email" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="text" name="phone" id="phone" placeholder="Số điện thoại" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" name="address" id="address" placeholder="Địa chỉ" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
@@ -222,12 +237,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("register-form").addEventListener("submit", function (e) {
+                const fullname = document.getElementById("fullname").value.trim();
+                const phone = document.getElementById("phone").value.trim();
                 const password = document.getElementById("password").value;
                 const confirmPassword = document.getElementById("confirm-password").value;
+
+                if (fullname === "") {
+                    e.preventDefault();
+                    alert("Họ và tên không được để trống!");
+                    return;
+                }
+
+                if (!/^\d{10,}$/.test(phone)) {
+                    e.preventDefault();
+                    alert("Số điện thoại phải có ít nhất 10 chữ số!");
+                    return;
+                }
 
                 if (password !== confirmPassword) {
                     e.preventDefault();
                     alert("Mật khẩu xác nhận không khớp!");
+                    return;
                 }
             });
         });

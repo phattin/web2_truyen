@@ -31,14 +31,13 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
 
             <div class="auth-container">
-                <!-- Đặt icon giỏ hàng trước -->
-                <a href="index.php?page=cart_view" class="btn-cart" id="cart-icon">
-                    <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
-                </a>
-
                 <?php if (isset($_SESSION['username'])): ?>
                     <!-- Nếu đã đăng nhập -->
                     <div class="user-menu">
+                        <!-- Đặt icon giỏ hàng trước -->
+                        <a href="index.php?page=cart_view" class="btn-cart" id="cart-icon">
+                            <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
+                        </a>
                         <div class="user-info">
                             <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                             <i class="fa-solid fa-user"></i>
@@ -52,7 +51,12 @@ if (session_status() === PHP_SESSION_NONE) {
                 <?php else: ?>
                     <!-- Nếu chưa đăng nhập -->
                     <div class="auth-buttons">
-                        <a href="index.php?page=register" class="btn-register" style="color:#ff4b2b;text-decoration: none;">Đăng ký</a>
+                        <!-- Đặt icon giỏ hàng trước -->
+                        <a href="index.php?page=cart_view" class="btn-cart" id="cart-icon">
+                            <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
+                        </a>
+                        <a href="index.php?page=register" class="btn-register"
+                            style="color:#ff4b2b;text-decoration: none;">Đăng ký</a>
                         <a href="index.php?page=login" class="btn-login">Đăng nhập</a>
                     </div>
                 <?php endif; ?>
