@@ -24,12 +24,5 @@ Array
             [quantity] => 1
         )
 
-    [2] => Array
-        (
-            [id] => P004
-            [name] => Truyện Naruto
-            [price] => 38000
-            [quantity] => 1
-        )
 
 )
