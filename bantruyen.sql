@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 21, 2025 lúc 08:05 AM
+-- Thời gian đã tạo: Th4 05, 2025 lúc 06:04 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `account` (
   `Username` varchar(50) NOT NULL,
-  `Password` varchar(50) NOT NULL,
+  `Password` varchar(500) NOT NULL,
   `RoleID` varchar(10) NOT NULL,
   `Status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -41,7 +41,8 @@ CREATE TABLE `account` (
 INSERT INTO `account` (`Username`, `Password`, `RoleID`, `Status`) VALUES
 ('admin', 'admin123', 'R1', 'Hiện'),
 ('kh01', 'password02', 'R3', 'Hiện'),
-('nv01', 'password01', 'R2', 'Hiện');
+('nv01', 'password01', 'R2', 'Hiện'),
+('phattin', '$2y$10$PgO.KiaAofBNNcFulFH0yerLU0T1OwLieioGujv4azVVNJWC6/mtC', 'R3', 'Hiện');
 
 -- --------------------------------------------------------
 
@@ -103,7 +104,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`, `Status`) VALUES
-('C001', 'Nguyễn Văn A', 'kh01', 'nguyenvana@gmail.com', 'Hà Nội', '0987654321', 1500000, 'Hiện');
+('C001', 'Nguyễn Văn A', 'kh01', 'nguyenvana@gmail.com', 'Hà Nội', '0987654321', 1500000, 'Hiện'),
+('C02', 'Phat Tin', 'phattin', 'phattin@gmail.com', 'abc/123', '0987654321', 0, '');
 
 -- --------------------------------------------------------
 
@@ -398,6 +400,7 @@ CREATE TABLE `promotion` (
 --
 
 INSERT INTO `promotion` (`PromotionID`, `PromotionName`, `Discount`, `Status`) VALUES
+('PR00', 'Không', 0, 'Hiện'),
 ('PR01', 'Giảm giá Tết', 10, 'Hiện'),
 ('PR02', 'Khuyến mãi hè', 15, 'Hiện');
 
@@ -451,11 +454,14 @@ INSERT INTO `role` (`RoleID`, `RoleName`) VALUES
 
 CREATE TABLE `sales_invoice` (
   `SalesID` varchar(10) NOT NULL,
-  `EmployeeID` varchar(10) NOT NULL,
   `CustomerID` varchar(10) NOT NULL,
+  `Phone` varchar(12) NOT NULL,
+  `Address` varchar(255) NOT NULL,
   `Date` date NOT NULL,
   `PromotionID` varchar(10) NOT NULL,
   `TotalPrice` int(10) NOT NULL,
+  `PaymentMethod` varchar(50) NOT NULL,
+  `Note` varchar(500) DEFAULT NULL,
   `Status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -463,8 +469,8 @@ CREATE TABLE `sales_invoice` (
 -- Đang đổ dữ liệu cho bảng `sales_invoice`
 --
 
-INSERT INTO `sales_invoice` (`SalesID`, `EmployeeID`, `CustomerID`, `Date`, `PromotionID`, `TotalPrice`, `Status`) VALUES
-('SI001', 'E001', 'C001', '2025-03-15', 'PR01', 1350000, 'Hiện');
+INSERT INTO `sales_invoice` (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`, `PromotionID`, `TotalPrice`, `PaymentMethod`, `Note`, `Status`) VALUES
+('SI001', 'C001', '0987654321', 'abc', '2025-03-15', 'PR00', 1350000, '', NULL, 'Hiện');
 
 -- --------------------------------------------------------
 
@@ -473,7 +479,6 @@ INSERT INTO `sales_invoice` (`SalesID`, `EmployeeID`, `CustomerID`, `Date`, `Pro
 --
 
 CREATE TABLE `sales_invoice_detail` (
-  `SalesDetailID` varchar(10) NOT NULL,
   `SalesID` varchar(10) NOT NULL,
   `ProductID` varchar(10) NOT NULL,
   `Quantity` int(11) NOT NULL,
@@ -485,9 +490,9 @@ CREATE TABLE `sales_invoice_detail` (
 -- Đang đổ dữ liệu cho bảng `sales_invoice_detail`
 --
 
-INSERT INTO `sales_invoice_detail` (`SalesDetailID`, `SalesID`, `ProductID`, `Quantity`, `Price`, `TotalPrice`) VALUES
-('SD001', 'SI001', 'P001', 2, 50000, 100000),
-('SD002', 'SI001', 'P002', 1, 45000, 45000);
+INSERT INTO `sales_invoice_detail` (`SalesID`, `ProductID`, `Quantity`, `Price`, `TotalPrice`) VALUES
+('SI001', 'P001', 2, 50000, 100000),
+('SI001', 'P002', 1, 45000, 45000);
 
 -- --------------------------------------------------------
 
@@ -633,14 +638,12 @@ ALTER TABLE `role`
 ALTER TABLE `sales_invoice`
   ADD PRIMARY KEY (`SalesID`),
   ADD KEY `fk_customer_sales` (`CustomerID`),
-  ADD KEY `fk_employee_sales` (`EmployeeID`),
   ADD KEY `fk_promotion` (`PromotionID`);
 
 --
 -- Chỉ mục cho bảng `sales_invoice_detail`
 --
 ALTER TABLE `sales_invoice_detail`
-  ADD PRIMARY KEY (`SalesDetailID`),
   ADD KEY `fk_sales` (`SalesID`),
   ADD KEY `fk_product_sales` (`ProductID`);
 
@@ -725,7 +728,6 @@ ALTER TABLE `reviews`
 --
 ALTER TABLE `sales_invoice`
   ADD CONSTRAINT `fk_customer_sales` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`),
-  ADD CONSTRAINT `fk_employee_sales` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`),
   ADD CONSTRAINT `fk_promotion` FOREIGN KEY (`PromotionID`) REFERENCES `promotion` (`PromotionID`);
 
 --
