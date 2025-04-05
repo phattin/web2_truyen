@@ -1,0 +1,83 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.bills-page {
+    background-color: #074b80;
+    display: block;
+    height: fit-content;
+    width: 100%;
+    padding: 30px;
+}
+
+
+.bills-box {
+    margin: 0 auto;
+    min-width: 385px;
+    max-width: 600px;
+}
+
+.bills-button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px auto;
+    width: 300px;
+}
+.bills-button-group .btn {
+    background-color: #ff4b2b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.bill-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    position: relative;
+}
+
+.bills-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.bills-table th, .bills-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+/* .bills-table th {
+    background-color: #f4f4f4; 
+} */
+
+.bills-submit-background {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.submit-bills-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-bills-btn:hover {
+    background-color: #45a049;
+}
+@media print {
+    /* Ẩn các phần tử không cần thiết khi in */
+    .bills-button-group {
+        display: none; /* Ẩn nhóm nút */
+    }
+}

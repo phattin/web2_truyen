@@ -14,12 +14,12 @@ session_start();
     
 </head>
 <body>
-<script src="view/layout/js/cart_view.js"></script>
 <div class="container">
     <h2>🛒 Giỏ Hàng Của Bạn</h2>
 
     <table>
         <tr>
+            <th><input type="checkbox" class="cbCart-all"></th>
             <th>Tên sản phẩm</th>
             <th>Giá</th>
             <th>Số lượng</th>
@@ -35,8 +35,10 @@ session_start();
                 $total += $subtotal;
         ?>
             <tr>
-                <td><?= htmlspecialchars($item['name']) ?></td>
-                <td><?= number_format($item['price'], 0, '.', ',') ?> VNĐ</td>
+                <td><input type="checkbox" class="cbCart-item"></td>
+                <td style="display:none" class="idProduct-cart"><?= $item['id'] ?></td>
+                <td class="nameProduct-cart"><?= htmlspecialchars($item['name']) ?></td>
+                <td class="priceProduct-cart"><?= number_format($item['price'], 0, ',', '.') ?> VNĐ</td>
                 <td>
                     <div class="quantity-control">
                         <button class="btn-quantity btn-decrease" data-id="<?= $item['id'] ?>">-</button>
@@ -44,7 +46,7 @@ session_start();
                         <button class="btn-quantity btn-increase" data-id="<?= $item['id'] ?>">+</button>
                     </div>
                 </td>
-                <td><?= number_format($subtotal, 0, '.', ',') ?> VNĐ</td>
+                <td class="totalPrice-cart"><?= number_format($subtotal, 0, ',', '.') ?> VNĐ</td>
                 <td>
                     <button class="btn btn-delete" data-id="<?= $item['id'] ?>">Xóa</button>
                 </td>
@@ -65,14 +67,14 @@ session_start();
 
         <tr>
             <td colspan="3"><strong>Tổng cộng</strong></td>
-            <td colspan="2"><strong><?= number_format($total, 0, '.', ',') ?> VNĐ</strong></td>
+            <td colspan="2"><strong class="totalAllPrice-cart"><?= number_format($total, 0, ',', '.') ?> VNĐ</strong></td>
         </tr>
     </table>
 
     <br>
-    <a href="checkout.php" class="btn btn-checkout">Thanh toán</a>
+    <div class="btn btn-checkout">Thanh toán</div>
     <a href="index.php?page=home" class="btn btn-continue">Tiếp tục mua hàng</a>
 </div>
-
+<script src="view/layout/js/cart_view.js"></script>
 </body>
 </html>

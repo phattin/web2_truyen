@@ -154,18 +154,19 @@ nav ul li {
   margin-right: 20px;
 }
 
-nav ul li a {
+.menu-item {
   color: #fff;
   text-decoration: none;
   padding: 10px 15px;
   display: block;
   transition: background 0.3s ease; /* Thêm hiệu ứng chuyển đổi */
+  cursor: pointer;
 }
 
-nav ul li a:hover {
+.menu-item:hover {
   background: #34495e;
 }
-nav ul li a.active {
+.menu-item.active {
   background: #4a3694;
 }
 
@@ -274,7 +275,7 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 10px;
+  padding: 10px 10px;
   background: #074b80;
   color: white;
   text-decoration: none;
@@ -284,7 +285,8 @@ main {
   transition: all 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border: 2px solid transparent;
-  margin-top: 25px;
+  margin: 25px 8px;
+  cursor: pointer;
 }
 
 .btn-pagination:hover {
@@ -368,3 +370,15 @@ footer p {
   background: #dc3545;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* Màu xám với độ mờ (opacity 0.3) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Đảm bảo overlay nằm trên các phần tử khác */
+}
