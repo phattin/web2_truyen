@@ -102,6 +102,7 @@ $(document).ready(function () {
                 htmlContent += `</ul></div>`;
                 // Duyệt qua từng sản phẩm trong response và tạo HTML cho chúng
                 $("main.container").html(htmlContent);
+
                 history.pushState({ page: page, page_number: page_number }, "", "?act=" + page + "&page_number=" + page_number);
             },
             error: function (xhr, status, error) {

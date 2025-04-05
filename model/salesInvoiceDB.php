@@ -23,16 +23,41 @@
             return $salesInvoiceList;
         }
 
+        // Lấy thông tin hóa đơn theo mã hóa đơn
+        public static function getSalesInvoiceByID($salesID) {
+            //Mở database
+            $conn = ConnectDB::getConnection();
+            //Lệnh sql
+            $strSQL = "SELECT * FROM sales_invoice WHERE SalesID = ?";
+            //Thực hiện sql
+            $stmt = $conn->prepare($strSQL);
+            if (!$stmt) 
+                die("Lỗi chuẩn bị SQL: " . $conn->error);
+            $stmt->bind_param("s", $salesID);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            //Thực hiện chức năng
+            $salesInvoice = null;
+            if ($result->num_rows > 0) {
+                $salesInvoice = $result->fetch_assoc();
+            }
+            //Đóng kết nối
+            $stmt->close();
+            ConnectDB::closeConnection($conn);
+        
+            return $salesInvoice;
+        }
+
         // Thêm hóa đơn
         public static function addSalesInvoice($salesID, $customerID, $phone, $address, $date, $promotionID, $totalPrice, $paymentMethod, $note, $status) {
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "INSERT INTO salesInvoice (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`, `PromotionID`, `TotalPrice`, `PaymentMethod`, `Note`, `Status`) 
+            $strSQL = "INSERT INTO sales_invoice (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`, `PromotionID`, `TotalPrice`, `PaymentMethod`, `Note`, `Status`) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
-            $stmt->bind_param("sssssiiiisi",$salesID, $customerID, $phone, $address, $date, $promotionID, $totalPrice, $paymentMethod, $note, $status);
+            $stmt->bind_param("ssssssisss",$salesID, $customerID, $phone, $address, $date, $promotionID, $totalPrice, $paymentMethod, $note, $status);
             //Thực hiện chức năng
             $success = $stmt->execute();
 
@@ -53,7 +78,7 @@
             $stmt = $conn->prepare($strSQL);
             if (!$stmt) 
                 die("Lỗi chuẩn bị SQL: " . $conn->error);
-            $stmt->bind_param("s", $id);
+            $stmt->bind_param("ss",$status, $id);
             //Thực hiện chức năng
             $success = $stmt->execute();
             //Đóng kết nối

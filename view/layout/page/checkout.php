@@ -213,11 +213,11 @@ if (isset($_SESSION['username']))
         const salesID = "<?= $saleID ?>"; // Lấy mã hóa đơn từ PHP
         const phone = document.getElementById("phone-payment").value;
         const address = document.getElementById("address-payment").value;
-        const note = document.getElementById("note-payment").value;
+        const note = document.getElementById("note-payment").value || '';
         const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
         const totalPrice = "<?= $totalAllPrice ?>"; // Lấy giá trị tổng tiền từ PHP
         const date = document.querySelector(".payment-date").innerText;
-        const promotionID = document.getElementById("idKhuyenMai").innerText; 
+        const promotionID = document.getElementById("idKhuyenMai").innerText.trim(); 
         const customerID = "<?= $customer['CustomerID'] ?>"; // Lấy mã khách hàng từ PHP
 
         // Kiểm tra xem tất cả các trường đã được điền chưa
@@ -248,24 +248,31 @@ if (isset($_SESSION['username']))
             },
             success: function (response) {
                 // Xử lý phản hồi từ server nếu cần
-                alert("Đặt hàng thành công!");
-                var dataTest = {
-                salesID: salesID,
-                productsCheckout: JSON.stringify(<?= json_encode($productsCheckout) ?>),
-                totalPrice: totalPrice,
-                phone: phone,
-                address: address,
-                note: note,
-                paymentMethod: paymentMethod,
-                date: date,
-                promotionID: promotionID,
-                customerID: customerID
-            }
-                console.log("Dữ liệu đã gửi:", dataTest);
+                let res;
+                try {
+                    res = JSON.parse(response); // <-- Parse JSON string thành object
+                } catch (e) {
+                    console.error("Phản hồi không phải JSON hợp lệ:", response);
+                    alert("Có lỗi xảy ra! Vui lòng thử lại.");
+                    return;
+                }
+                console.log("Dữ liệu đã gửi:", res.data);
+                if (res.success){
+                    alert("Đặt hàng thành công!");
+                    
+                    window.location.href = "/webbantruyen/view/layout/page/bills.php";
+                }
+                else{
+                    alert("Đặt hàng thất bại! Vui lòng thử lại.");
+                    console.error(res.success);
+                    console.error(res.message); // In lỗi ra console để kiểm tra
+                }
+                
                 // window.location.href = "index.php?page=home"; // Chuyển hướng về trang chủ sau khi đặt hàng thành công
             },
             error: function (xhr, status, error) {
                 console.error("Lỗi:", error);
+                console.log("Phản hồi từ server:", xhr.responseText);
                 alert("Có lỗi xảy ra trong quá trình đặt hàng. Vui lòng thử lại.");
             }
         });

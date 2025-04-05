@@ -7,7 +7,7 @@
     }
     class salesInvoiceDetailDB{
     
-        public static function getAllSalesInvoice(){
+        public static function getAllSalesDetailInvoice(){
             //Mở database
             $conn = connectDB::getConnection();
             //Lệnh sql
@@ -23,6 +23,28 @@
             return $salesInvoiceDetailList;
         }
 
+        // Lấy thông tin chi tiết hóa đơn theo mã hóa đơn
+        public static function getSalesInvoiceDetailBySalesID($salesID) {
+            // Mở database
+            $conn = connectDB::getConnection();
+            // Lệnh SQL đúng
+            $strSQL = "SELECT * 
+                       FROM sales_invoice_detail 
+                       WHERE SalesID = ?"; 
+        
+            // Thực hiện SQL
+            $stmt = $conn->prepare($strSQL);
+            $stmt->bind_param("s", $salesID);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            // Lưu danh sách sản phẩm
+            $salesDetailtList = [];
+            while ($row = $result->fetch_assoc())
+                $salesDetailtList[] = $row;
+            // Đóng kết nối
+            connectDB::closeConnection($conn);
+            return $salesDetailtList;
+        }
 
         // Thêm chi tiết hóa đơn
         public static function addSalesInvoiceDetail($salesID, $productID, $quantity, $price, $totalPrice) {
@@ -33,7 +55,7 @@
                         VALUES (?, ?, ?, ?, ?)";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
-            $stmt->bind_param("ssiis",$salesID, $productID, $quantity, $price, $totalPrice);
+            $stmt->bind_param("ssiii",$salesID, $productID, $quantity, $price, $totalPrice);
             //Thực hiện chức năng
             $success = $stmt->execute();
 
