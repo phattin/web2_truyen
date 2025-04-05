@@ -34,9 +34,6 @@ if (isset($_GET['id'])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -78,8 +75,6 @@ if (isset($_GET['id'])) {
     </style>
 </head>
 
-<body>
-
     <div class="product-container product-item">
         <div class="product-img">
             <img src="view/layout/images/<?php echo $product['ProductImg']; ?>"
@@ -120,6 +115,3 @@ if (isset($_GET['id'])) {
     <script>
         document.querySelector('.product-container').scrollIntoView({ behavior: 'smooth' });
     </script>
-</body>
-
-</html>
