@@ -19,7 +19,7 @@
         include_once("view/layout/page/cart_view.php");
     } elseif ($page == 'admin') {
         include_once("view/admin/admin.php");
-    } elseif ($page == 'login' || $page == 'register' || $page == 'profile' || $page == 'cart') {
+    } elseif ($page == 'login' || $page == 'register' || $page == 'profile' || $page == 'cart'|| $page == 'order_history') {
         include("view/layout/page/$page.php");
     } else {
         include_once("view/header.php");
