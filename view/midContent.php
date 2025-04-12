@@ -75,8 +75,12 @@ if (session_status() === PHP_SESSION_NONE)
         <?php
         for ($i = 1; $i <= $total_pagesHome; $i++) {
             // Tạo các nút phân trang với dữ liệu về số trang
-            echo '<li class="btn-pagination" data-page="home" data-page_number="' . $i . '">' . $i . '</li>';
+            if($i!=1)
+                echo '<li class="btn-pagination" data-page="home" data-page_number="' . $i . '">' . $i . '</li>';
+            else
+                echo '<li class="btn-pagination active" data-page="home" data-page_number="' . $i . '">' . $i . '</li>';
         }
+        echo '<li class="btn-pagination" data-page="${page}" data-page_number="2">&gt;</li>'
         ?>
     </ul>
 </div>

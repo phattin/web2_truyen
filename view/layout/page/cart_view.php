@@ -17,7 +17,7 @@ session_start();
 <div class="container">
     <h2>🛒 Giỏ Hàng Của Bạn</h2>
 
-    <table>
+    <table id="cart-table">
         <tr>
             <th><input type="checkbox" class="cbCart-all"></th>
             <th>Tên sản phẩm</th>
@@ -28,11 +28,9 @@ session_start();
         </tr>
 
         <?php
-        $total = 0;
         if (!empty($_SESSION['cart'])):
             foreach ($_SESSION['cart'] as $key => $item):
                 $subtotal = $item['price'] * $item['quantity'];
-                $total += $subtotal;
         ?>
             <tr>
                 <td><input type="checkbox" class="cbCart-item"></td>
@@ -67,7 +65,7 @@ session_start();
 
         <tr>
             <td colspan="3"><strong>Tổng cộng</strong></td>
-            <td colspan="2"><strong class="totalAllPrice-cart"><?= number_format($total, 0, ',', '.') ?> VNĐ</strong></td>
+            <td colspan="2"><strong class="totalAllPrice-cart">0 VND</strong></td>
         </tr>
     </table>
 
