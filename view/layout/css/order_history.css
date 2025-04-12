@@ -1,0 +1,286 @@
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #074b80;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .invoice-header {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #074b80;
+            position: relative;
+        }
+
+        .invoice-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .invoice-detail-item {
+            margin-bottom: 5px;
+        }
+
+        .invoice-detail-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #074b80;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background-color: #e9ecef;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            padding: 10px;
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .search-button {
+            padding: 10px 15px;
+            background-color: #074b80;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #053d69;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+            margin-bottom: 8px;
+        }
+
+        .pagination a.active {
+            background-color: #074b80;
+            color: white;
+            border: 1px solid #074b80;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
+
+        .no-records {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
+        }
+
+        .user-info {
+            background-color: #e9f5ff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .user-info span {
+            font-weight: bold;
+            color: #074b80;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            color: black;
+            transition: color 0.3s ease;
+            width: 35px;
+            align-items: center;
+            background: white;
+            padding: 3px 8px;
+            border-radius: 0 0 0 25%;
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            color: red;
+            background: #f8d7da;
+        }
+
+        .table-container {
+            position: relative;
+            overflow-x: auto;
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 992px) {
+            .invoice-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin: 15px 0;
+            }
+
+            .invoice-details {
+                grid-template-columns: 1fr;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .search-button {
+                width: 100%;
+            }
+
+            table {
+                border: 0;
+            }
+
+            table thead {
+                display: none;
+            }
+
+            table tr {
+                margin-bottom: 15px;
+                display: block;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 8px;
+            }
+
+            table td {
+                display: flex;
+                justify-content: space-between;
+                font-size: 14px;
+                border-bottom: 1px solid #eee;
+                padding: 8px 5px;
+                text-align: right;
+            }
+
+            table td:last-child {
+                border-bottom: 0;
+            }
+
+            table td:before {
+                content: attr(data-label);
+                font-weight: bold;
+                text-transform: uppercase;
+                padding-right: 10px;
+                float: left;
+            }
+
+            .total-row td {
+                background-color: #e9ecef;
+            }
+
+            .total-row td:before {
+                content: "Tổng cộng";
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                padding: 8px;
+            }
+
+            h1 {
+                font-size: 20px;
+                margin: 10px 0;
+            }
+
+            .close-btn {
+                width: 30px;
+                padding: 2px 6px;
+            }
+
+            .pagination a {
+                padding: 6px 12px;
+                margin: 0 2px;
+            }
+
+            .invoice-header {
+                padding: 10px;
+            }
+
+            .invoice-detail-item {
+                font-size: 14px;
+            }
+        }

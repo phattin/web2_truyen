@@ -33,17 +33,18 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="auth-container">
                 <?php if (isset($_SESSION['username'])): ?>
                     <!-- Nếu đã đăng nhập -->
+                    <a href="index.php?page=cart_view" class="btn-cart" id="cart-icon">
+                        <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
+                    </a>
                     <div class="user-menu">
                         <!-- Đặt icon giỏ hàng trước -->
-                        <a href="index.php?page=cart_view" class="btn-cart" id="cart-icon">
-                            <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
-                        </a>
                         <div class="user-info">
                             <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                             <i class="fa-solid fa-user"></i>
                         </div>
                         <div class="dropdown-menu">
                             <a href="index.php?page=profile">Thông tin cá nhân</a>
+                            <a href="index.php?page=order_history">Lịch sử mua hàng</a>
                             <a href="view/layout/page/logout.php" class="btn-logout"
                                 onclick="return confirm('Bạn có chắc muốn đăng xuất?');">Đăng xuất</a>
                         </div>
@@ -51,10 +52,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <?php else: ?>
                     <!-- Nếu chưa đăng nhập -->
                     <div class="auth-buttons">
-                        <!-- Đặt icon giỏ hàng trước -->
-                        <a href="index.php?page=cart_view" class="btn-cart" id="cart-icon">
-                            <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
-                        </a>
+
                         <a href="index.php?page=register" class="btn-register"
                             style="color:#ff4b2b;text-decoration: none;">Đăng ký</a>
                         <a href="index.php?page=login" class="btn-login">Đăng nhập</a>
