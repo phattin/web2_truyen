@@ -188,6 +188,22 @@ ul.dropdown-menu-list {
   height: 400px;
 }
 
+.menu-list-genre {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 15px;
+  display: block;
+  transition: background 0.3s ease; /* Thêm hiệu ứng chuyển đổi */
+  cursor: pointer;
+}
+
+.menu-list-genre:hover {
+  background: #34495e;
+}
+.menu-list-genre.active {
+  background: #4a3694;
+}
+
 .dropdown-menu li a {
   padding: 10px;
 }
@@ -307,7 +323,7 @@ main {
 }
 
 /* Nếu là trang hiện tại thì đổi màu */
-.pagination .active {
+.btn-pagination.active {
   background: #2c3e50;
   border-color: #fff;
 }
