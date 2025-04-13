@@ -1,11 +1,8 @@
 $(document).ready(function () {
+    //Click navbar
     $(".menu-item").on("click", function (event) {
         event.preventDefault();
         var page = $(this).data("page");
-        var id = $(this).data("genre");
-        if (page == 'genre') {
-            page += '&genre=' + id;
-        }
         console.log("page: " + page);
 
         $.ajax({
@@ -35,13 +32,19 @@ $(document).ready(function () {
                 });
                 htmlContent += `</div>`;
                 //Phan trang
-                htmlContent += `<div class="pagination"><ul>`;
                 var total_pages = response.total_pages;
-                for (i = 1; i <= total_pages; i++) {
-                    var s = '<li class="btn-pagination" data-page="'+page+'" data-page_number="' + i + '">' + i + '</li>';
-                    htmlContent += s;
+                if(total_pages != 1){
+                    htmlContent += `<div class="pagination"><ul>`;
+                    for (i = 1; i <= total_pages; i++) {
+                        if(i!=1)
+                            var s = '<li class="btn-pagination" data-page="'+page+'" data-page_number="' + i + '">' + i + '</li>';
+                        else
+                            var s = '<li class="btn-pagination active" data-page="'+page+'" data-page_number="' + i + '">' + i + '</li>';
+                        htmlContent += s;
+                    }
+                    htmlContent += '<li class="btn-pagination" data-page="${page}" data-page_number="2">&gt;</li>'
+                    htmlContent += `</ul></div>`;
                 }
-                htmlContent += `</ul></div>`;
                 // Duyệt qua từng sản phẩm trong response và tạo HTML cho chúng
                 $("main.container").html(htmlContent);
                 history.pushState({ page: page }, "", "?act=" + page);
@@ -54,10 +57,72 @@ $(document).ready(function () {
         });
     });
 
+    //Click vào thể loại
+    $(".menu-list-genre").on("click", function (event) {
+        event.preventDefault();
+        var page = $(this).data("page");
+        var id = $(this).data("genre");
+        page += '&genre=' + id;
+        console.log("page: " + page);
+        console.log("genreID: " + id);
+
+        $.ajax({
+            type: "GET",
+            url: "/webbantruyen/handle/switch_navbar.php?act=" + page,
+            dataType: "json",
+            success: function (response) {
+                console.log("response:", response);
+                htmlContent = `<div class="product-grid">`;
+                response.data.forEach(function (product) {
+                    htmlContent += `<div class="product-item">
+                                        <a href="index.php?page=product_detail&id=${product.ProductID}">
+                                            <img src="view/layout/images/${product.ProductImg}" alt="${product.ProductName}">
+                                        </a>
+                                        <h3>${product.ProductName}</h3>
+                                        <p class="price">${(Math.round(parseInt(product.ImportPrice) * parseFloat(product.ROS) / 1000) * 1000).toLocaleString('vi-VN')} VNĐ</p>
+                                        
+                                        <!-- Form gửi dữ liệu sản phẩm đến cart.php -->
+                                        <form action="view/layout/page/cart.php" method="POST">
+                                            <input type="hidden" name="id" value="${product.ProductID}">
+                                            <input type="hidden" name="name" value="${product.ProductName}">
+                                            <input type="hidden" name="price" value="${(Math.round(parseInt(product.ImportPrice) * parseFloat(product.ROS) / 1000) * 1000).toLocaleString('vi-VN')}">
+                                            <input type="hidden" name="quantity" value="1">
+                                            <button type="button" class="btn-add-to-cart" data-id="${product.ProductID}">Thêm vào giỏ hàng</button>
+                                        </form>
+                                    </div>`;
+                });
+                htmlContent += `</div>`;
+                //Phan trang
+                var total_pages = response.total_pages;
+                if (total_pages != 1){
+                    htmlContent += `<div class="pagination"><ul>`;
+                    for (i = 1; i <= total_pages; i++) {
+                        if(i!=1)
+                            var s = '<li class="btn-pagination" data-page="'+page+'" data-page_number="' + i + '">' + i + '</li>';
+                        else
+                            var s = '<li class="btn-pagination active" data-page="'+page+'" data-page_number="' + i + '">' + i + '</li>';
+                        htmlContent += s;
+                    }
+                    htmlContent += '<li class="btn-pagination" data-page="${page}" data-page_number="2">&gt;</li>'
+                    htmlContent += `</ul></div>`;
+                }
+                // Duyệt qua từng sản phẩm trong response và tạo HTML cho chúng
+                $("main.container").html(htmlContent);
+                history.pushState({ page: page }, "", "?act=" + page);
+            },
+            error: function (xhr, status, error) {
+                console.error("Lỗi Ajax:", error);
+                console.log("Phản hồi từ Server:", xhr.responseText); // Xem nội dung server trả về
+                alert("Lỗi: " + error);
+            }
+        });
+    });
+
+    //Phân trang
     $(document).on("click",'.btn-pagination', function (event) {
         event.preventDefault();
         var page = $(this).data("page");
-        var page_number = $(this).data("page_number");
+        var page_number = parseInt($(this).data("page_number"));
         var id = $(this).data("genre");
         if (page == 'genre') {
             page += '?genre=' + id;
@@ -91,15 +156,29 @@ $(document).ready(function () {
                                         </form>
                                     </div>`;
                 });
-                htmlContent += `</div>`;
-                //Phan trang
-                htmlContent += `<div class="pagination"><ul>`;
-                var total_pages = response.total_pages;
-                for (i = 1; i <= total_pages; i++) {
-                    var s = '<li class="btn-pagination" data-page="'+page+'" data-page_number="' + i + '">' + i + '</li>';
-                    htmlContent += s;
+                var total_pages = parseInt(response.total_pages);
+                if(total_pages != 1){
+                    htmlContent += `</div>`;
+                    //Phan trang
+                    htmlContent += `<div class="pagination"><ul>`;
+
+                    // Nút Prev nếu không phải trang đầu
+                    if (page_number > 1) 
+                        htmlContent += `<li class="btn-pagination" data-page="${page}" data-page_number="${page_number - 1}">&lt;</li>`;
+
+                    // Các số trang
+                    for (let i = 1; i <= total_pages; i++) {
+                        if (i !== page_number)
+                            htmlContent += `<li class="btn-pagination" data-page="${page}" data-page_number="${i}">${i}</li>`;
+                        else 
+                            htmlContent += `<li class="btn-pagination active" data-page="${page}" data-page_number="${i}">${i}</li>`;
+                    }
+
+                    // Nút Next nếu không phải trang cuối
+                    if (page_number < total_pages) 
+                        htmlContent += `<li class="btn-pagination" data-page="${page}" data-page_number="${page_number + 1}">&gt;</li>`;
+                    htmlContent += `</ul></div>`;
                 }
-                htmlContent += `</ul></div>`;
                 // Duyệt qua từng sản phẩm trong response và tạo HTML cho chúng
                 $("main.container").html(htmlContent);
 

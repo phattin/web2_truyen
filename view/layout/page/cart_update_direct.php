@@ -2,7 +2,7 @@
 session_start();
 header('Content-Type: application/json');
 
-include($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php"); // Kết nối CSDL
+include($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/productDB.php");
 $conn = connectDB::getConnection();
 
 $data = json_decode(file_get_contents("php://input"), true);
@@ -10,17 +10,12 @@ $id = $data['id'] ?? null;
 $newQuantity = $data['quantity'] ?? 0;
 
 if ($id && isset($_SESSION['cart'])) {
-    // Lấy số lượng sản phẩm từ cơ sở dữ liệu
-    $sql = "SELECT Quantity FROM product WHERE ProductID = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Lấy sản phẩm từ cơ sở dữ liệu
+    $product = productDB::getProductByID($id);
 
-    if ($result->num_rows > 0) {
-        $product = $result->fetch_assoc();
+    if ($product) {
         $maxQuantity = $product['Quantity']; // Số lượng tối đa trong kho
-
+        $price = round($product['ImportPrice'] * $product['ROS'] / 1000) * 1000;
         foreach ($_SESSION['cart'] as &$item) {
             if ($item['id'] == $id) {
                 // Kiểm tra nếu số lượng vượt quá số lượng trong kho
@@ -34,7 +29,12 @@ if ($id && isset($_SESSION['cart'])) {
 
                 // Cập nhật số lượng trong giỏ hàng
                 $item['quantity'] = $newQuantity > 0 ? $newQuantity : 1; // Không cho nhỏ hơn 1
-                echo json_encode(["success" => true]);
+                $newPrice = $price * $newQuantity;
+                echo json_encode([
+                    "success" => true,
+                    "newQuantity" => $newQuantity,
+                    "productPrice" => $newPrice
+                ]);
                 exit();
             }
         }
