@@ -1,12 +1,22 @@
 <?php
-session_start(); 
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
-$username = isset($_SESSION['username']) ? $_SESSION['username'] : "Khách";
+
+// Kiểm tra đăng nhập và quyền truy cập
+if (!isset($_SESSION['user']) || $_SESSION['user']['RoleID'] !== 'R1') {
+    // Nếu chưa đăng nhập hoặc không phải admin, chuyển hướng về trang chủ
+    header("Location: /webbantruyen/index.php?trangChu");
+    exit();
+}
+
+// Nếu đã đăng nhập và là admin
+$username = $_SESSION['user']['Username'];
 $conn = connectDB::getConnection();
 $sql = "SELECT Username FROM account";
 $result = $conn->query($sql);
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="vi">

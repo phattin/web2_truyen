@@ -179,8 +179,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
+    <script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
     <div class="container" style="position: relative;">
-        <div class="form-container" >
+        <div class="form-container">
             <div class="close-btn" onclick="goBack()">✖</div>
 
             <h2>Đăng ký</h2>
@@ -261,7 +262,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             });
         });
+        document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById("register-form").addEventListener("submit", function (e) {
+                    e.preventDefault();
 
+                    const fullname = document.getElementById("fullname").value.trim();
+                    const phone = document.getElementById("phone").value.trim();
+                    const password = document.getElementById("password").value;
+                    const confirmPassword = document.getElementById("confirm-password").value;
+
+                    if (fullname === "") {
+                        alert("Họ và tên không được để trống!");
+                        return;
+                    }
+
+                    if (!/^\d{10,}$/.test(phone)) {
+                        alert("Số điện thoại phải có ít nhất 10 số!");
+                        return;
+                    }
+
+                    if (password !== confirmPassword) {
+                        alert("Mật khẩu xác nhận không khớp!");
+                        return;
+                    }
+
+                    // Lấy form data
+                    const formData = new FormData(document.getElementById("register-form"));
+
+                    fetch("register_ajax.php", {
+                        method: "POST",
+                        body: formData
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Hiển thị hiệu ứng giống như bạn làm
+                                document.body.innerHTML += `
+                    <div id='loading-screen'>
+                        <div class='text'>${data.message}</div>
+                        <div class='line'></div>
+                    </div>
+                `;
+
+                                setTimeout(function () {
+                                    window.location.href = 'index.php?page=login';
+                                }, 2000);
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(err => {
+                            console.error("AJAX Error:", err);
+                            alert("Có lỗi xảy ra khi gửi dữ liệu.");
+                        });
+                });
+});
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     </script>
 </body>
 

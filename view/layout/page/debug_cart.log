@@ -10,17 +10,9 @@ Array
 
     [1] => Array
         (
-            [id] => P003
-            [name] => Truyện One Piece
-            [price] => 29000
-            [quantity] => 1
-        )
-
-    [2] => Array
-        (
-            [id] => P009
-            [name] => Truyện Black Clover
-            [price] => 78000
+            [id] => P005
+            [name] => Truyện Dragon Ball
+            [price] => 40000
             [quantity] => 1
         )
 
