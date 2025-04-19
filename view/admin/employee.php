@@ -1,5 +1,6 @@
 <?php
 echo"
+    <input type='button' value='Thêm' class='blue-btn'>
     <table>
         <tr>
             <th>Tên</th>

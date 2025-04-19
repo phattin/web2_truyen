@@ -1,6 +1,6 @@
 <?php
 echo"
-    <input type='button' value='Thêm' class='blue-btn'>
+    <input type='button' value='Thêm' class='blue-btn' onclick='ThemSP()'>
     <table>
         <tr>
             <th>Tên</th>
@@ -13,7 +13,7 @@ echo"
         $sql_data_acc = 'SELECT ProductName,ProductID,Author,Quantity FROM product';
         $result_acc = $conn->query($sql_data_acc);
         while ($row = $result_acc->fetch_assoc()) {
-            echo "<tr>
+            echo "<tr onclick='Chitiet(\"$row[ProductID]\")'>
                     <td>" . $row["ProductName"] . "</td>
                     <td>" . $row["ProductID"] . "</td>
                     <td>" . $row["Author"] . "</td>
