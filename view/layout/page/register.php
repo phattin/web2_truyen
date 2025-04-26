@@ -170,10 +170,71 @@
                     },
                     dataType: "json",  // Explicitly expect JSON response
                     success: function (res) {
+                        if (res.success) {
+                            // Thêm hiệu ứng loading screen
+                            document.body.innerHTML += `
+                                <style>
+                                    body {
+                                        margin: 0;
+                                        padding: 0;
+                                        overflow: hidden;
+                                    }
+                                    #loading-screen {
+                                        position: fixed;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                        background: #074b80;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        flex-direction: column;
+                                        color: white;
+                                        font-size: 20px;
+                                        font-weight: bold;
+                                        z-index: 9999;
+                                        opacity: 0;
+                                        animation: fadeIn 0.5s ease-in forwards;
+                                    }
+                                    .text {
+                                        opacity: 0;
+                                        animation: fadeInText 1.5s ease-in forwards;
+                                    }
+                                    .line {
+                                        width: 0;
+                                        height: 4px;
+                                        background: white;
+                                        margin-top: 10px;
+                                        animation: growLine 2s ease-in forwards;
+                                    }
+                                    @keyframes fadeIn {
+                                        from { opacity: 0; }
+                                        to { opacity: 1; }
+                                    }
+                                    @keyframes fadeInText {
+                                        0% { opacity: 0; transform: translateY(-10px); }
+                                        100% { opacity: 1; transform: translateY(0); }
+                                    }
+                                    @keyframes growLine {
+                                        0% { width: 0; }
+                                        100% { width: 150px; }
+                                    }
+                                </style>
 
-                        alert(res.message);
-                        window.location.href = "index.php?page=login";
+                                <div id='loading-screen'>
+                                    <div class='text'>Đăng ký thành công!</div>
+                                    <div class='line'></div>
+                                </div>
+                            `;
 
+                            // Chuyển hướng sau 2 giây
+                            setTimeout(function () {
+                                window.location.href = "index.php?page=login";
+                            }, 2000);
+                        } else {
+                            alert(res.message || "Có lỗi xảy ra khi đăng ký!");
+                        }
                     },
                     error: function (xhr, status, error) {
                         console.error("Lỗi:", error);
