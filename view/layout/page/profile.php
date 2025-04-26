@@ -146,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
     <script>
         function goBack() {
-            window.history.back();
+            window.location.href = "index.php";
         }
     </script>
 

@@ -2,25 +2,9 @@ Array
 (
     [0] => Array
         (
-            [id] => P003
-            [name] => Truyện One Piece
-            [price] => 29000
-            [quantity] => 1
-        )
-
-    [2] => Array
-        (
             [id] => P009
             [name] => Truyện Black Clover
             [price] => 78000
-            [quantity] => 1
-        )
-
-    [2] => Array
-        (
-            [id] => P008
-            [name] => Truyện Jujutsu Kaisen
-            [price] => 225000
             [quantity] => 1
         )
 
