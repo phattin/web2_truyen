@@ -6,18 +6,20 @@ $conn = connectDB::getConnection();
 $sql = "SELECT Username FROM account";
 $result = $conn->query($sql);
 $conn->close();
-
 ?>
 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<style>
+</style>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ Admin</title>
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminHome.css">
 
- 
+    
 </head>
 
 <body>
@@ -40,12 +42,15 @@ $conn->close();
 
         <main id="content"></main>
         <div id="ChiTiet" class="ChiTiet"></div>
-        <div id="Function" class="Function"></div>
+        <div id="Function" class="ChucNang">
+        </div>
         
     </div>
     <script src="../layout/js/Load_content.js"></script>
     <script src="../layout/js/Chitiet.js"></script>
     <script src="../layout/js/permissions.js"></script>
     <script src="../layout/js/jquery-3.7.1.min.js"></script>
+    <script src="../layout/js/Them.js"></script>
+    <script src="../layout/js/Xoa.js"></script>
 </body>
 </html>

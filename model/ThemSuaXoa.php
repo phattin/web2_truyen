@@ -29,5 +29,13 @@ class ThemSuaXoa{
     public function Them($sql){
         mysqli_query($this->getConnection(),$sql);
     }
+
+    public function Sua($sql){
+        mysqli_query($this->getConnection(),$sql);
+    }
+
+    public function Xoa($sql){
+        mysqli_query($this->getConnection(),$sql);
+    }
 }
 ?>

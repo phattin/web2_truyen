@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
-    <body>
+<html lang="vi">
+    
+    <div class="Them" style="position: relative;">
+        <button value="X" class="blue-btn" onclick="closeChucNang()">Close</button>
         <form action="XLThemSP.php" method="get">
             <p>ProductName:</p><input type="text" name="ProductName">
             <p>ProductImg:</p><input type="text" name="ProductImg">
@@ -22,11 +24,12 @@
                                 <option value="S009">S009</option>
                                 <option value="S010">S010</option>
                                 </select>
-            <p>Status:</p><select name="status" > 
+            <p>Status:</p><select name="Status"> 
                                 <option value="Hiện">Hiện</option>
                                 <option value="Ẩn">Ẩn</option>
-                            </select>
-            <input type="submit" name="submit" value="Thêm">
+                            </select><br>
+            <input type="submit" name="submit" value="Thêm" class="blue-btn">
+            <input type="reset" name="reset" value="Nhập lại" class="blue-btn">
         </form>
-    </body>
+    </div>
 </html>
