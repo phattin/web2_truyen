@@ -50,7 +50,7 @@ $result_distinct_sales = getOrdersList($conn, $search_condition, $offset, $recor
         <div class="close-btn" onclick="goBack()">✖</div>
         <script>
             function goBack() {
-                window.history.back();
+                window.location.href = "index.php";
             }
         </script>
 
@@ -152,7 +152,7 @@ $result_distinct_sales = getOrdersList($conn, $search_condition, $offset, $recor
         ?>
 
         <!-- Phân trang -->
-        <?php 
+        <?php
         if ($total_pages > 1) {
             echo generatePaginationHTML($current_page, $total_pages, $search);
         }

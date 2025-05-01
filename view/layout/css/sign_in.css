@@ -55,24 +55,27 @@ body {
     }
 }
 
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 cột */
+    gap: 1.5rem; /* Khoảng cách giữa các ô */
+}
+
 .input-group {
     position: relative;
-    margin-bottom: 1.5rem;
-    animation: slideIn 0.8s ease-in-out;
+    display: flex;
+    align-items: center;
 }
 
 .input-group i {
     position: absolute;
     left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
     color: #074b80;
-    transition: color 0.3s ease;
 }
 
 .input-group input {
     width: 100%;
-    padding: 10px 10px 10px 40px;
+    padding: 10px 10px 10px 35px; /* Chừa khoảng trống cho icon */
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -86,6 +89,7 @@ body {
 }
 
 button {
+    margin-top: 1.5rem;
     width: 100%;
     padding: 12px;
     font-size: 16px;
