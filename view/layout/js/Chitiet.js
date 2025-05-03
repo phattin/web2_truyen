@@ -1,5 +1,8 @@
-function Chitiet(x){
+// ChitietSP
+function ChitietSP(x){
     var ProductID = x;
+    console.log(ProductID);
+
     $.ajax({
         type: "POST",
         url: "../admin/form.php",
@@ -7,7 +10,8 @@ function Chitiet(x){
         dataType: "json",
         success: function(response) {
             console.log({response});
-            $("#ChiTiet").css("display","block");   
+            $("#ChiTiet").css("display","block");  
+            $("#Function").css("display","none"); 
             $("#ChiTiet").html(
                 `
                 <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
@@ -28,7 +32,7 @@ function Chitiet(x){
                     </div>
                 </div>
                 <input type="button" value="Sửa" class="blue-btn" onclick="Close_Chitiet()">
-                <input type="button" value="Xóa" class="blue-btn" onclick="Close_Chitiet()">
+                <input type="button" value="Xóa" class="blue-btn" onclick="Xoa('${response.productID}'); Close_Chitiet();">
                 `  
             );        
         }
@@ -39,9 +43,9 @@ function Chitiet(x){
 function Close_Chitiet(){
     $("#ChiTiet").css("display","none");
 }
-
-function ChitietRole(){/*
-    var RoleID = x;
+// chitietRole
+function ChitietRole(){
+    /*var RoleID = x;
     $.ajax({
         type: "POST",
         url: "../admin/form.php",
@@ -83,11 +87,83 @@ function ChitietRole(){/*
                 <input type="button" value="Xóa" class="blue-btn" onclick="Close_Chitiet()">
                 `  
             );        
-        }/*
-    });
-}*/
-
-
-function Close_ChitietRole(){
-    $("#ChiTiet").css("display","none");
+        }
+    /*});
 }
+*/
+
+
+
+// ChitietNV
+function ChitietNV(x){
+    var Username = x;
+    $.ajax({
+        type: "POST",
+        url: "../admin/form.php",
+        data: { usernameNV: Username },
+        dataType: "json",
+        success: function(response) {
+            console.log({response});
+            $("#ChiTiet").css("display","block");   
+            $("#ChiTiet").html(
+                `
+                <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
+                <div class="form">
+                    <div class="info-box">
+                        <p>EmployeeID:${response.employeeID}</p>
+                        <p>Fullname:${response.fullname}</p>
+                        <p>Username:${response.username}</p>
+                        <p>BirthDay:${response.birthDay}</p>
+                        <p>Phone:${response.phone}</p>
+                        <p>Email:${response.email}</p>
+                        <p>Address:${response.address}</p>
+                        <p>Gender:${response.Gender}</p>
+                        <p>Salary:${response.salary}</p>
+                        <p>StartDate:${response.startDate}</p>
+                        <p>status:${response.status}</p>
+                    </div>
+                </div>
+                <input type="button" value="Sửa" class="blue-btn" onclick="Close_Chitiet()">
+                <input type="button" value="Xóa" class="blue-btn" onclick="Close_Chitiet()">
+                `  
+            );        
+        }
+    })
+}
+
+
+// ChitietKH
+
+function ChitietKH(x){
+    var Username = x;
+    $.ajax({
+        type: "POST",
+        url: "../admin/form.php",
+        data: { usernameKH: Username },
+        dataType: "json",
+        success: function(response) {
+            console.log({response});
+            $("#ChiTiet").css("display","block");   
+            $("#ChiTiet").html(
+                `
+                <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
+                <div class="form">
+                    <div class="info-box">
+                        <p>CustomerID:${response.CustomerID}</p>
+                        <p>Fullname:${response.Fullname}</p>
+                        <p>Username:${response.Username}</p>
+                        <p>Phone:${response.Phone}</p>
+                        <p>Email:${response.Email}</p>
+                        <p>Address:${response.Address}</p>
+                        <p>TotalSpending:${response.TotalSpending}</p>
+                        <p>status:${response.status}</p>
+                    </div>
+                </div>
+                <input type="button" value="Sửa" class="blue-btn" onclick="Close_Chitiet()">
+                <input type="button" value="Xóa" class="blue-btn" onclick="Close_Chitiet()">
+                `  
+            );        
+        }
+    })
+}
+

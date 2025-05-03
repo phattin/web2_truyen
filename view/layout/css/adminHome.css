@@ -102,6 +102,7 @@ main {
     color: black ;
     border-radius: 20px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
 }
 
 h3 {
@@ -120,7 +121,6 @@ p {
     border-radius: 10px;
     text-align: center;
 }
-
 
 table {
     width: 100%;
@@ -192,7 +192,7 @@ td {
     bottom: 10%;
     right: 10%;
     /*width: 80%;*/
-    height: 80vh;
+    /*height: 80vh;*/
 
 
     border-radius: 10px;
@@ -202,6 +202,7 @@ td {
 }
 .form {
     display: block;
+    
 }
 
 .image-box {
@@ -226,4 +227,64 @@ img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.ChucNang {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 60vw;
+    max-width: 600px;
+    height: auto;
+    max-height: 80vh;
+    overflow-y: auto;
+
+    background-color: #fff;
+    color: #333;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+
+    display: none; /* bật = 'block' hoặc 'flex' tùy layout bên trong */
+    z-index: 999;
+}
+
+/* Làm đẹp cho form bên trong */
+.ChucNang form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.ChucNang label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.ChucNang input,
+.ChucNang select,
+.ChucNang textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ChucNang button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ChucNang button:hover {
+    background-color: #0056b3;
 }

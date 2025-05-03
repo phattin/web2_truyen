@@ -1,6 +1,6 @@
 <?php
 echo"
-    <input type='button' value='Thêm' class='blue-btn'>
+    <input type='button' value='Thêm' class='blue-btn' onclick='ThemNV()' style='width:100%;'>
     <table>
         <tr>
             <th>Tên</th>
@@ -14,7 +14,7 @@ echo"
                         WHERE role.RoleID="R1" OR role.RoleID="R2" ';
         $result_acc = $conn->query($sql_data_acc);
         while ($row = $result_acc->fetch_assoc()) {
-            echo "<tr>
+            echo "<tr onclick='ChitietNV(\"$row[Username]\")'>
                     <td>" . $row["Username"] . "</td>
                     <td>" . $row["Password"].  "</td>
                     <td>" . $row["RoleName"] . "</td>
