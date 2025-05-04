@@ -18,7 +18,7 @@
     if($page =='cart_view'){
         include_once("view/layout/page/cart_view.php");
     } elseif ($page == 'admin') {
-        include_once("view/admin/admin.php");
+        include_once("view/admin/index.php");
     } elseif ($page == 'login' || $page == 'register' || $page == 'profile' || $page == 'cart'|| $page == 'order_history') {
         include("view/layout/page/$page.php");
     } else {
@@ -43,7 +43,15 @@
         
         include_once("view/footer.php");
     }
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    echo '<pre>';
+    print_r($_SESSION['displayProduct']);
+    echo '</pre>';
     ?>
+
+    
 </body>
 <script src="view/layout/js/main.js"></script>
 

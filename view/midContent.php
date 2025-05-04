@@ -33,7 +33,6 @@ if (session_status() === PHP_SESSION_NONE)
     // Trả về HTML thay vì tải lại trang
     ob_start();
 ?>
-
 <div class="product-grid">
     <?php
     foreach ($resultHome as $productHome) {

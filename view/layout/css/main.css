@@ -234,6 +234,144 @@ main {
   }
 }
 
+.filter-bar {
+  width: 90%;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.filter-header {
+  font-weight: bold;
+  color: #333;
+  margin-right: 15px;
+}
+
+.filter-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 5px;
+  color: #555;
+  transition: background-color 0.3s ease;
+  position: relative; 
+}
+
+.filter-item:hover {
+  background-color: #e9ecef;
+}
+
+.filter-item label {
+  margin-right: 5px;
+}
+
+.filter-item input[type="checkbox"] {
+  margin: 0;
+}
+
+.filter-price-range {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.filter-price-range label {
+  font-size: 0.9em;
+  color: #777;
+}
+
+.filter-price-range input[type="number"] {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 80px;
+}
+
+.filter-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #0056b3;
+}
+
+
+.dropdown-filter {
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10; 
+  display: none; 
+  min-width: 150px;
+  padding: 10px 0;
+}
+
+.dropdown-filter-list {
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 5px 10px;
+}
+
+
+.filter-list-genre {
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.filter-list-genre:hover {
+  background-color: #f0f0f0;
+}
+
+.filter-list-genre label {
+  flex-grow: 1;
+  font-size: 0.9em;
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
+
+.filter-list-genre input[type="checkbox"] {
+  margin: 0;
+}
+
+.filter-item:nth-child(1):hover .dropdown-filter {
+  display: block;
+}
+
 .product-item {
   text-align: center;
   padding: 10px;
