@@ -23,20 +23,19 @@ header {
     font-weight: bold;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
-    position: fixed;
 }
 
-/* Container tổng */
 .container {
-    display: block ;
+    display: flex;
     min-height: 100vh;
+    margin-top: 80px;
 }
 
 /* Sidebar */
 .sidebar {
     width: auto;
     background: #074b80;
-    color: white;
+    color: white; 
     padding-top: 20px;
     height: 100vh;
     border-top-right-radius: 50px;
@@ -66,6 +65,7 @@ header {
     display: flex;
     flex-direction: column; /* Menu dọc */
     gap: 10px; /* Khoảng cách giữa các mục */
+    overflow-y: scroll; /* Thêm thanh cuộn nếu cần */
 }
 
 .sidebar ul li {

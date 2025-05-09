@@ -30,17 +30,23 @@ $conn->close();
         <nav class="sidebar">
             <h3>Chức năng</h3>
             <ul>
-                <li onclick="Switch(1)"><a>Trang chủ</a></li>
-                <li onclick="Switch(2)"><a>Quản lý nhân viên</a></li>
-                <li onclick="Switch(3)"><a>Quản lý khách hàng</a></li>
-                <li onclick="Switch(4)"><a>Quản lý sản phẩm</a></li>
-                <li onclick="Switch(5)"><a>Phân quyền</a></li>
-                <li onclick="Switch(6)"><a>ROLE</a></li>
+                <li onclick="Switch('tc')"><a>Trang chủ</a></li>
+                <li onclick="Switch('nv')"><a>Quản lý nhân viên</a></li>
+                <li onclick="Switch('kh')"><a>Quản lý khách hàng</a></li>
+                <li onclick="Switch('sp')"><a>Quản lý sản phẩm</a></li>
+                <li onclick="Switch('km')"><a>Quản lý khuyến mãi</a></li>
+                <li onclick="Switch('tl')"><a>Thể loại truyện</a></li>
+                <li onclick="Switch('hdb')"><a>Hóa đơn bán</a></li>
+                <li onclick="Switch('hdn')"><a>Hóa đơn nhập</a></li>
+                <li onclick="Switch('ncc')"><a>Quản lý nhà cung cấp</a></li>
+                <li onclick="Switch('pq')"><a>Phân quyền</a></li>
+                <li onclick="Switch('role')"><a>ROLE</a></li>
+                <li onclick="Switch('tk')"><a>Thống kê</a></li>
                 <li><a href="/webbantruyen/view/layout/page/logout.php" onclick="return confirm('Bạn có chắc muốn đăng xuất?');" >Đăng xuất</a></li>
             </ul>
         </nav>
 
-        <main id="content"></main>
+        <main id="admin-content"></main>
         <div id="ChiTiet" class="ChiTiet"></div>
         <div id="Function" class="ChucNang">
         </div>
