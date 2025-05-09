@@ -11,7 +11,7 @@
             //Mở database
             $conn = connectDB::getConnection();
             //Lệnh sql
-            $strSQL = "Select * from sales_invoice WHERE Status = 'Hiện'";
+            $strSQL = "Select * from sales_invoice WHERE  IsDeleted =  0";
             //Thực hiện sql
             $result = mysqli_query($conn, $strSQL);
             //Thực hiện chức năng
@@ -53,7 +53,7 @@
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "INSERT INTO sales_invoice (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`, `PromotionID`, `TotalPrice`, `PaymentMethod`, `Note`, `Status`) 
+            $strSQL = "INSERT INTO sales_invoice (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`, `PromotionID`, `TotalPrice`, `PaymentMethod`, `Note`, ` IsDeleted`) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
@@ -72,7 +72,7 @@
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "UPDATE sales_invoice SET `Status` = ? 
+            $strSQL = "UPDATE sales_invoice SET ` IsDeleted` = ? 
                        WHERE SalesID = ?";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);

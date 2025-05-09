@@ -7,39 +7,39 @@ function Switch(x){
             // $("#admin-content").load("home.php");
             break;
         case 'nv':
-            $("#admin-content").load("employee.php");
+            $("#admin-content").load("/webbantruyen/view/admin/employee.php");
             break;
         case 'kh':
-            $("#admin-content").load("guest.php");
+            $("#admin-content").load("/webbantruyen/view/admin/guest.php");
             break;
         case 'sp':
-            $("#admin-content").load("product.php");
+            $("#admin-content").load("/webbantruyen/view/admin/product.php");
             break;
         case 'km':
-            // $("#admin-content").load("promotion.php");
+            // $("#admin-content").load("/webbantruyen/view/admin/promotion.php");
             break;
         case 'tl':
-            // $("#admin-content").load("genres.php");
+            // $("#admin-content").load("/webbantruyen/view/admin/genres.php");
             break;
         case 'hdb':
-            // $("#admin-content").load("sales.php");
+            // $("#admin-content").load("/webbantruyen/view/admin/sales.php");
             break;
         case 'hdn':
-            $("#admin-content").load("import.php");
+            $("#admin-content").load("/webbantruyen/view/admin/import.php");
             break;
         case 'ncc':
-            // $("#admin-content").load("supplier.php");
+            // $("#admin-content").load("/webbantruyen/view/admin/supplier.php");
             break;
         case 'pq':
-            $("#admin-content").load("permissions.php", function () {
+            $("#admin-content").load("/webbantruyen/view/admin/permissions.php", function () {
                 permissions();
             });
             break;
         case 'role':
-            $("#admin-content").load("Role.php");
+            $("#admin-content").load("/webbantruyen/view/admin/Role.php");
             break;
         case 'tk':
-            // $("#admin-content").load("statistic.php");
+            // $("#admin-content").load("/webbantruyen/view/admin/statistic.php");
             break;
         default:
             break;

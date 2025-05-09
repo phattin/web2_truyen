@@ -1,26 +1,29 @@
 <?php
 echo"
     <input type='button' value='Thêm' class='blue-btn' onclick='ThemSP()' style='width:100%;'>
-    <table>
+    <table class='product-admin-table'>
         <tr>
-            <th>Tên</th>
             <th>ID</th>
+            <th>Tên</th>
             <th>Tác giả</th>
             <th>Số lượng</th>
+            <th>Thao tác</th>
         </tr>";
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
-        $conn = connectDB::getConnection();
-        $sql_data_acc = 'SELECT ProductName,ProductID,Author,Quantity FROM product';
-        $result_acc = $conn->query($sql_data_acc);
-        while ($row = $result_acc->fetch_assoc()) {
-            echo "<tr onclick='ChitietSP(`".$row["ProductID"]."`)'>
-                    <td>" . $row["ProductName"] . "</td>
-                    <td>" . $row["ProductID"] . "</td>
-                    <td>" . $row["Author"] . "</td>
-                    <td>" . $row["Quantity"] . "</td>
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/productDB.php";
+        $products = productDB::getAllProduct();
+        foreach ($products as $product) {
+            echo "<tr>
+                    <td>" . $product["ProductID"] . "</td>
+                    <td>" . $product["ProductName"] . "</td>
+                    <td>" . $product["Author"] . "</td>
+                    <td>" . $product["Quantity"] . "</td>
+                    <td class='function-icon'>
+                        <i class='fa-regular fa-eye detail-icon' onclick='ChitietSP(`".$product["ProductID"]."`)'></i>
+                        <i class='fa-regular fa-pen-to-square edit-icon' onclick='editSP(`".$product["ProductID"]."`)'></i>
+                        <i class='fa-regular fa-trash-can delete-icon' onclick='deleteSP(`".$product["ProductID"]."`)'></i>
+                    </td>
                 </tr>";
         }
-        $conn->close();
 echo "
     </table>
     "

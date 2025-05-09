@@ -17,8 +17,9 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminHome.css">
-
+    <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminForm.css">
     
 </head>
 
@@ -47,16 +48,16 @@ $conn->close();
         </nav>
 
         <main id="admin-content"></main>
-        <div id="ChiTiet" class="ChiTiet"></div>
-        <div id="Function" class="ChucNang">
-        </div>
+        <div id="overlay-chitiet" onclick="Close_Chitiet()" class="overlay-chitiet"><div id="ChiTiet" class="ChiTiet" onclick="event.stopPropagation();">></div></div>
+        <div id="overlay-chucnang" onclick="Close_ChucNang()" class="overlay-chucnang"><div id="Function" class="ChucNang" onclick="event.stopPropagation();"></div></div>
         
     </div>
-    <script src="../layout/js/Load_content.js"></script>
-    <script src="../layout/js/Chitiet.js"></script>
-    <script src="../layout/js/permissions.js"></script>
-    <script src="../layout/js/jquery-3.7.1.min.js"></script>
-    <script src="../layout/js/Them.js"></script>
-    <script src="../layout/js/Xoa.js"></script>
+    <script src="/webbantruyen/view/layout/js/Load_content.js"></script>
+    <script src="/webbantruyen/view/layout/js/Chitiet.js"></script>
+    <script src="/webbantruyen/view/layout/js/permissions.js"></script>
+    <script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
+    <script src="/webbantruyen/view/layout/js/them_ajax.js"></script>
+    <script src="/webbantruyen/view/layout/js/admin_function.js"></script>
+    <script src="/webbantruyen/view/layout/js/Xoa.js"></script>
 </body>
 </html>

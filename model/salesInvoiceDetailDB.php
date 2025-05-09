@@ -11,7 +11,7 @@
             //Mở database
             $conn = connectDB::getConnection();
             //Lệnh sql
-            $strSQL = "Select * from sales_invoice_detail WHERE Status = 'Hiện'";
+            $strSQL = "Select * from sales_invoice_detail WHERE  IsDeleted =  0";
             //Thực hiện sql
             $result = mysqli_query($conn, $strSQL);
             //Thực hiện chức năng

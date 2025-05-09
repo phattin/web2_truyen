@@ -1,0 +1,96 @@
+.input-panel input[readonly] {
+    background-color: #f0f0f0; /* Màu xám nhạt */
+    cursor: not-allowed; /* Thay đổi con trỏ chuột */
+    color: #888; /* Màu xám đậm hơn */
+    border: 1px solid #ccc; /* Đường viền nhạt hơn */
+}
+
+.product-add-form {
+    gap: 40px;
+    padding: 20px;
+    max-width: 900px;
+    margin: 50px auto;
+}
+
+.form-content {
+    display: flex;
+    gap: 20px;
+}
+
+.left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    height: 300px;
+}
+
+.product-form-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.image-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.image-upload-container label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.product-add-form input[type="file"] {
+    padding: 8px;
+    text-align: left;
+}
+
+#preview {
+    width: 200px;
+    border: 1px solid #ccc;
+    object-fit: cover;
+}
+
+.right-panel {
+    flex: 2;
+    display: grid; /* Sử dụng grid layout */
+    grid-template-columns: auto 1fr; /* Cột cho label (tự động) và cột cho input (phần còn lại) */
+    gap: 10px 20px; /* Khoảng cách giữa các hàng và cột */
+}
+
+.right-panel label {
+    font-weight: bold;
+    grid-column: 1; /* Label nằm ở cột đầu tiên */
+    text-align: left; /* Căn trái label */
+    display: flex; /* Để căn chỉnh nội dung nếu cần */
+    align-items: center;
+}
+
+.right-panel input[type="text"],
+.right-panel input[type="number"],
+.right-panel select{
+    grid-column: 2; /* Input nằm ở cột thứ hai */
+    padding: 8px;
+    border: 1px solid #797979;
+    box-sizing: border-box;
+    width: 100%; /* Input chiếm toàn bộ chiều rộng của cột */
+}
+
+
+#overlay-chucnang {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 9999;
+}
