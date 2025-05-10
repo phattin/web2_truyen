@@ -156,13 +156,13 @@
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "UPDATE product SET ProductName = ?, ProductImg = ?, Author = ?, Publisher = ?, Quantity = ?, ImportPrice = ? , ROS = ?, `Description` = ?, SupplierID = ?, ` IsDeleted` = ? 
+            $strSQL = "UPDATE product SET ProductName = ?, ProductImg = ?, Author = ?, Publisher = ?, Quantity = ?, ImportPrice = ? , ROS = ?, `Description` = ?, SupplierID = ?, `IsDeleted` = ? 
                        WHERE ProductID = ?";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
             if (!$stmt) 
                 die("Lỗi chuẩn bị SQL: " . $conn->error);
-            $stmt->bind_param("ssssiissisi", $name, $img, $author, $publisher, $quantity, $importPrice, $ros, $description, $supplierID, $status, $id);
+            $stmt->bind_param("ssssiiissis", $name, $img, $author, $publisher, $quantity, $importPrice, $ros, $description, $supplierID, $status, $id);
             //Thực hiện chức năng
             $success = $stmt->execute();
             //Đóng kết nối
@@ -172,12 +172,12 @@
             return $success;
         }
 
-        //Sửa sản phẩm
+        //Xóa sản phẩm
         public function removeProduct($id) {
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "UPDATE product SET ` IsDeleted` = 1 WHERE ProductID = ?";
+            $strSQL = "UPDATE product SET `IsDeleted` = 1 WHERE ProductID = ?";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
             if (!$stmt) 

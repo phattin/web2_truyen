@@ -4,6 +4,7 @@
         $productID = $_POST["product_id"];
 
         require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/productDB.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/supplierDB.php";
         $product = productDB::getProductByID($productID);
         $productID = $product["ProductID"];
         $productName = $product["ProductName"];
@@ -15,6 +16,7 @@
         $ros = $product["ROS"];
         $description = $product["Description"];
         $supplierID = $product["SupplierID"];
+        $allSuppliers = supplierDB::getAllSupplier();
 
         echo json_encode([
             "productID" => $productID,
@@ -26,7 +28,8 @@
             "importPrice" => $importPrice,
             "ros" => $ros,
             "description" => $description,
-            "supplierID" => $supplierID
+            "supplierID" => $supplierID,
+            "allSupplier" => $allSuppliers,
         ]);
     }
 //chitiet khach hang
