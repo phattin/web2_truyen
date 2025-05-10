@@ -1,6 +1,6 @@
 
     <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
-    <h2 style='text-align:center; margin:30px;'>Thêm sản phẩm</h2>
+    <h2 style='text-align:center; margin:30px;'>Sửa sản phẩm</h2>
     <form id="product-add-form" class="product-add-form">
         <div class="form-content">
             <div class="left-panel">
@@ -12,11 +12,11 @@
             </div>
     
             <div class="right-panel">
-                <div style="display: none;">
+                <div >
                     <label for="productID">Mã sản phẩm:</label>
                     <?php 
                         require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/productDB.php";
-                        echo '<input type="text" id="productID" name="productID" value="'.productDB::getNewProductID().'" readonly>'
+                        echo '<input type="text" id="productID" name="productID" readonly>'
                     ?>
                 </div>
                 <div>

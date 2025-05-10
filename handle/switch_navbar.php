@@ -50,30 +50,16 @@
 
     // Nội dung HTML thay đổi theo chế độ
     ob_start();
-    switch($act) {
-        case "home":
-            break;
-        case "Hot":
-            $htmlContent = "<h2>Bạn đã chọn chế độ: Thông tin tuyển sinh</h2>";
-            break;
-        case "New":
-            $htmlContent = "<h2>Bạn đã chọn chế độ: Chương trình đào tạo</h2>";
-            break;
-        case "product":
-            
-            break;
-        case "contact":
-            $htmlContent = "<h2>Bạn đã chọn chế độ: Liên hệ</h2>";
-            break;
-        default:
-            $htmlContent = "<h2>Bạn đã chọn chế độ: Không xác định</h2>";
-    }
     $response = [
         "status" => "success",
         "current_page" => $page_number,
         "total_pages" => $total_pages,
         "data" => $result
     ];  
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    $_SESSION['displayProduct'] = $response;
     // Trả về JSON hợp lệ
     echo json_encode($response);
 ?>

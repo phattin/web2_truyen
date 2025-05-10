@@ -5,6 +5,7 @@ Array
             [id] => P002
             [name] => Truyện Conan
             [price] => 60000
+<<<<<<< HEAD
             [quantity] => 1
         )
 
@@ -21,6 +22,8 @@ Array
             [id] => P001
             [name] => Truyện Doremon
             [price] => 24000
+=======
+>>>>>>> bb6fb869a7919a21fc46c04b484fef111b1053d0
             [quantity] => 1
         )
 

@@ -15,7 +15,7 @@ echo"
                     <td>" . $row["Username"]."</td>
                     <td><select name='role'; id='".$row["Username"]."';>
                         <option value='Nhân viên'> Nhân viên </option>
-                        <option value='khách hàng'> khách hàng </option>
+                        <option value='Khách hàng'> khách hàng </option>
                         <option value='Admin'> Admin </option>
                     </select></td>
                 </tr>";

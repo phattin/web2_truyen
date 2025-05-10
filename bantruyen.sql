@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 05, 2025 lúc 06:04 AM
+-- Thời gian đã tạo: Th5 09, 2025 lúc 11:04 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -29,20 +29,22 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `account` (
   `Username` varchar(50) NOT NULL,
-  `Password` varchar(500) NOT NULL,
+  `Password` varchar(255) NOT NULL,
   `RoleID` varchar(10) NOT NULL,
-  `Status` varchar(10) NOT NULL
+  `IsDeleted` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `account`
 --
 
-INSERT INTO `account` (`Username`, `Password`, `RoleID`, `Status`) VALUES
-('admin', 'admin123', 'R1', 'Hiện'),
-('kh01', 'password02', 'R3', 'Hiện'),
-('nv01', 'password01', 'R2', 'Hiện'),
-('phattin', '$2y$10$PgO.KiaAofBNNcFulFH0yerLU0T1OwLieioGujv4azVVNJWC6/mtC', 'R3', 'Hiện');
+INSERT INTO `account` (`Username`, `Password`, `RoleID`, `IsDeleted`) VALUES
+('admin', 'admin123', 'R1', 0),
+('kh01', 'password02', 'R3', 0),
+('nv01', 'password01', 'R2', 0),
+('phattin', '$2y$10$LGxvas5xpea.HEvxLjVXxug4AdQaJnP5txgiDer2wNf2Fjy4W2KCy', 'R3', 0),
+('phattin123', '$2y$10$U0q2hbQEySm2GG4ak93kJ.AThbIctl5iWNu0NqGek/XcQ8IZ6u/B2', 'R3', 0),
+('tin', '$2y$10$2aX5DfDLqgukmqP7eKBY3OL/r0TW3kwQpxTc9ZbnoBlXiUZVGolqS', 'R3', 0);
 
 -- --------------------------------------------------------
 
@@ -96,16 +98,18 @@ CREATE TABLE `customer` (
   `Address` varchar(255) NOT NULL,
   `Phone` varchar(25) NOT NULL,
   `TotalSpending` double NOT NULL,
-  `Status` varchar(10) NOT NULL
+  `IsDeleted` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `customer`
 --
 
-INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`, `Status`) VALUES
-('C001', 'Nguyễn Văn A', 'kh01', 'nguyenvana@gmail.com', 'Hà Nội', '0987654321', 1500000, 'Hiện'),
-('C02', 'Phat Tin', 'phattin', 'phattin@gmail.com', 'abc/123', '0987654321', 0, '');
+INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`, `IsDeleted`) VALUES
+('C001', 'Nguyễn Văn A', 'kh01', 'nguyenvana@gmail.com', 'Hà Nội', '0987654321', 1500000, 0),
+('C003', 'Nguyen Phat Tin', 'phattin123', 'phattin123@gmail.com', 'abc', '0987654321', 0, ''),
+('C004', 'Phat Tin', 'tin', 'tin@gmail.com', '123456', '0987654321', 0, ''),
+('C02', 'Nguyễn Phát Tín', 'phattin', 'phattin@gmail.com', '123/123', '0987654321', 0, '');
 
 -- --------------------------------------------------------
 
@@ -124,15 +128,15 @@ CREATE TABLE `employee` (
   `Gender` enum('Nam','Nữ') NOT NULL,
   `Salary` int(10) NOT NULL,
   `StartDate` date NOT NULL,
-  `Status` varchar(10) NOT NULL
+  `IsDeleted` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `employee`
 --
 
-INSERT INTO `employee` (`EmployeeID`, `Fullname`, `Username`, `BirthDay`, `Phone`, `Email`, `Address`, `Gender`, `Salary`, `StartDate`, `Status`) VALUES
-('E001', 'Trần Văn B', 'nv01', '1990-05-20', '0981234567', 'tranvanb@gmail.com', 'Hồ Chí Minh', 'Nam', 7000000, '2024-01-01', 'Hiện');
+INSERT INTO `employee` (`EmployeeID`, `Fullname`, `Username`, `BirthDay`, `Phone`, `Email`, `Address`, `Gender`, `Salary`, `StartDate`, `IsDeleted`) VALUES
+('E001', 'Trần Văn B', 'nv01', '1990-05-20', '0981234567', 'tranvanb@gmail.com', 'Hồ Chí Minh', 'Nam', 7000000, '2024-01-01', 0);
 
 -- --------------------------------------------------------
 
@@ -363,24 +367,24 @@ CREATE TABLE `product` (
   `ROS` double NOT NULL,
   `Description` varchar(500) NOT NULL,
   `SupplierID` varchar(10) NOT NULL,
-  `Status` varchar(50) NOT NULL
+  `IsDeleted` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `product`
 --
 
-INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `ImportPrice`, `ROS`, `Description`, `SupplierID`, `Status`) VALUES
-('P001', 'Truyện Doremon', 'doremon.jpg', 'Fujiko F. Fujio', 'NXB Kim Đồng', 100, 20000, 1.2, 'Truyện tranh hài hước', 'S001', 'Hiện'),
-('P002', 'Truyện Conan', 'conan.jpg', 'Gosho Aoyama', 'NXB Kim Đồng', 80, 40000, 1.5, 'Truyện trinh thám nổi tiếng', 'S002', 'Hiện'),
-('P003', 'Truyện One Piece', 'onepiece.jpg', 'Eiichiro Oda', 'NXB Kim Đồng', 120, 22500, 1.3, 'Truyện phiêu lưu hành động', 'S003', 'Hiện'),
-('P004', 'Truyện Naruto', 'naruto.jpg', 'Masashi Kishimoto', 'NXB Kim Đồng', 90, 27400, 1.4, 'Truyện ninja hấp dẫn', 'S004', 'Hiện'),
-('P005', 'Truyện Dragon Ball', 'dragonball.jpg', 'Akira Toriyama', 'NXB Kim Đồng', 110, 25000, 1.6, 'Truyện võ thuật viễn tưởng', 'S005', 'Hiện'),
-('P006', 'Truyện Attack on Titan', 'aot.jpg', 'Hajime Isayama', 'NXB Kim Đồng', 70, 48000, 1.8, 'Truyện hành động kịch tính', 'S006', 'Hiện'),
-('P007', 'Truyện Tokyo Revengers', 'tokyo.jpg', 'Ken Wakui', 'NXB Kim Đồng', 85, 118000, 1.7, 'Truyện du hành thời gian', 'S007', 'Hiện'),
-('P008', 'Truyện Jujutsu Kaisen', 'jujutsu.jpg', 'Gege Akutami', 'NXB Kim Đồng', 95, 150000, 1.5, 'Truyện chiến đấu huyền bí', 'S008', 'Hiện'),
-('P009', 'Truyện Black Clover', 'blackclover.jpg', 'Yūki Tabata', 'NXB Kim Đồng', 75, 60000, 1.3, 'Truyện phép thuật hành động', 'S009', 'Hiện'),
-('P010', 'Truyện Fairy Tail', 'fairytail.jpg', 'Hiro Mashima', 'NXB Kim Đồng', 88, 100000, 1.4, 'Truyện phiêu lưu phép thuật', 'S010', 'Hiện');
+INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `ImportPrice`, `ROS`, `Description`, `SupplierID`, `IsDeleted`) VALUES
+('P001', 'Truyện Doremon', 'doremon.jpg', 'Fujiko F. Fujio', 'NXB Kim Đồng', 100, 20000, 1.2, 'Truyện tranh hài hước', 'S001', 0),
+('P002', 'Truyện Conan', 'conan.jpg', 'Gosho Aoyama', 'NXB Kim Đồng', 80, 40000, 1.5, 'Truyện trinh thám nổi tiếng', 'S002', 0),
+('P003', 'Truyện One Piece', 'onepiece.jpg', 'Eiichiro Oda', 'NXB Kim Đồng', 120, 22500, 1.3, 'Truyện phiêu lưu hành động', 'S003', 0),
+('P004', 'Truyện Naruto', 'naruto.jpg', 'Masashi Kishimoto', 'NXB Kim Đồng', 90, 27400, 1.4, 'Truyện ninja hấp dẫn', 'S004', 0),
+('P005', 'Truyện Dragon Ball', 'dragonball.jpg', 'Akira Toriyama', 'NXB Kim Đồng', 110, 25000, 1.6, 'Truyện võ thuật viễn tưởng', 'S005', 0),
+('P006', 'Truyện Attack on Titan', 'aot.jpg', 'Hajime Isayama', 'NXB Kim Đồng', 70, 48000, 1.8, 'Truyện hành động kịch tính', 'S006', 0),
+('P007', 'Truyện Tokyo Revengers', 'tokyo.jpg', 'Ken Wakui', 'NXB Kim Đồng', 85, 118000, 1.7, 'Truyện du hành thời gian', 'S007', 0),
+('P008', 'Truyện Jujutsu Kaisen', 'jujutsu.jpg', 'Gege Akutami', 'NXB Kim Đồng', 95, 150000, 1.5, 'Truyện chiến đấu huyền bí', 'S008', 0),
+('P009', 'Truyện Black Clover', 'blackclover.jpg', 'Yūki Tabata', 'NXB Kim Đồng', 75, 60000, 1.3, 'Truyện phép thuật hành động', 'S009', 0),
+('P010', 'Truyện Fairy Tail', 'fairytail.jpg', 'Hiro Mashima', 'NXB Kim Đồng', 88, 100000, 1.4, 'Truyện phiêu lưu phép thuật', 'S010', 0);
 
 -- --------------------------------------------------------
 
@@ -392,17 +396,16 @@ CREATE TABLE `promotion` (
   `PromotionID` varchar(10) NOT NULL,
   `PromotionName` varchar(50) NOT NULL,
   `Discount` double NOT NULL,
-  `Status` varchar(10) NOT NULL
+  `IsDeleted` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `promotion`
 --
 
-INSERT INTO `promotion` (`PromotionID`, `PromotionName`, `Discount`, `Status`) VALUES
-('PR00', 'Không', 0, 'Hiện'),
-('PR01', 'Giảm giá Tết', 10, 'Hiện'),
-('PR02', 'Khuyến mãi hè', 15, 'Hiện');
+INSERT INTO `promotion` (`PromotionID`, `PromotionName`, `Discount`, `IsDeleted`) VALUES
+('PR01', 'Giảm giá Tết', 10, 0),
+('PR02', 'Khuyến mãi hè', 15, 0);
 
 -- --------------------------------------------------------
 
@@ -454,23 +457,20 @@ INSERT INTO `role` (`RoleID`, `RoleName`) VALUES
 
 CREATE TABLE `sales_invoice` (
   `SalesID` varchar(10) NOT NULL,
+  `EmployeeID` varchar(10) NOT NULL,
   `CustomerID` varchar(10) NOT NULL,
-  `Phone` varchar(12) NOT NULL,
-  `Address` varchar(255) NOT NULL,
   `Date` date NOT NULL,
   `PromotionID` varchar(10) NOT NULL,
   `TotalPrice` int(10) NOT NULL,
-  `PaymentMethod` varchar(50) NOT NULL,
-  `Note` varchar(500) DEFAULT NULL,
-  `Status` varchar(10) NOT NULL
+  `IsDeleted` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `sales_invoice`
 --
 
-INSERT INTO `sales_invoice` (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`, `PromotionID`, `TotalPrice`, `PaymentMethod`, `Note`, `Status`) VALUES
-('SI001', 'C001', '0987654321', 'abc', '2025-03-15', 'PR00', 1350000, '', NULL, 'Hiện');
+INSERT INTO `sales_invoice` (`SalesID`, `EmployeeID`, `CustomerID`, `Date`, `PromotionID`, `TotalPrice`, `IsDeleted`) VALUES
+('SI001', 'E001', 'C001', '2025-03-15', 'PR01', 1350000, 0);
 
 -- --------------------------------------------------------
 
@@ -479,6 +479,7 @@ INSERT INTO `sales_invoice` (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`
 --
 
 CREATE TABLE `sales_invoice_detail` (
+  `SalesDetailID` varchar(10) NOT NULL,
   `SalesID` varchar(10) NOT NULL,
   `ProductID` varchar(10) NOT NULL,
   `Quantity` int(11) NOT NULL,
@@ -490,9 +491,9 @@ CREATE TABLE `sales_invoice_detail` (
 -- Đang đổ dữ liệu cho bảng `sales_invoice_detail`
 --
 
-INSERT INTO `sales_invoice_detail` (`SalesID`, `ProductID`, `Quantity`, `Price`, `TotalPrice`) VALUES
-('SI001', 'P001', 2, 50000, 100000),
-('SI001', 'P002', 1, 45000, 45000);
+INSERT INTO `sales_invoice_detail` (`SalesDetailID`, `SalesID`, `ProductID`, `Quantity`, `Price`, `TotalPrice`) VALUES
+('SD001', 'SI001', 'P001', 2, 50000, 100000),
+('SD002', 'SI001', 'P002', 1, 45000, 45000);
 
 -- --------------------------------------------------------
 
@@ -506,16 +507,16 @@ CREATE TABLE `supplier` (
   `Phone` varchar(10) NOT NULL,
   `Email` varchar(50) NOT NULL,
   `Address` varchar(255) NOT NULL,
-  `Status` varchar(10) NOT NULL
+  `IsDeleted` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `supplier`
 --
 
-INSERT INTO `supplier` (`SupplierID`, `SupplierName`, `Phone`, `Email`, `Address`, `Status`) VALUES
-('S001', 'Nhà cung cấp A', '0123456789', 'nhaccA@gmail.com', 'Hà Nội', 'Hiện'),
-('S002', 'Nhà cung cấp B', '0987654321', 'nhaccB@gmail.com', 'TP. Hồ Chí Minh', 'Hiện'),
+INSERT INTO `supplier` (`SupplierID`, `SupplierName`, `Phone`, `Email`, `Address`, `IsDeleted`) VALUES
+('S001', 'Nhà cung cấp A', '0123456789', 'nhaccA@gmail.com', 'Hà Nội', 0),
+('S002', 'Nhà cung cấp B', '0987654321', 'nhaccB@gmail.com', 'TP. Hồ Chí Minh', 0),
 ('S003', 'Nhà cung cấp 3', '', '', '', ''),
 ('S004', 'Nhà cung cấp 4', '', '', '', ''),
 ('S005', 'Nhà cung cấp 5', '', '', '', ''),
@@ -638,12 +639,14 @@ ALTER TABLE `role`
 ALTER TABLE `sales_invoice`
   ADD PRIMARY KEY (`SalesID`),
   ADD KEY `fk_customer_sales` (`CustomerID`),
+  ADD KEY `fk_employee_sales` (`EmployeeID`),
   ADD KEY `fk_promotion` (`PromotionID`);
 
 --
 -- Chỉ mục cho bảng `sales_invoice_detail`
 --
 ALTER TABLE `sales_invoice_detail`
+  ADD PRIMARY KEY (`SalesDetailID`),
   ADD KEY `fk_sales` (`SalesID`),
   ADD KEY `fk_product_sales` (`ProductID`);
 
@@ -728,6 +731,7 @@ ALTER TABLE `reviews`
 --
 ALTER TABLE `sales_invoice`
   ADD CONSTRAINT `fk_customer_sales` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`),
+  ADD CONSTRAINT `fk_employee_sales` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`),
   ADD CONSTRAINT `fk_promotion` FOREIGN KEY (`PromotionID`) REFERENCES `promotion` (`PromotionID`);
 
 --

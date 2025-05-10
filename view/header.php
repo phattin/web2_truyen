@@ -62,33 +62,33 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </header>
     <script>
-        document.getElementById("find-product").addEventListener("keydown", function (event) {
-            if (document.querySelector('main.container')) {
-                //Ấn Enter thì cuộn xuống sản phẩm
-                if (event.key == 'Enter')
-                    document.querySelector('main.container').scrollIntoView({ behavior: 'smooth' })
-                const sanPham = document.getElementById("find-product").value.trim().toLowerCase();
-                if (products != null) {
-                    // Lọc sản phẩm từ mảng products có sẵn từ PHP
-                    const productsFound = products.filter(product => product['ProductName'].toLowerCase().includes(sanPham));
+        // document.getElementById("find-product").addEventListener("keydown", function (event) {
+        //     if (document.querySelector('main.container')) {
+        //         //Ấn Enter thì cuộn xuống sản phẩm
+        //         if (event.key == 'Enter')
+        //             document.querySelector('main.container').scrollIntoView({ behavior: 'smooth' })
+        //         const sanPham = document.getElementById("find-product").value.trim().toLowerCase();
+        //         if (products != null) {
+        //             // Lọc sản phẩm từ mảng products có sẵn từ PHP
+        //             const productsFound = products.filter(product => product['ProductName'].toLowerCase().includes(sanPham));
 
-                    // Gửi kết quả qua PHP bằng AJAX
-                    const xhr = new XMLHttpRequest();
-                    xhr.open("POST", "/webbantruyen/view/midContent.php", true);
-                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    xhr.send("productsFound=" + encodeURIComponent(JSON.stringify(productsFound)));
+        //             // Gửi kết quả qua PHP bằng AJAX
+        //             const xhr = new XMLHttpRequest();
+        //             xhr.open("POST", "/webbantruyen/view/midContent.php", true);
+        //             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        //             xhr.send("productsFound=" + encodeURIComponent(JSON.stringify(productsFound)));
 
-                    // Xử lý phản hồi từ PHP
-                    xhr.onload = function () {
-                        if (xhr.status === 200) {
-                            document.querySelector("main.container").innerHTML = xhr.responseText;
-                        } else {
-                            console.error("Lỗi AJAX:", xhr.statusText);
-                        }
-                    };
-                }
-            }
-        });
+        //             // Xử lý phản hồi từ PHP
+        //             xhr.onload = function () {
+        //                 if (xhr.status === 200) {
+        //                     document.querySelector("main.container").innerHTML = xhr.responseText;
+        //                 } else {
+        //                     console.error("Lỗi AJAX:", xhr.statusText);
+        //                 }
+        //             };
+        //         }
+        //     }
+        // });
     </script>
 </body>
 
