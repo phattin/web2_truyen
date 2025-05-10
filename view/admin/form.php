@@ -36,11 +36,12 @@
 
         require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
         $conn = connectDB::getConnection();
-        $sql_data='SELECT * FROM `function_detail` WHERE `RoleID` = "R1"';
+        $sql_data='SELECT * FROM `role`LEFT JOIN `function_detail` ON role.RoleID=function_detail.RoleID WHERE role.RoleID = "'.$roleID.'";';
         $result_sql=$conn->query($sql_data );
         $data=[];
         while($row=$result_sql->fetch_assoc()){
             $data[] = [
+                "RoleName" => $row["RoleName"],
                 "RoleID" => $row["RoleID"],
                 "FunctionID" => $row["FunctionID"],
                 "Option" => $row["Option"],

@@ -188,6 +188,11 @@ function editSP(product_id){
 }
 function Close_ChucNang(){
     $("#overlay-chucnang").css("display","none");
+    $("#overlay-chitiet").css("display","none");
+}
+function Close_Chitiet(){
+    $("#overlay-chucnang").css("display","none");
+    $("#overlay-chitiet").css("display","none");
 }
 
 // Them Nhan Vien
@@ -196,9 +201,7 @@ function ThemNV(){
     $("#ChiTiet").css("display","none");
     $("#Function").load("/webbantruyen/view/admin/ThemNV.php");
 }   
-function closeChucNang(){
-    document.getElementById("Function").style.display = "none";
-}
+
 
 // Them Khach Hang
 function ThemKH(){
@@ -206,6 +209,11 @@ function ThemKH(){
     $("#ChiTiet").css("display","none");
     $("#Function").load("/webbantruyen/view/admin/ThemKH.php");
 }
-function closeChucNang(){
-    document.getElementById("Function").style.display = "none";
+
+
+// Them ROLE
+function ThemRole(){
+     $("#overlay-chucnang").css("display","block");
+    $("#Function").css("display","block");
+    $("#Function").load("/webbantruyen/view/admin/ThemRole.php");
 }

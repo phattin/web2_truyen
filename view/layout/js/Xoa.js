@@ -11,3 +11,16 @@ function Xoa(x){
             }
     });
 }
+function XoaRole(x){
+    console.log(x);
+    $.ajax({
+        type: "GET",
+        url: "../admin/XLXoaRole.php",
+        data: { RoleID: x },
+        success:
+    function() {
+                alert("Xóa ROLE thành công");
+                location.reload();
+            }
+    });
+}
