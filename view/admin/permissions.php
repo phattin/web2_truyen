@@ -1,7 +1,7 @@
 <?php
 echo"
 <html>
-    <table>
+    <table id='table_role'>
         <tr>
             <th>Tên</th>
             <th>Role</th>
@@ -23,6 +23,7 @@ echo"
         $conn->close();
 echo "
     </table>
+    <input type='button' class='blue-btn' onclick='LuuRole()' style='width=100%'>Lưu</input>
     <script src='../layout/js/permissions.js'></script>
 </html>"
 /*

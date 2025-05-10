@@ -35,21 +35,22 @@ function ChitietSP(x){
     });
 }
 
-
+ChiTiet
 function Close_Chitiet(){
     $("#overlay-chitiet").css("display","none");
 }
 // chitietRole
-function ChitietRole(){
-    /*var RoleID = x;
+function ChitietRole(x){
+    console.log(x);
+    var RoleID = x;
     $.ajax({
         type: "POST",
         url: "../admin/form.php",
-        data: { role_id: RoleID },
+        data: { roleID: RoleID },
         dataType: "json",
         success: function(response) {
-            console.log({response});*/
-            $("#ChiTiet").css("display","block");   
+            console.log({response});
+            $("#overlay-chitiet").css("display","block");   
             $("#ChiTiet").html(
                 `
                 <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
@@ -84,9 +85,9 @@ function ChitietRole(){
                 `  
             );        
         }
-    /*});
+    });
 }
-*/
+
 
 
 
