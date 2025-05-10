@@ -5,34 +5,30 @@ function ChitietSP(x){
 
     $.ajax({
         type: "POST",
-        url: "../admin/form.php",
+        url: "/webbantruyen/view/admin/form.php",
         data: { product_id: ProductID },
         dataType: "json",
         success: function(response) {
             console.log({response});
-            $("#ChiTiet").css("display","block");  
+            $("#overlay-chitiet").css("display","block");  
             $("#Function").css("display","none"); 
             $("#ChiTiet").html(
                 `
-                <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
-                <div class="form">
-                    <div class="image-box"><img src="../layout/images/${response.productImg}";height="100%";width:"90%";></div>
+                <input type="button" value="X" class="close-btn" onclick="Close_Chitiet()">
+                <div class="chitiet-box">
+                    <div class="image-box"><img src="/webbantruyen/view/layout/images/${response.productImg}";height="100%";width:"90%";></div>
                     <div class="info-box">
-                        <p>ProductID:${response.productID}</p>
-                        <p>ProductName:${response.productName}</p>
-                        <p>ProductImg:${response.productImg}</p>
-                        <p>Author:${response.author}</p>
-                        <p>Publisher:${response.publisher}</p>
-                        <p>Quantity:${response.quantity}</p>
-                        <p>ImportPrice:${response.importPrice}</p>
-                        <p>ROS:${response.ros}</p>
-                        <p>Description:${response.description}</p>
-                        <p>SupplierID:${response.supplierID}</p>
-                        <p>Status:${response.status}</p>
+                        <p><strong>Mã sản phẩm:</strong> ${response.productID}</p>
+                        <p><strong>Tên truyện:</strong> ${response.productName}</p>
+                        <p><strong>Tác giả:</strong> ${response.author}</p>
+                        <p><strong>NXB:</strong> ${response.publisher}</p>
+                        <p><strong>Kho:</strong> ${response.quantity}</p>
+                        <p><strong>Giá nhập:</strong> ${response.importPrice}</p>
+                        <p><strong>ROS:</strong> ${response.ros}</p>
+                        <p><strong>Mô tả:</strong> ${response.description}</p>
+                        <p><strong>Mã nhà cung cấp:</strong> ${response.supplierID}</p>
                     </div>
                 </div>
-                <input type="button" value="Sửa" class="blue-btn" onclick="Close_Chitiet()">
-                <input type="button" value="Xóa" class="blue-btn" onclick="Xoa('${response.productID}'); Close_Chitiet();">
                 `  
             );        
         }
@@ -41,7 +37,7 @@ function ChitietSP(x){
 
 
 function Close_Chitiet(){
-    $("#ChiTiet").css("display","none");
+    $("#overlay-chitiet").css("display","none");
 }
 // chitietRole
 function ChitietRole(){

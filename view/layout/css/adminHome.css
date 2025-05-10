@@ -15,36 +15,35 @@ body {
 
 header {
     width: 100%;
+    position: fixed;
     background: #074b80;
     color:white  ;
     padding: 20px;
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    border-bottom-left-radius: 50px;
-    border-bottom-right-radius: 50px;
-    position: fixed;
 }
 
-/* Container tổng */
 .container {
-    display: block ;
+    display: flex;
     min-height: 100vh;
+    position: relative;
+    margin: 0;
+    padding: 0;
 }
 
 /* Sidebar */
 .sidebar {
     width: auto;
     background: #074b80;
-    color: white;
-    padding-top: 20px;
-    height: 100vh;
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
-    position: fixed;
+    color: white; 
+    height: calc( 100vh - 82px); /* Chiều cao sidebar bằng chiều cao viewport - chiều cao header */
+    position: sticky;
+    margin-top: 82px;
     left: 0;
     top: 0;
     padding: 20px;
+    overflow: hidden;
 }
 
 /* Tiêu đề "Chức năng" */
@@ -66,7 +65,25 @@ header {
     display: flex;
     flex-direction: column; /* Menu dọc */
     gap: 10px; /* Khoảng cách giữa các mục */
+    max-height: calc(100vh - 125px); /* trừ phần tiêu đề và padding */
+    
+    overflow-y: scroll;
+
+    /* Ẩn scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
 }
+
+.sidebar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+/* Ngăn vùng nội dung bị lệch trên Edge hoặc Firefox */
+.sidebar * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
 
 .sidebar ul li {
     padding: 0px;
@@ -95,7 +112,6 @@ header {
 
 /* Nội dung chính */
 main {
-    margin-left: 200px;
     padding: 50px;
     padding-top: 100px;
     flex: 1;
@@ -120,6 +136,7 @@ p {
     background-color: #fff;
     border-radius: 10px;
     text-align: center;
+    cursor: pointer;
 }
 
 table {
@@ -135,6 +152,7 @@ table {
 
 th, td {
     padding: 12px 15px;
+    text-align: center ;
 }
 
 th {
@@ -154,6 +172,66 @@ tr:hover {
 
 td {
     border-bottom: 1px solid #ddd;
+}
+
+.function-icon .detail-icon {
+    padding: 0 5px;
+    color: #28a745;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.function-icon .detail-icon:hover {
+    color: #218838;
+    transform: scale(1.2);
+}
+
+
+.function-icon .delete-icon {
+    padding: 0 5px;
+    color: red;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.function-icon .delete-icon:hover {
+    color: #ff0000;
+    transform: scale(1.2);
+}
+
+.function-icon .edit-icon {
+    color: #007bff;
+    padding: 0 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.function-icon .edit-icon:hover {
+    color: #0056b3;
+    transform: scale(1.2);
+}
+
+.close-btn {
+    background-color: red;
+    color: white;
+    padding: 8px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.close-btn:hover {
+    background-color: #910707;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.close-btn:active {
+    background-color: #fd6666;
+    transform: translateY(1px);
 }
 
 .blue-btn {
@@ -180,6 +258,16 @@ td {
     transform: translateY(1px);
 }
 /* Chi Tiet*/
+.overlay-chitiet {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* màu đen trong suốt 50% */
+    display: none;
+    z-index: 9999; /* đảm bảo nằm trên cùng */
+}
 .ChiTiet {
     background-color: white;
     color: black;
@@ -187,104 +275,65 @@ td {
     border-radius: 10px;
     box-shadow:0 4px 6px rgba(0, 0, 0, 0.1);*/
     align-items: center;
-    display: none;
     position: fixed;
-    bottom: 10%;
-    right: 10%;
-    /*width: 80%;*/
-    /*height: 80vh;*/
-
-
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
     border-radius: 10px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    text-align: left;
+    text-align: right;
 }
-.form {
-    display: block;
-    
+.chitiet-box {
+    display: flex;
 }
 
 .image-box {
-    /*width: 100px;*/
-    height: 130px;
-    border: 1px solid black;
-    margin: auto;
-    margin-bottom: 4px;
-
-    width: 100%;
-    border-radius: 10px;
+    width: 50%;
+    text-align: center;
 }
 
 .info-box {
     /*border: 1px solid black;*/
     padding: 10px;
-    margin: auto;
-    width: 50%
+    width: 50%;
+    text-align: left;
 }
 
-img {
-    width: 100%;
-    height: 100%;
+.info-box p {
+    padding: 5px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+
+}
+
+.info-box strong {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.image-box img {
     object-fit: cover;
+    width: 300px;
 }
 
 .ChucNang {
+    background-color: white;
+    color: black;
+    /*padding: 10px;
+    border-radius: 10px;
+    box-shadow:0 4px 6px rgba(0, 0, 0, 0.1);*/
+    align-items: center;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
-    width: 60vw;
-    max-width: 600px;
-    height: auto;
-    max-height: 80vh;
-    overflow-y: auto;
-
-    background-color: #fff;
-    color: #333;
-    padding: 25px 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-
-    display: none; /* bật = 'block' hoặc 'flex' tùy layout bên trong */
-    z-index: 999;
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: right;
 }
 
-/* Làm đẹp cho form bên trong */
-.ChucNang form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.ChucNang label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.ChucNang input,
-.ChucNang select,
-.ChucNang textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.ChucNang button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.ChucNang button:hover {
-    background-color: #0056b3;
-}

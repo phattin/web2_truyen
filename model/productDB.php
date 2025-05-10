@@ -26,14 +26,14 @@
         }
         // Lấy tổng số sản phẩm để tính số trang
         public function getTotalProducts() {
-            $result = $this->conn->query("SELECT COUNT(*) AS total FROM product WHERE Status = 'Hiện'");
+            $result = $this->conn->query("SELECT COUNT(*) AS total FROM product WHERE  IsDeleted =  0");
             $row = $result->fetch_assoc();
             return $row['total'];
         }
     
         // Lấy danh sách sản phẩm có phân trang
         public function getProductsByPage($limit, $offset) {
-            $stmt = $this->conn->prepare("SELECT * FROM product WHERE Status = 'Hiện' LIMIT ? OFFSET ?");
+            $stmt = $this->conn->prepare("SELECT * FROM product WHERE  IsDeleted =  0 LIMIT ? OFFSET ?");
             $stmt->bind_param("ii", $limit, $offset);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -44,7 +44,7 @@
             //Mở database
             $conn = connectDB::getConnection();
             //Lệnh sql
-            $strSQL = "Select * from product WHERE Status = 'Hiện'";
+            $strSQL = "Select * from product WHERE  IsDeleted =  0";
             //Thực hiện sql
             $result = mysqli_query($conn, $strSQL);
             //Thực hiện chức năng
@@ -87,7 +87,7 @@
             $strSQL = "SELECT * 
                        FROM product 
                        JOIN genre_detail ON product.ProductID = genre_detail.ProductID 
-                       WHERE product.Status = 'Hiện' AND genre_detail.GenreID = ?";
+                       WHERE product. IsDeleted =  0 AND genre_detail.GenreID = ?";
         
             // Thực hiện SQL
             $stmt = $conn->prepare($strSQL);
@@ -109,8 +109,8 @@
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "INSERT INTO product (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `ImportPrice`, `ROS`, `Description`, `SupplierID`, `Status`) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $strSQL = "INSERT INTO product (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `ImportPrice`, `ROS`, `Description`, `SupplierID`, `IsDeleted`) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
             $stmt->bind_param("sssssiiiisi", $id, $name, $img, $author, $publisher, $quantity, $importPrice,  $ros, $description, $supplierID, $status);
@@ -123,12 +123,40 @@
             return $success;
         }
 
+        public static function getNewProductID() {
+            // Mở kết nối
+            $conn = connectDB::getConnection();
+
+            // Lấy mã sản phẩm lớn nhất
+            $sql = "SELECT MAX(ProductID) AS maxID FROM product";
+            $result = mysqli_query($conn, $sql);
+            $row = mysqli_fetch_assoc($result);
+            $maxID = $row['maxID'];
+
+            // Đóng kết nối
+            connectDB::closeConnection($conn);
+
+            // Nếu chưa có sản phẩm nào
+            if (!$maxID) {
+                return 'P001';
+            }
+
+            // Tách số từ mã, ví dụ: P005 -> 5
+            $num = (int)substr($maxID, 1);
+            $num++;
+
+            // Tạo mã mới
+            $newID = 'P' . str_pad($num, 3, '0', STR_PAD_LEFT);
+
+            return $newID;
+        }
+
         //Sửa sản phẩm
         public function updateProduct($id, $name, $img, $author, $publisher, $quantity, $importPrice, $ros, $description, $supplierID, $status) {
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "UPDATE product SET ProductName = ?, ProductImg = ?, Author = ?, Publisher = ?, Quantity = ?, ImportPrice = ? , ROS = ?, `Description` = ?, SupplierID = ?, `Status` = ? 
+            $strSQL = "UPDATE product SET ProductName = ?, ProductImg = ?, Author = ?, Publisher = ?, Quantity = ?, ImportPrice = ? , ROS = ?, `Description` = ?, SupplierID = ?, ` IsDeleted` = ? 
                        WHERE ProductID = ?";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
@@ -149,7 +177,7 @@
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "UPDATE product SET `Status` = 'Ẩn' WHERE ProductID = ?";
+            $strSQL = "UPDATE product SET ` IsDeleted` = 1 WHERE ProductID = ?";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
             if (!$stmt) 
@@ -198,7 +226,7 @@
                 // Giả sử có một trường đánh dấu sản phẩm hot, ví dụ: IsHot
                 $conditions[] = "p.IsHot = 1";
             }
-            $conditions[] = "p.Status = 'Hiện'";
+            $conditions[] = "p. IsDeleted =  0";
 
             if (!empty($conditions)) {
                 $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -251,7 +279,7 @@
             if ($isHot === true) {
                 $conditions[] = "p.IsHot = 1";
             }
-            $conditions[] = "p.Status = 'Hiện'";
+            $conditions[] = "p. IsDeleted =  0";
 
             if (!empty($conditions)) {
                 $sql .= " WHERE " . implode(" AND ", $conditions);
