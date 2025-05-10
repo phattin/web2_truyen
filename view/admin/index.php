@@ -91,8 +91,7 @@ $conn->close();
     <script src="/webbantruyen/view/layout/js/permissions.js"></script>
     <script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
     <script src="/webbantruyen/view/layout/js/them_ajax.js"></script>
-    <script src="/webbantruyen/view/layout/js/Them.js"></script>
-    <script src="/webbantruyen/view/layout/js/Sua.js"></script>
+    <script src="/webbantruyen/view/layout/js/admin_function.js"></script>
     <script src="/webbantruyen/view/layout/js/Xoa.js"></script>
 </body>
 
