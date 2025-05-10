@@ -152,6 +152,7 @@
                 alert("Thêm sản phẩm thành công!");
                 const table = document.querySelector(".product-admin-table");
                 const row = table.insertRow(-1);
+                row.id = "product-row-" + productID;
 
                 row.insertCell(0).innerText = productID;
                 row.insertCell(1).innerText = productName;

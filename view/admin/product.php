@@ -12,7 +12,7 @@ echo"
         require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/productDB.php";
         $products = productDB::getAllProduct();
         foreach ($products as $product) {
-            echo "<tr>
+            echo "<tr id='product-row-".$product["ProductID"]."'>
                     <td>" . $product["ProductID"] . "</td>
                     <td>" . $product["ProductName"] . "</td>
                     <td>" . $product["Author"] . "</td>
