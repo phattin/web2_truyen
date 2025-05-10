@@ -1,26 +1,55 @@
 <?php
-session_start(); 
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
-$username = isset($_SESSION['username']) ? $_SESSION['username'] : "Khách";
+
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
+
+if (!$username) {
+    // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+    header("Location: /webbantruyen/index.php?page=login");
+    exit;
+}
+
 $conn = connectDB::getConnection();
-$sql = "SELECT Username FROM account";
-$result = $conn->query($sql);
+
+// Kiểm tra RoleID của người dùng
+$stmt = $conn->prepare("SELECT RoleID FROM account WHERE Username = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    if ($row['RoleID'] !== 'R1') {
+        // Nếu RoleID không phải 'R1', hiển thị thông báo và dừng chương trình
+        echo "<script>alert('Bạn không có quyền truy cập vào trang này!'); window.location.href = '/webbantruyen/index.php';</script>";
+        exit;
+    }
+
+} else {
+    // Nếu không tìm thấy tài khoản, chuyển hướng đến trang đăng nhập
+    header("Location: /webbantruyen/index.php?page=login");
+    exit;
+}
+
+$stmt->close();
 $conn->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<style>
-</style>
-    
+    <style>
+    </style>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminHome.css">
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminForm.css">
-    
+
 </head>
 
 <body>
@@ -43,14 +72,19 @@ $conn->close();
                 <li onclick="Switch('pq')"><a>Phân quyền</a></li>
                 <li onclick="Switch('role')"><a>ROLE</a></li>
                 <li onclick="Switch('tk')"><a>Thống kê</a></li>
-                <li><a href="/webbantruyen/view/layout/page/logout.php" onclick="return confirm('Bạn có chắc muốn đăng xuất?');" >Đăng xuất</a></li>
+                <li><a href="/webbantruyen/view/layout/page/logout.php"
+                        onclick="return confirm('Bạn có chắc muốn đăng xuất?');">Đăng xuất</a></li>
             </ul>
         </nav>
 
         <main id="admin-content"></main>
-        <div id="overlay-chitiet" onclick="Close_Chitiet()" class="overlay-chitiet"><div id="ChiTiet" class="ChiTiet" onclick="event.stopPropagation();">></div></div>
-        <div id="overlay-chucnang" onclick="Close_ChucNang()" class="overlay-chucnang"><div id="Function" class="ChucNang" onclick="event.stopPropagation();"></div></div>
-        
+        <div id="overlay-chitiet" onclick="Close_Chitiet()" class="overlay-chitiet">
+            <div id="ChiTiet" class="ChiTiet" onclick="event.stopPropagation();">></div>
+        </div>
+        <div id="overlay-chucnang" onclick="Close_ChucNang()" class="overlay-chucnang">
+            <div id="Function" class="ChucNang" onclick="event.stopPropagation();"></div>
+        </div>
+
     </div>
     <script src="/webbantruyen/view/layout/js/Load_content.js"></script>
     <script src="/webbantruyen/view/layout/js/Chitiet.js"></script>
@@ -60,4 +94,5 @@ $conn->close();
     <script src="/webbantruyen/view/layout/js/admin_function.js"></script>
     <script src="/webbantruyen/view/layout/js/Xoa.js"></script>
 </body>
+
 </html>

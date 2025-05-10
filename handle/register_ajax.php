@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm-password'] ?? '';
     $roleID = 'R3';
-    $status = 'Hiện';
+    $isDeleted = 0; // Giá trị mặc định cho IsDeleted
 
     // Kiểm tra dữ liệu đầu vào
     if (empty($username)) {
@@ -139,8 +139,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Thêm tài khoản vào bảng account
-        $stmt = $conn->prepare("INSERT INTO account (Username, Password, RoleID, Status) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $username, $hashedPassword, $roleID, $status);
+        $stmt = $conn->prepare("INSERT INTO account (Username, Password, RoleID, IsDeleted) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sssi", $username, $hashedPassword, $roleID, $isDeleted);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -166,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $response["message"] = "Lỗi khi tạo tài khoản: " . $stmt->error;
         }
     } catch (Exception $e) {
-            @$conn->rollback();
+        @$conn->rollback();
         $response["message"] = "Lỗi hệ thống: " . $e->getMessage();
     }
 }

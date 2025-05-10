@@ -1,3 +1,8 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -44,17 +49,8 @@
         
         include_once("view/footer.php");
     }
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
     ?>
-
-    
 </body>
 <script src="view/layout/js/main.js"></script>
 
 </html>
-
-
-<!-- include_once("view/navbar.php");
-    include_once("view/midContent.php"); -->

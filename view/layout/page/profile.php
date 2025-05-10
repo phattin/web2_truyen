@@ -1,5 +1,4 @@
 <?php
-session_start();
 include($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php");
 
 $conn = connectDB::getConnection();

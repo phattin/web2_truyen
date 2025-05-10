@@ -1,5 +1,4 @@
 <?php
-session_start(); // Bắt đầu phiên làm việc
 
 // Nhập file chứa các hàm truy vấn
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/order_history_utils.php");

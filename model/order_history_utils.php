@@ -87,16 +87,21 @@ function calculatePagination($total_records, $records_per_page, $current_page) {
  * @return mysqli_result Kết quả truy vấn
  */
 function getOrdersList($conn, $search_condition, $offset, $records_per_page) {
-    $sql_distinct_sales = "SELECT DISTINCT s.SalesID, s.Date, s.Address, s.Phone 
-                          FROM sales_invoice s
-                          JOIN Customer c ON s.CustomerID = c.CustomerID
-                          LEFT JOIN sales_invoice_detail sd ON s.SalesID = sd.SalesID
-                          LEFT JOIN Product p ON sd.ProductID = p.ProductID
-                          $search_condition
-                          ORDER BY s.Date DESC
-                          LIMIT $offset, $records_per_page";
+    $sql_distinct_sales = "
+        SELECT DISTINCT s.SalesID, s.Date, c.Address, c.Phone 
+        FROM sales_invoice s
+        JOIN customer c ON s.CustomerID = c.CustomerID
+        LEFT JOIN sales_invoice_detail sd ON s.SalesID = sd.SalesID
+        LEFT JOIN product p ON sd.ProductID = p.ProductID
+        $search_condition
+        ORDER BY s.Date DESC
+        LIMIT ?, ?
+    ";
     
-    return $conn->query($sql_distinct_sales);
+    $stmt = $conn->prepare($sql_distinct_sales);
+    $stmt->bind_param("ii", $offset, $records_per_page);
+    $stmt->execute();
+    return $stmt->get_result();
 }
 
 /**
