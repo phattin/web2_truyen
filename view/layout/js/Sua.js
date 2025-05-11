@@ -22,8 +22,8 @@ function editSP(product_id){
                         </div>
                 
                         <div class="right-panel">
-                            <div >
-                                <label for="productID" style="display:none">Mã sản phẩm:</label>
+                            <div style="display:none">
+                                <label for="productID">Mã sản phẩm:</label>
                                 <input type="text" value="${response.productID}" id="productID" name="productID" readonly>
                             </div>
                             <div>

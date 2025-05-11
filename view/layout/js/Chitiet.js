@@ -35,6 +35,41 @@ function ChitietSP(x){
     });
 }
 
+// ChitietSP
+function ChitietHDN(importID){
+    console.log(importID);
+    $.ajax({
+        type: "POST",
+        url: "/webbantruyen/view/admin/form.php",
+        data: { importID: importID },
+        dataType: "json",
+        success: function(response) {
+            console.log({response});
+            $("#overlay-chitiet").css("display","block");  
+            $("#Function").css("display","none"); 
+            $("#ChiTiet").html(
+                `
+                <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
+                <div class="chitiet-box">
+                    <div class="image-box"><img src="/webbantruyen/view/layout/images/${response.productImg}";height="100%";width:"90%";></div>
+                    <div class="info-box">
+                        <p><strong>Mã sản phẩm:</strong> ${response.productID}</p>
+                        <p><strong>Tên truyện:</strong> ${response.productName}</p>
+                        <p><strong>Tác giả:</strong> ${response.author}</p>
+                        <p><strong>NXB:</strong> ${response.publisher}</p>
+                        <p><strong>Kho:</strong> ${response.quantity}</p>
+                        <p><strong>Giá nhập:</strong> ${response.importPrice}</p>
+                        <p><strong>ROS:</strong> ${response.ros}</p>
+                        <p><strong>Mô tả:</strong> ${response.description}</p>
+                        <p><strong>Mã nhà cung cấp:</strong> ${response.supplierID}</p>
+                    </div>
+                </div>
+                `  
+            );        
+        }
+    });
+}
+
 ChiTiet
 function Close_ChucNang(){
     $("#overlay-chitiet").css("display","none");
