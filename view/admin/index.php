@@ -66,7 +66,7 @@ $conn->close();
                 <li onclick="Switch('sp')"><a>Quản lý sản phẩm</a></li>
                 <li onclick="Switch('km')"><a>Quản lý khuyến mãi</a></li>
                 <li onclick="Switch('tl')"><a>Thể loại truyện</a></li>
-                <li onclick="Switch('hdb')"><a>Hóa đơn bán</a></li>
+                <li onclick="loadInvoices()"><a>Hóa đơn bán</a></li>
                 <li onclick="Switch('hdn')"><a>Hóa đơn nhập</a></li>
                 <li onclick="Switch('ncc')"><a>Quản lý nhà cung cấp</a></li>
                 <li onclick="Switch('pq')"><a>Phân quyền</a></li>
@@ -91,8 +91,18 @@ $conn->close();
     <script src="/webbantruyen/view/layout/js/permissions.js"></script>
     <script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
     <script src="/webbantruyen/view/layout/js/them_ajax.js"></script>
-    <script src="/webbantruyen/view/layout/js/admin_function.js"></script>
     <script src="/webbantruyen/view/layout/js/Xoa.js"></script>
+    <script src="/webbantruyen/view/layout/js/HoaDon.js"></script>
+    <script>
+        function HienThiHoaDon() {
+            $("#admin-content").load("/webbantruyen/view/admin/sales_invoice.php", function (response, status, xhr) {
+                if (status === "error") {
+                    console.error("Lỗi khi tải hóa đơn bán:", xhr.status, xhr.statusText);
+                    $("#admin-content").html("<p>Không thể tải hóa đơn bán.</p>");
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
