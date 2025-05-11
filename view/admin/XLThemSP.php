@@ -1,7 +1,13 @@
 <?php   
     include("../../model/ThemSuaXoa.php");
-    include("../../model/ID.php");
     include("../layout/js/Load_content.js");
+    include("../../model/connectDB.php");
+    include("../../model/ID.php");
+    $a = new connectDB();
+    $conn = $a->getConnection();
+
+    $newIDSP = generateNextID($conn, 'product', 'ProductID', 'P');
+
 
     //Thêm sản phẩm mới
     if(isset($_GET["ProductName"])){

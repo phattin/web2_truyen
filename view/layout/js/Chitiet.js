@@ -14,7 +14,7 @@ function ChitietSP(x){
             $("#Function").css("display","none"); 
             $("#ChiTiet").html(
                 `
-                <input type="button" value="X" class="close-btn" onclick="Close_Chitiet()">
+                <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
                 <div class="chitiet-box">
                     <div class="image-box"><img src="/webbantruyen/view/layout/images/${response.productImg}";height="100%";width:"90%";></div>
                     <div class="info-box">
@@ -35,24 +35,28 @@ function ChitietSP(x){
     });
 }
 
-
-function Close_Chitiet(){
+ChiTiet
+function Close_ChucNang(){
     $("#overlay-chitiet").css("display","none");
 }
 // chitietRole
-function ChitietRole(){
-    /*var RoleID = x;
+function ChitietRole(x){
+    console.log(x);
+    var RoleID = x;
     $.ajax({
         type: "POST",
         url: "../admin/form.php",
-        data: { role_id: RoleID },
+        data: { roleID: RoleID },
         dataType: "json",
         success: function(response) {
-            console.log({response});*/
-            $("#ChiTiet").css("display","block");   
+            console.log({response});
+            $("#overlay-chitiet").css("display","block");   
             $("#ChiTiet").html(
                 `
-                <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
+                <h2>Chỉnh sửa quyền ${response[0].RoleName} </h2>
+                <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
+                <form action="../admin/SuaRole.php" method="POST">
+                <input type="hidden" name="RoleID" value="${response[0].RoleID}">
                 <table>
                     <tr>
                         <th>Tên chức năng </th>
@@ -62,32 +66,67 @@ function ChitietRole(){
                     </tr>
                     <tr>
                         <th>Quản lý tài khoản</th>
-                        <td><input type='checkbox' name='Quản lý tài khoản' value='Thêm'></td>
-                        <td><input type='checkbox' name='Quản lý tài khoản' value='Sửa'></td>
-                        <td><input type='checkbox' name='Quản lý tài khoản' value='Xóa'></td>
+                        <td><input type='checkbox' name='TTK' value='Thêm'></input></td>
+                        <td><input type='checkbox' name='STK' value='Sửa'></input></td>
+                        <td><input type='checkbox' name='XTK' value='Xóa'></input></td>
                     </tr>
                     <tr>
                         <th>Quản lý sản phẩm</th>
-                        <td><input type='checkbox' name='Quản lý sản phẩm' value='Thêm'></td>
-                        <td><input type='checkbox' name='Quản lý sản phẩm' value='Sửa'></td>
-                        <td><input type='checkbox' name='Quản lý sản phẩm' value='Xóa'></td>
+                        <td><input type='checkbox' name='TSP' value='Thêm'></input></td>
+                        <td><input type='checkbox' name='SSP' value='Sửa'></input></td>
+                        <td><input type='checkbox' name='XSP' value='Xóa'></input></td>
                     </tr>
                     <tr>
                         <th>Quản lý hóa đơn</th>
-                        <td><input type='checkbox' name='Quản lý hóa đơn' value='Thêm'></td>
-                        <td><input type='checkbox' name='Quản lý hóa đơn' value='Sửa'></td>
-                        <td><input type='checkbox' name='Quản lý hóa đơn' value='Xóa'></td>
-                    </tr>
+                        <td><input type='checkbox' name='THD' value='Thêm'></input></td>
+                        <td><input type='checkbox' name='SHD' value='Sửa'></input></td>
+                        <td><input type='checkbox' name='XHD' value='Xóa'></input></td>
+                    </tr> 
                 </table>
-                <input type="button" value="Sửa" class="blue-btn" onclick="Close_Chitiet()">
-                <input type="button" value="Xóa" class="blue-btn" onclick="Close_Chitiet()">
+                <input type="submit" value="Xác Nhận Sửa" class="blue-btn">
+                <input type="button" value="Xóa Role" class="blue-btn" onclick='XoaRole("${response[0].RoleID}")'>
+                </form>
                 `  
             );        
+            response.forEach(element => {
+            if(element.FunctionID == "F001"){
+                if(element.Option == "Thêm"){
+                    $("input[name='TTK'][value='Thêm']").prop("checked", true);
+                }
+                if(element.Option == "Sửa"){
+                    $("input[name='STK'][value='Sửa']").prop("checked", true);
+                }
+                if(element.Option == "Xóa"){
+                    $("input[name='XTK'][value='Xóa']").prop("checked", true);
+                }
+            }
+            if(element.FunctionID == "F002"){
+                if(element.Option == "Thêm"){
+                    $("input[name='TSP'][value='Thêm']").prop("checked", true);
+                }
+                if(element.Option == "Sửa"){
+                    $("input[name='SSP'][value='Sửa']").prop("checked", true);
+                }
+                if(element.Option == "Xóa"){
+                    $("input[name='XSP'][value='Xóa']").prop("checked", true);
+                }
+            }
+            if(element.FunctionID == "F003"){
+                if(element.Option == "Thêm"){
+                    $("input[name='THD'][value='Thêm']").prop("checked", true);
+                }  
+                if(element.Option == "Sửa"){
+                    $("input[name='SHD'][value='Sửa']").prop("checked", true);
+                }
+                if(element.Option == "Xóa"){
+                    $("input[name='XHD'][value='Xóa']").prop("checked", true);
+                }
+            }
+            });
+            
         }
-    /*});
+    });
 }
-*/
-
 
 
 // ChitietNV
@@ -103,7 +142,7 @@ function ChitietNV(x){
             $("#ChiTiet").css("display","block");   
             $("#ChiTiet").html(
                 `
-                <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
+                <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
                 <div class="form">
                     <div class="info-box">
                         <p>EmployeeID:${response.employeeID}</p>
@@ -119,8 +158,8 @@ function ChitietNV(x){
                         <p>status:${response.status}</p>
                     </div>
                 </div>
-                <input type="button" value="Sửa" class="blue-btn" onclick="Close_Chitiet()">
-                <input type="button" value="Xóa" class="blue-btn" onclick="Close_Chitiet()">
+                <input type="button" value="Sửa" class="blue-btn" onclick="Close_ChucNang()">
+                <input type="button" value="Xóa" class="blue-btn" onclick="Close_ChucNang()">
                 `  
             );        
         }
@@ -142,7 +181,7 @@ function ChitietKH(x){
             $("#ChiTiet").css("display","block");   
             $("#ChiTiet").html(
                 `
-                <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
+                <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
                 <div class="form">
                     <div class="info-box">
                         <p>CustomerID:${response.CustomerID}</p>
@@ -155,8 +194,8 @@ function ChitietKH(x){
                         <p>status:${response.status}</p>
                     </div>
                 </div>
-                <input type="button" value="Sửa" class="blue-btn" onclick="Close_Chitiet()">
-                <input type="button" value="Xóa" class="blue-btn" onclick="Close_Chitiet()">
+                <input type="button" value="Sửa" class="blue-btn" onclick="Close_ChucNang()">
+                <input type="button" value="Xóa" class="blue-btn" onclick="Close_ChucNang()">
                 `  
             );        
         }

@@ -32,51 +32,28 @@
             "allSupplier" => $allSuppliers,
         ]);
     }
-//chitiet khach hang
-    /*if(!isset($_POST["username"])) {
-        $username = $_POST["username"];
-
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
-        $conn = connectDB::getConnection();
-        $sql_data='SELECT * FROM `account` WHERE Username="'.$username.'";';
-        $result_sql=$conn->query( $sql_data );
-        while($row=$result_sql->fetch_assoc()){
-            $username = $row["Username"];
-            $password = $row["Password"];
-            $roleID = $row["RoleID"];
-            $status = $row["Status"];
-        };
-
-        echo json_encode([
-            "username" => $username,
-            "password" => $password,
-            "roleID" => $roleID,
-            "status" => $status,
-        ]);
-        $conn->close();
-    }*/
 
 //chitiet ROLE
-    /*if(!isset($_POST["roleID"])) {
+    if(isset($_POST["roleID"])) {
         $roleID = $_POST["roleID"];
 
         require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
         $conn = connectDB::getConnection();
-        $sql_data='SELECT * FROM `role` WHERE RoleID="'.$roleID.'";';
-        $result_sql=$conn->query( $sql_data );
+        $sql_data='SELECT * FROM `role`LEFT JOIN `function_detail` ON role.RoleID=function_detail.RoleID WHERE role.RoleID = "'.$roleID.'";';
+        $result_sql=$conn->query($sql_data );
+        $data=[];
         while($row=$result_sql->fetch_assoc()){
-            $roleID = $row["RoleID"];
-            $roleName = $row["RoleName"];
-            $status = $row["Status"];
+            $data[] = [
+                "RoleName" => $row["RoleName"],
+                "RoleID" => $row["RoleID"],
+                "FunctionID" => $row["FunctionID"],
+                "Option" => $row["Option"],
+            ];
         };
-
-        echo json_encode([
-            "roleID" => $roleID,
-            "roleName" => $roleName,
-            "status" => $status,
-        ]);
         $conn->close();
-    }*/
+        echo json_encode($data);
+        
+    }
 //chitiet NV
 if(isset($_POST["usernameNV"])) {
     $username = $_POST["usernameNV"];
