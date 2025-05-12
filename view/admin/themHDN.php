@@ -1,6 +1,65 @@
 
     <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
     <h2 style='text-align:center; margin:30px;'>Nhập hàng</h2>
+    <div class="import-info">
+        <div class="left-info">
+            <div class="import-info-item">
+                <div>
+                    <strong>Mã hóa đơn nhập:</strong>
+                <?php 
+                    require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/importDB.php";
+                    echo importDB::getNewImportID();
+                    ?>
+                </div>
+            </div>
+            <div class="import-info-item">
+                <div>
+                    <strong>Ngày nhập:</strong>
+                    <?php
+                    date_default_timezone_set('Asia/Ho_Chi_Minh');
+                    $currentDate = date('Y-m-d');
+                    echo $currentDate;
+                    ?>
+                </div>
+            </div>
+            <div class="import-info-item">
+                <div>
+                    <strong>Nhân viên nhập:</strong>
+                    <?php
+                    session_start();
+                    if (isset($_SESSION['username'])) {
+                        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/employeeDB.php";
+                        $username = $_SESSION['username'];
+                        $employee = employeeDB::getEmployeeByUsername($username);
+                        if ($employee) {
+                            echo $employee["Fullname"];
+                            echo "<input type='text' id='import-employeeID' value='".$employee['EmployeeID']."' style='display:none;'>";
+                        } else {
+                            echo "Không tìm thấy nhân viên.";
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+        <div class="right-info">
+            
+            <div class="import-info-item">
+                <div>
+                    <strong>Nhà cung cấp:</strong>
+                    <select id="supplier" name="supplier">
+                        <?php
+                        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/supplierDB.php";
+                        $suppliers = supplierDB::getAllSupplier();
+                        foreach ($suppliers as $supplier) {
+                            echo "<option value='" . $supplier["SupplierID"] . "'>" . $supplier["SupplierName"] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
     <form id="product-add-form" class="product-add-form">
         <div class="form-content">
             <div class="left-panel">

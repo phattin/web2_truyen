@@ -104,5 +104,19 @@ class employeeDB {
         connectDB::closeConnection($conn);
         return $success;
     }
+    public static function getEmployeeByUsername($username) {
+        $conn = connectDB::getConnection();
+        $strSQL = "SELECT * FROM employee WHERE Username = ?";
+        $stmt = $conn->prepare($strSQL);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $employee = null;
+        if ($result->num_rows > 0) {
+            $employee = $result->fetch_assoc();
+        }
+        connectDB::closeConnection($conn);
+        return $employee;
+    }
 }
 ?>

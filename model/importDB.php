@@ -67,5 +67,33 @@
             connectDB::closeConnection($conn);
             return $success;
         }
+
+        public static function getNewImportID() {
+            // Mở kết nối
+            $conn = connectDB::getConnection();
+
+            // Lấy mã hóa đơn lớn nhất
+            $sql = "SELECT MAX(ImportID) AS maxID FROM import_invoice";
+            $result = mysqli_query($conn, $sql);
+            $row = mysqli_fetch_assoc($result);
+            $maxID = $row['maxID'];
+
+            // Đóng kết nối
+            connectDB::closeConnection($conn);
+
+            // Nếu chưa có hóa đơn nào
+            if (!$maxID) {
+                return 'I001';
+            }
+
+            // Tách số từ mã, ví dụ: I005 -> 5
+            $num = (int)substr($maxID, 1);
+            $num++;
+
+            // Tạo mã mới
+            $newID = 'I' . str_pad($num, 3, '0', STR_PAD_LEFT);
+
+            return $newID;
+        }
     }
 ?>
