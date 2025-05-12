@@ -32,6 +32,7 @@ if ($result->num_rows > 0) {
     exit;
 }
 
+CheckRole($row['RoleID']);
 $stmt->close();
 $conn->close();
 ?>
@@ -60,18 +61,18 @@ $conn->close();
         <nav class="sidebar">
             <h3>Chức năng</h3>
             <ul>
-                <li onclick="Switch('tc')"><a>Trang chủ</a></li>
-                <li onclick="Switch('nv')"><a>Quản lý nhân viên</a></li>
-                <li onclick="Switch('kh')"><a>Quản lý khách hàng</a></li>
-                <li onclick="Switch('sp')"><a>Quản lý sản phẩm</a></li>
-                <li onclick="Switch('km')"><a>Quản lý khuyến mãi</a></li>
-                <li onclick="Switch('tl')"><a>Thể loại truyện</a></li>
-                <li onclick="Switch('hdb')"><a>Hóa đơn bán</a></li>
-                <li onclick="Switch('hdn')"><a>Hóa đơn nhập</a></li>
-                <li onclick="Switch('ncc')"><a>Quản lý nhà cung cấp</a></li>
-                <li onclick="Switch('pq')"><a>Phân quyền</a></li>
-                <li onclick="Switch('role')"><a>ROLE</a></li>
-                <li onclick="Switch('tk')"><a>Thống kê</a></li>
+                <li onclick="Switch('tc')" id="TC"><a>Trang chủ</a></li>
+                <li onclick="Switch('nv')" id="QLTK"><a>Quản lý nhân viên</a></li>
+                <li onclick="Switch('kh')" id="QLTK"><a>Quản lý khách hàng</a></li>
+                <li onclick="Switch('sp')" id="QLSP"><a>Quản lý sản phẩm</a></li>
+                <li onclick="Switch('km')" id="QLHD"><a>Quản lý khuyến mãi</a></li>
+                <li onclick="Switch('tl')" id="QLSP"><a>Thể loại truyện</a></li>
+                <li onclick="Switch('hdb')" id="QLHD"><a>Hóa đơn bán</a></li>
+                <li onclick="Switch('hdn')" id="QLHD"><a>Hóa đơn nhập</a></li>
+                <li onclick="Switch('ncc')" id="QLHD"><a>Quản lý nhà cung cấp</a></li>
+                <li onclick="Switch('pq')" id="QLTK"><a>Phân quyền</a></li>
+                <li onclick="Switch('role')" id="QLTK"><a>ROLE</a></li>
+                <li onclick="Switch('tk')" id="TK"><a>Thống kê</a></li>
                 <li><a href="/webbantruyen/view/layout/page/logout.php"
                         onclick="return confirm('Bạn có chắc muốn đăng xuất?');">Đăng xuất</a></li>
             </ul>
@@ -94,6 +95,7 @@ $conn->close();
     <script src="/webbantruyen/view/layout/js/Them.js"></script>
     <script src="/webbantruyen/view/layout/js/Sua.js"></script>
     <script src="/webbantruyen/view/layout/js/Xoa.js"></script>
+    <script src="/webbantruyen/view/layout/js/CheckRole.js"></script>
 </body>
 
 </html>

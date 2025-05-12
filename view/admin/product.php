@@ -1,6 +1,6 @@
 <?php
 echo"
-    <input type='button' value='Thêm' class='blue-btn' onclick='ThemSP()' style='width:100%;'>
+    <input type='button' value='Thêm' class='blue-btn' id='TSP' onclick='ThemSP()' style='width:100%;'>
     <table class='product-admin-table'>
         <tr>
             <th>ID</th>
@@ -19,8 +19,8 @@ echo"
                     <td>" . $product["Quantity"] . "</td>
                     <td class='function-icon'>
                         <i class='fa-regular fa-eye detail-icon' onclick='ChitietSP(`".$product["ProductID"]."`)'></i>
-                        <i class='fa-regular fa-pen-to-square edit-icon' onclick='editSP(`".$product["ProductID"]."`)'></i>
-                        <i class='fa-regular fa-trash-can delete-icon' onclick='deleteSP(`".$product["ProductID"]."`)'></i>
+                        <i class='fa-regular fa-pen-to-square edit-icon' id='SSP' onclick='editSP(`".$product["ProductID"]."`)'></i>
+                        <i class='fa-regular fa-trash-can delete-icon' id='XSP' onclick='deleteSP(`".$product["ProductID"]."`)'></i>
                     </td>
                 </tr>";
         }
