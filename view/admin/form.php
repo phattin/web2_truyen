@@ -124,5 +124,29 @@ if(isset($_POST["usernameNV"])) {
         ]);
         $conn->close();
     }
+
+    if(isset($_POST["importID"])) {
+        $importID = $_POST["importID"];
+
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/productDB.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/importDB.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/importDetailDB.php";
+        $import = importDB::getImportByID($importID);
+        $importDetails = importDetailDB::getImportDetailByImportID($importID);
+        foreach ($importDetails as &$detail) {
+            $product = productDB::getProductByID($detail["ProductID"]);
+            $detail["ProductName"] = $product["ProductName"];
+        }
+
+        echo json_encode([
+            "importID" => $import["ImportID"],
+            "employeeID" => $import["EmployeeID"],
+            "supplierID" => $import["SupplierID"],
+            "importDate" => $import["Date"],
+            "totalPrice" => $import["TotalPrice"],
+            "status" => $import["Status"],
+            "importDetails" => $importDetails,
+        ]);
+    }
         
 ?>

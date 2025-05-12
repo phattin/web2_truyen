@@ -1,22 +1,24 @@
 <?php
 echo"
-    <input type='button' value='Thêm' class='blue-btn' onclick='themHDN()' style='width:100%;'>
+    <input type='button' value='Nhập hàng' class='blue-btn' onclick='themHDN()' style='width:100%;'>
     <table class='product-admin-table'>
         <tr>
             <th>Mã hóa đơn nhập</th>
-            <th>Mã nhân viên</th>
-            <th>Mã nhà cung cấp</th>
+            <th>Tên nhân viên</th>
+            <th>Tên nhà cung cấp</th>
             <th>Ngày nhập</th>
             <th>Tổng tiền</th>
             <th>Thao tác</th>
         </tr>";
         require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/importDB.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/employeeDB.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/supplierDB.php";
         $imports = importDB::getAllImports();
         foreach ($imports as $import) {
             echo "<tr id='import-row-".$import["ImportID"]."'>
                     <td>" . $import["ImportID"] . "</td>
-                    <td>" . $import["EmployeeID"] . "</td>
-                    <td>" . $import["SupplierID"] . "</td>
+                    <td>" . employeeDB::getEmployeeByID($import["EmployeeID"])["Fullname"] . "</td>
+                    <td>" . supplierDB::getSupplierByID($import["SupplierID"])["SupplierName"] . "</td>
                     <td>" . $import["Date"] . "</td>
                     <td>" . $import["TotalPrice"] . "</td>
                     <td class='function-icon'>

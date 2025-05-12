@@ -47,21 +47,32 @@ function ChitietHDN(importID){
             console.log({response});
             $("#overlay-chitiet").css("display","block");  
             $("#Function").css("display","none"); 
+            let detailContent = "";
+            response.importDetails.forEach(function(detail) {
+                detailContent += `<tr>
+                    <td>${detail.ProductID}</td>
+                    <td>${detail.ProductName}</td>
+                    <td>${detail.Quantity}</td>
+                    <td>${detail.Price}</td>
+                    <td>${detail.TotalPrice}</td>
+                </tr>`;
+            });
             $("#ChiTiet").html(
                 `
                 <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
-                <div class="chitiet-box">
-                    <div class="image-box"><img src="/webbantruyen/view/layout/images/${response.productImg}";height="100%";width:"90%";></div>
-                    <div class="info-box">
-                        <p><strong>Mã sản phẩm:</strong> ${response.productID}</p>
-                        <p><strong>Tên truyện:</strong> ${response.productName}</p>
-                        <p><strong>Tác giả:</strong> ${response.author}</p>
-                        <p><strong>NXB:</strong> ${response.publisher}</p>
-                        <p><strong>Kho:</strong> ${response.quantity}</p>
-                        <p><strong>Giá nhập:</strong> ${response.importPrice}</p>
-                        <p><strong>ROS:</strong> ${response.ros}</p>
-                        <p><strong>Mô tả:</strong> ${response.description}</p>
-                        <p><strong>Mã nhà cung cấp:</strong> ${response.supplierID}</p>
+                <h2 style='text-align:center; margin:30px;'>Chi tiết hóa đơn nhập</h2>
+                <div class="chitiet-box" style="display:block">
+                    <div class="info-box" style="width:100%">
+                        <table class='product-admin-table'>
+                            <tr>
+                                <th>Mã sản phẩm</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                            </tr>`
+                            + detailContent +
+                        `</table>
                     </div>
                 </div>
                 `  
@@ -70,7 +81,6 @@ function ChitietHDN(importID){
     });
 }
 
-ChiTiet
 function Close_ChucNang(){
     $("#overlay-chitiet").css("display","none");
 }

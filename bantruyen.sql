@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 12, 2025 lúc 01:09 AM
+-- Thời gian đã tạo: Th5 12, 2025 lúc 03:44 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -332,23 +332,24 @@ CREATE TABLE `import_invoice` (
   `EmployeeID` varchar(10) NOT NULL,
   `SupplierID` varchar(10) NOT NULL,
   `Date` date NOT NULL,
-  `TotalPrice` int(10) NOT NULL
+  `TotalPrice` int(10) NOT NULL,
+  `Status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `import_invoice`
 --
 
-INSERT INTO `import_invoice` (`ImportID`, `EmployeeID`, `SupplierID`, `Date`, `TotalPrice`) VALUES
-('I001', 'E001', 'S001', '2024-12-05', 20000000),
-('I002', 'E001', 'S002', '2024-12-05', 3200000),
-('I003', 'E001', 'S003', '2024-12-05', 2700000),
-('I004', 'E001', 'S004', '2024-12-05', 2466000),
-('I005', 'E001', 'S005', '2024-12-05', 2750000),
-('I006', 'E001', 'S006', '2024-12-05', 3360000),
-('I007', 'E001', 'S007', '2024-12-05', 10030000),
-('I008', 'E001', 'S008', '2024-12-05', 14250000),
-('I009', 'E001', 'S009', '2024-12-05', 4500000);
+INSERT INTO `import_invoice` (`ImportID`, `EmployeeID`, `SupplierID`, `Date`, `TotalPrice`, `Status`) VALUES
+('I001', 'E001', 'S001', '2024-12-05', 20000000, ''),
+('I002', 'E001', 'S002', '2024-12-05', 3200000, ''),
+('I003', 'E001', 'S003', '2024-12-05', 2700000, ''),
+('I004', 'E001', 'S004', '2024-12-05', 2466000, ''),
+('I005', 'E001', 'S005', '2024-12-05', 2750000, ''),
+('I006', 'E001', 'S006', '2024-12-05', 3360000, ''),
+('I007', 'E001', 'S007', '2024-12-05', 10030000, ''),
+('I008', 'E001', 'S008', '2024-12-05', 14250000, ''),
+('I009', 'E001', 'S009', '2024-12-05', 4500000, '');
 
 -- --------------------------------------------------------
 
