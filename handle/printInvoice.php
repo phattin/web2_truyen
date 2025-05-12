@@ -1,4 +1,5 @@
 <?php
+//printInvoice.php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/order_history_utils.php");
 
 $salesID = isset($_GET['salesID']) ? $_GET['salesID'] : '';
@@ -9,6 +10,11 @@ if (empty($salesID)) {
 
 $conn = connectToDatabase();
 
+// Kiểm tra kết nối
+if (!$conn) {
+    die("Lỗi kết nối đến cơ sở dữ liệu");
+}
+
 // Get invoice information
 $invoice_sql = "
     SELECT si.SalesID, c.FullName, c.Username, c.Address, c.Phone, si.Date, si.PromotionID, si.TotalPrice 
@@ -18,6 +24,10 @@ $invoice_sql = "
 ";
 
 $stmt = $conn->prepare($invoice_sql);
+if (!$stmt) {
+    die("Lỗi chuẩn bị truy vấn hóa đơn: " . $conn->error);
+}
+
 $stmt->bind_param("s", $salesID);
 $stmt->execute();
 $invoice_result = $stmt->get_result();
@@ -27,6 +37,7 @@ if ($invoice_result->num_rows == 0) {
 }
 
 $invoice = $invoice_result->fetch_assoc();
+$stmt->close();
 
 // Get invoice details
 $details_sql = "
@@ -37,6 +48,10 @@ $details_sql = "
 ";
 
 $stmt = $conn->prepare($details_sql);
+if (!$stmt) {
+    die("Lỗi chuẩn bị truy vấn chi tiết hóa đơn: " . $conn->error);
+}
+
 $stmt->bind_param("s", $salesID);
 $stmt->execute();
 $details_result = $stmt->get_result();
@@ -133,9 +148,10 @@ $details_result = $stmt->get_result();
             <?php
             $total = 0;
             $stt = 1;
-            while ($product = $details_result->fetch_assoc()):
-                $subtotal = $product['Price'] * $product['Quantity'];
-                $total += $subtotal;
+            if ($details_result && $details_result->num_rows > 0) {
+                while ($product = $details_result->fetch_assoc()):
+                    $subtotal = $product['Price'] * $product['Quantity'];
+                    $total += $subtotal;
             ?>
             <tr>
                 <td><?php echo $stt++; ?></td>
@@ -146,7 +162,15 @@ $details_result = $stmt->get_result();
                 <td><?php echo number_format($product['Price'], 0, ',', '.'); ?>đ</td>
                 <td><?php echo number_format($subtotal, 0, ',', '.'); ?>đ</td>
             </tr>
-            <?php endwhile; ?>
+            <?php 
+                endwhile;
+            } else {
+                echo "<tr><td colspan='7'>Không có sản phẩm nào trong hóa đơn này.</td></tr>";
+                if ($stmt->error) {
+                    echo "<tr><td colspan='7' class='error'>Lỗi truy vấn: " . $stmt->error . "</td></tr>";
+                }
+            }
+            ?>
         </tbody>
         <tfoot>
             <tr class="total-row">
@@ -157,7 +181,7 @@ $details_result = $stmt->get_result();
     </table>
     
     <div class="footer">
-        <p>Cảm ơn quý khách đã mua hàng tại Nhà sách Truyện Online!</p>
+        <p>Cảm ơn quý khách đã mua hàng</p>
     </div>
     
     <div class="no-print" style="text-align: center; margin-top: 20px;">
@@ -175,4 +199,7 @@ $details_result = $stmt->get_result();
 </body>
 </html>
 
-<?php $conn->close(); ?>
+<?php 
+$stmt->close();
+$conn->close(); 
+?>

@@ -41,3 +41,8 @@
     width: 80%;
     border-radius: 5px;
 }
+
+/* Thay đổi màu chữ của thẻ <th> */
+.product-table th {
+    color: black; /* Đặt màu chữ là đen */
+}

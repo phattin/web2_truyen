@@ -40,16 +40,89 @@ $conn->close();
 <html lang="vi">
 
 <head>
-    <style>
-    </style>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminHome.css">
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminForm.css">
-
+    <!-- Thêm CSS cho hóa đơn bán -->
+    <style>
+        .sales-invoice-container {
+            padding: 20px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+        }
+        .search-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            flex-grow: 1;
+        }
+        .search-button {
+            padding: 8px 15px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+        }
+        .blue-btn {
+            background-color: #2196F3;
+        }
+        .invoice-list {
+            margin-top: 20px;
+        }
+        .invoice {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .product-table th, .product-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .product-table th {
+            background-color: #f2f2f2;
+        }
+        .btn-print {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .invoice-actions {
+            margin-top: 15px;
+            text-align: right;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
 </head>
 
 <body>
@@ -66,7 +139,7 @@ $conn->close();
                 <li onclick="Switch('sp')"><a>Quản lý sản phẩm</a></li>
                 <li onclick="Switch('km')"><a>Quản lý khuyến mãi</a></li>
                 <li onclick="Switch('tl')"><a>Thể loại truyện</a></li>
-                <li onclick="loadInvoices()"><a>Hóa đơn bán</a></li>
+                <li onclick="HienThiHoaDon()"><a>Hóa đơn bán</a></li>
                 <li onclick="Switch('hdn')"><a>Hóa đơn nhập</a></li>
                 <li onclick="Switch('ncc')"><a>Quản lý nhà cung cấp</a></li>
                 <li onclick="Switch('pq')"><a>Phân quyền</a></li>
@@ -81,8 +154,9 @@ $conn->close();
         <div id="overlay-chitiet" onclick="Close_Chitiet()" class="overlay-chitiet">
             <div id="ChiTiet" class="ChiTiet" onclick="event.stopPropagation();">></div>
         </div>
-        <div id="overlay-chucnang" onclick="Close_ChucNang()" class="overlay-chucnang">
-            <div id="Function" class="ChucNang" onclick="event.stopPropagation();"></div>
+        <div id="overlay-chucnang" class="overlay-chucnang">
+            <div id="Function" class="function-container" onclick="event.stopPropagation();"></div>
+            <button class="close-btn" onclick="closeOverlay()">X</button>
         </div>
 
     </div>
@@ -93,14 +167,34 @@ $conn->close();
     <script src="/webbantruyen/view/layout/js/them_ajax.js"></script>
     <script src="/webbantruyen/view/layout/js/Xoa.js"></script>
     <script src="/webbantruyen/view/layout/js/HoaDon.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <script>
+        // Hàm hiển thị hóa đơn bán
         function HienThiHoaDon() {
             $("#admin-content").load("/webbantruyen/view/admin/sales_invoice.php", function (response, status, xhr) {
                 if (status === "error") {
                     console.error("Lỗi khi tải hóa đơn bán:", xhr.status, xhr.statusText);
                     $("#admin-content").html("<p>Không thể tải hóa đơn bán.</p>");
+                } else {
+                    console.log("Đã tải trang hóa đơn bán thành công");
                 }
             });
+        }
+
+        // Đóng overlay chi tiết
+        function Close_Chitiet() {
+            document.getElementById("overlay-chitiet").style.display = "none";
+        }
+
+        // Đóng overlay chức năng
+        function Close_ChucNang() {
+            document.getElementById("overlay-chucnang").style.display = "none";
+        }
+
+        // Hàm đóng overlay (sử dụng trong HoaDon.js)
+        function closeOverlay() {
+            document.getElementById("overlay-chucnang").style.display = "none";
         }
     </script>
 </body>

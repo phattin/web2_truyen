@@ -1,4 +1,5 @@
 <?php
+//order_history_utils.php
 function connectToDatabase() {
     include_once($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php");
     $conn = connectDB::getConnection();
