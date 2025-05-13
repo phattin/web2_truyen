@@ -1,5 +1,5 @@
 <?php
-//getStatistics.php - Enhanced version
+//getStatistics.php .
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/order_history_utils.php");
 
 // Input validation
@@ -180,11 +180,11 @@ function generateStatisticsHTML($summary, $topCustomers, $topProducts, $invoices
         $html .= "<table class='statistics-table'>";
         $html .= "<thead>
                 <tr>
-                    <th>STT</th>
-                    <th>Tên khách hàng</th>
-                    <th>Tên đăng nhập</th>
-                    <th>Số đơn hàng</th>
-                    <th>Tổng tiền mua</th>
+                    <th style='color: black;'>STT</th>
+                    <th style='color: black;'>Tên khách hàng</th>
+                    <th style='color: black;'>Tên đăng nhập</th>
+                    <th style='color: black;'>Số đơn hàng</th>
+                    <th style='color: black;'>Tổng tiền mua</th>
                 </tr>
               </thead>";
         $html .= "<tbody>";
@@ -211,11 +211,11 @@ function generateStatisticsHTML($summary, $topCustomers, $topProducts, $invoices
         $html .= "<table class='statistics-table'>";
         $html .= "<thead>
                 <tr>
-                    <th>STT</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Tác giả</th>
-                    <th>Số lượng bán</th>
-                    <th>Doanh thu</th>
+                    <th style='color: black;'>STT</th>
+                    <th style='color: black;'>Tên sản phẩm</th>
+                    <th style='color: black;'>Tác giả</th>
+                    <th style='color: black;'>Số lượng bán</th>
+                    <th style='color: black;'>Doanh thu</th>
                 </tr>
               </thead>";
         $html .= "<tbody>";
@@ -242,13 +242,13 @@ function generateStatisticsHTML($summary, $topCustomers, $topProducts, $invoices
         $html .= "<table class='statistics-table'>";
         $html .= "<thead>
                 <tr>
-                    <th>STT</th>
-                    <th>Mã hóa đơn</th>
-                    <th>Khách hàng</th>
-                    <th>Ngày</th>
-                    <th>Số sản phẩm</th>
-                    <th>Tổng tiền</th>
-                    <th>Chi tiết</th>
+                    <th style='color: black;'>STT</th>
+                    <th style='color: black;'>Mã hóa đơn</th>
+                    <th style='color: black;'>Khách hàng</th>
+                    <th style='color: black;'>Ngày</th>
+                    <th style='color: black;'>Số sản phẩm</th>
+                    <th style='color: black;'>Tổng tiền</th>
+                    <th style='color: black;'>Chi tiết</th>
                 </tr>
               </thead>";
         $html .= "<tbody>";

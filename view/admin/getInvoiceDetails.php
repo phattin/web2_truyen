@@ -1,5 +1,5 @@
 <?php
-//getInvoiceDetails.php - Fix for session validation issue
+//getInvoiceDetails.php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/order_history_utils.php");
 
 // Start session if not already started
@@ -118,7 +118,7 @@ $result_details = $stmt->get_result();
 <script>
     function printInvoice(salesID) {
         // Open print window for this invoice
-        window.open('/webbantruyen/handle/printInvoice.php?id=' + salesID, '_blank');
+        window.open('/webbantruyen/handle/printInvoice.php?salesID=' + salesID, '_blank');
     }
     
     function closeInvoiceDetails() {

@@ -26,73 +26,7 @@
         <div class="loading">Đang tải dữ liệu...</div>
     </div>
 </div>
-
-<style>
-.search-container {
-    margin-bottom: 20px;
-}
-
-.search-row, .date-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-    align-items: center;
-}
-
-.search-input, .date-input {
-    flex-grow: 1;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.date-input-group {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.date-input-group label {
-    white-space: nowrap;
-}
-
-.search-button, .reset-button {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.search-button.blue-btn {
-    background-color: #007bff;
-    color: white;
-}
-
-.reset-button {
-    background-color: #6c757d;
-    color: white;
-}
-
-.search-button:hover, .reset-button:hover {
-    opacity: 0.9;
-}
-
-/* Thêm style cho nút in */
-.btn-print {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.btn-print:hover {
-    background-color: #218838;
-}
-</style>
+<link rel="stylesheet" href="/webbantruyen/view/layout/css/sales_invoice.css">
 
 <script>
 // Kiểm tra nếu jQuery tồn tại

@@ -1,5 +1,5 @@
 <?php
-//printInvoice.php
+//printInvoice.php .
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/order_history_utils.php");
 
 $salesID = isset($_GET['salesID']) ? $_GET['salesID'] : '';
