@@ -167,6 +167,7 @@
                 const cell = row.insertCell(4);
                 cell.innerHTML = actions;
                 cell.classList.add("function-icon");
+                Close_ChucNang();
                 } else {
                 alert("Thêm sản phẩm thất bại: " + response.message);
                 }

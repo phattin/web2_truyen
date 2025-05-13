@@ -11,6 +11,13 @@ function themHDN(){
     $("#Function").load("/webbantruyen/view/admin/themHDN.php");
 }
 
+// Them khuyến mãi
+function themKM(){
+    $("#overlay-chucnang").css("display","block");
+    $("#Function").css("display","block");
+    $("#Function").load("/webbantruyen/view/admin/themKM.php");
+}
+
 function Close_ChucNang(){
     $("#overlay-chucnang").css("display","none");
 }

@@ -13,7 +13,8 @@
 }
 
 .form-content {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
 
@@ -61,7 +62,7 @@
 .right-panel {
     flex: 2;
     display: grid; /* Sử dụng grid layout */
-    grid-template-columns: auto 1fr; /* Cột cho label (tự động) và cột cho input (phần còn lại) */
+    grid-template-columns: 1fr 1fr; /* Cột cho label (tự động) và cột cho input (phần còn lại) */
     gap: 10px 20px; /* Khoảng cách giữa các hàng và cột */
 }
 
@@ -75,6 +76,7 @@
 
 .right-panel input[type="text"],
 .right-panel input[type="number"],
+.right-panel input[type="date"],
 .right-panel select{
     grid-column: 2; /* Input nằm ở cột thứ hai */
     padding: 8px;

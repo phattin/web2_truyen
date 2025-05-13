@@ -69,20 +69,20 @@ class promotionDB {
         connectDB::closeConnection($conn);
 
         if (!$maxID) {
-            return 'KM001';
+            return 'PR001';
         }
 
         $num = (int)substr($maxID, 2); // Bỏ 'KM'
         $num++;
-        return 'KM' . str_pad($num, 3, '0', STR_PAD_LEFT);
+        return 'PR' . str_pad($num, 3, '0', STR_PAD_LEFT);
     }
 
     // Thêm khuyến mãi
-    public function addPromotion($id, $name, $discount, $isDeleted) {
+    public function addPromotion($id, $name, $discount, $startDate, $endDate, $isDeleted) {
         $conn = connectDB::getConnection();
-        $sql = "INSERT INTO promotion (PromotionID, PromotionName, Discount, IsDeleted) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO promotion (PromotionID, PromotionName, Discount, StartDate, EndDate, IsDeleted) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssdi", $id, $name, $discount, $isDeleted);
+        $stmt->bind_param("ssdssi", $id, $name, $discount, $startDate, $endDate, $isDeleted);
         $success = $stmt->execute();
         $stmt->close();
         connectDB::closeConnection($conn);
@@ -90,11 +90,11 @@ class promotionDB {
     }
 
     // Sửa khuyến mãi
-    public function updatePromotion($id, $name, $discount, $isDeleted) {
+    public function updatePromotion($id, $name, $discount, $startDate, $endDate, $isDeleted) {
         $conn = connectDB::getConnection();
-        $sql = "UPDATE promotion SET PromotionName = ?, Discount = ?, IsDeleted = ? WHERE PromotionID = ?";
+        $sql = "UPDATE promotion SET PromotionName = ?, Discount = ?, StartDate = ?, EndDate = ?, IsDeleted = ? WHERE PromotionID = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sdis", $name, $discount, $isDeleted, $id);
+        $stmt->bind_param("sdssis", $name, $discount, $startDate, $endDate, $isDeleted, $id);
         $success = $stmt->execute();
         $stmt->close();
         connectDB::closeConnection($conn);

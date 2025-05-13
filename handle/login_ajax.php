@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['username'] = $user['Username'];
             $_SESSION['role'] = $user['RoleID'];
 
-            $redirectURL = ($user['RoleID'] !== 'R3') ? "/webbantruyen/index.php?page=admin" : "/webbantruyen/index.php";
+            $redirectURL = ($user['RoleID'] !== 'R003') ? "/webbantruyen/index.php?page=admin" : "/webbantruyen/index.php";
 
             echo json_encode([
                 "success" => true,

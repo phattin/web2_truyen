@@ -181,6 +181,122 @@ function editSP(product_id){
         }
     });
 }
+
+function suaKM(promotionID) {
+    $("#overlay-chucnang").css("display", "block");
+    $("#Function").css("display", "block");
+
+    $.ajax({
+        type: "POST",
+        url: "/webbantruyen/view/admin/form.php", // file trả về dữ liệu khuyến mãi
+        data: { promotion_id: promotionID },
+        dataType: "json",
+        success: function(response) {
+            console.log({ response });
+
+            let htmlContent = `
+                <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
+                <h2 style='text-align:center; margin:30px;'>Sửa khuyến mãi</h2>
+                <form id="promotion-edit-form" class="product-add-form">
+                    <div class="form-content" style="display:block">
+                        <div class="right-panel">
+                            <div style="display: none;">
+                                <label for="promotionID">Mã khuyến mãi:</label>
+                                <input type="text" id="promotionID" name="promotionID" value="${response.promotionID}" readonly>
+                            </div>
+                            <div>
+                                <label for="promotionName">Tên khuyến mãi:</label>
+                                <input type="text" id="promotionName" name="promotionName" value="${response.promotionName}">
+                            </div>
+                            <div>
+                                <label for="discount">Giá trị giảm (%):</label>
+                                <input type="number" id="discount" name="discount" min="1" max="100" value="${response.discount}">
+                            </div>
+                            <div>
+                                <label for="startDate">Ngày bắt đầu:</label>
+                                <input type="date" id="startDate" name="startDate" value="${response.startDate}">
+                            </div>
+                            <div>
+                                <label for="endDate">Ngày kết thúc:</label>
+                                <input type="date" id="endDate" name="endDate" value="${response.endDate}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-form-button">
+                        <button type="button" id="edit-promotion-submit-btn" class="add-product-submit-btn blue-btn">Sửa</button>
+                        <input type="reset" value="Reset" class="reset-btn blue-btn">
+                    </div>
+                </form>
+
+                <script>
+                    $("#edit-promotion-submit-btn").on("click", function (e) {
+                        e.preventDefault();
+                        const promotionID = $("#promotionID").val();
+                        const promotionName = $("#promotionName").val();
+                        const discount = $("#discount").val();
+                        const startDate = $("#startDate").val();
+                        const endDate = $("#endDate").val();
+
+                        if (!promotionName || !discount || !startDate || !endDate) {
+                            alert("Vui lòng điền đầy đủ thông tin!");
+                            return;
+                        }
+
+                        if (discount <= 0 || discount > 100) {
+                            alert("Giá trị giảm phải nằm trong khoảng 1-100!");
+                            return;
+                        }
+
+                        if (new Date(startDate) > new Date(endDate)) {
+                            alert("Ngày kết thúc phải sau hoặc bằng ngày bắt đầu!");
+                            return;
+                        }
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/webbantruyen/handle/editPromotion.php",
+                            data: {
+                                promotionID,
+                                promotionName,
+                                discount,
+                                startDate,
+                                endDate
+                            },
+                            dataType: "json",
+                            success: function (response) {
+                                if (response.success) {
+                                    alert("Sửa khuyến mãi thành công!");
+
+                                    const row = document.querySelector("#promotion-row-" + promotionID);
+                                    if (row) {
+                                        row.children[1].textContent = promotionName;
+                                        row.children[2].textContent = discount;
+                                        row.children[3].textContent = startDate;
+                                        row.children[4].textContent = endDate;
+                                    }
+
+                                    Close_ChucNang();
+                                } else {
+                                    alert("Sửa thất bại: " + response.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Lỗi Ajax:", error);
+                                alert("Lỗi: " + error);
+                            }
+                        });
+                    });
+                </script>
+            `;
+
+            $("#Function").html(htmlContent);
+        },
+        error: function(xhr, status, error) {
+            console.error("Lỗi Ajax khi lấy dữ liệu:", error);
+            alert("Không thể lấy thông tin khuyến mãi!");
+        }
+    });
+}
 function Close_ChucNang(){
     $("#overlay-chucnang").css("display","none");
     $("#overlay-chitiet").css("display","none");

@@ -148,5 +148,25 @@ if(isset($_POST["usernameNV"])) {
             "importDetails" => $importDetails,
         ]);
     }
+
+    //chitiet khuyen mai
+    if(isset($_POST["promotion_id"])) {
+        $promotionID = $_POST["promotion_id"];
+
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/promotionDB.php";
+        $promotion = promotionDB::getPromotionByID($promotionID);
+        $promotionID = $promotion["PromotionID"];
+        $promotionName = $promotion["PromotionName"];
+        $discount = $promotion["Discount"];
+        $startDate = $promotion["StartDate"];
+        $endDate = $promotion["EndDate"];
+        echo json_encode([
+            "promotionID" => $promotionID,
+            "promotionName" => $promotionName,
+            "discount" => $discount,
+            "startDate" => $startDate,
+            "endDate" => $endDate
+        ]);
+    }
         
 ?>
