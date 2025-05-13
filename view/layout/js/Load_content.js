@@ -16,7 +16,7 @@ function Switch(x){
             $("#admin-content").load("/webbantruyen/view/admin/product.php");
             break;
         case 'km':
-            // $("#admin-content").load("/webbantruyen/view/admin/promotion.php");
+            $("#admin-content").load("/webbantruyen/view/admin/promotion.php");
             break;
         case 'tl':
             // $("#admin-content").load("/webbantruyen/view/admin/genres.php");

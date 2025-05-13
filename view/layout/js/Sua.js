@@ -189,26 +189,3 @@ function Close_Chitiet(){
     $("#overlay-chucnang").css("display","none");
     $("#overlay-chitiet").css("display","none");
 }
-
-// Them Nhan Vien
-function ThemNV(){
-    $("#Function").css("display","block");
-    $("#ChiTiet").css("display","none");
-    $("#Function").load("/webbantruyen/view/admin/ThemNV.php");
-}   
-
-
-// Them Khach Hang
-function ThemKH(){
-    $("#Function").css("display","block");
-    $("#ChiTiet").css("display","none");
-    $("#Function").load("/webbantruyen/view/admin/ThemKH.php");
-}
-
-
-// Them ROLE
-function ThemRole(){
-     $("#overlay-chucnang").css("display","block");
-    $("#Function").css("display","block");
-    $("#Function").load("/webbantruyen/view/admin/ThemRole.php");
-}
