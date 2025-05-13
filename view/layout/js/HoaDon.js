@@ -1,4 +1,4 @@
-// Kiểm tra nếu jQuery tồn tại
+//HoaDon.js
 if (typeof jQuery === 'undefined') {
     console.error("jQuery không được tìm thấy. Vui lòng thêm thư viện jQuery vào trang web.");
     document.getElementById("invoice-list").innerHTML = "<p class='error'>Lỗi: jQuery không được tìm thấy!</p>";

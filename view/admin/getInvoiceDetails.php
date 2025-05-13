@@ -1,139 +1,133 @@
 <?php
-//getSalesInvoices.php
-// Hiển thị lỗi cho mục đích debug
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Đường dẫn đúng đến file
+//getInvoiceDetails.php - Fix for session validation issue
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/order_history_utils.php");
 
-$search = isset($_GET['search']) ? $_GET['search'] : '';
+// Start session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Get the sales ID from the request
+$salesID = isset($_GET['salesID']) ? $_GET['salesID'] : '';
+
+// Check if salesID is provided
+if (empty($salesID)) {
+    echo "<p class='error'>Mã hóa đơn không hợp lệ.</p>";
+    exit;
+}
+
+// Connect to database
 $conn = connectToDatabase();
 
-// Kiểm tra và ghi log kết nối
-if (!$conn) {
-    echo "<p class='error'>Lỗi kết nối đến cơ sở dữ liệu</p>";
+// Validate the sales invoice exists and belongs to the appropriate context
+// For statistics page (admin view), we don't need to validate username
+$sql_validate = "SELECT si.SalesID, si.CustomerID, si.Date, si.TotalPrice, c.FullName, c.Phone, c.Address
+                FROM sales_invoice si
+                JOIN customer c ON si.CustomerID = c.CustomerID
+                WHERE si.SalesID = ?";
+
+$stmt = $conn->prepare($sql_validate);
+$stmt->bind_param("s", $salesID);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    echo "<p class='error'>Không tìm thấy hóa đơn.</p>";
     exit;
 }
 
-// Log truy vấn tìm kiếm
-echo "<!-- Đang tìm kiếm với từ khóa: " . htmlspecialchars($search) . " -->";
+$invoice = $result->fetch_assoc();
 
-$sql = "
-    SELECT si.SalesID, c.FullName, c.Username, c.Address, c.Phone, si.Date, si.PromotionID, si.TotalPrice 
-    FROM sales_invoice si
-    LEFT JOIN customer c ON si.CustomerID = c.CustomerID
-";
+// Get invoice details
+$sql_details = "SELECT sd.ProductID, p.ProductName, p.Author, sd.Quantity, sd.Price, sd.TotalPrice
+               FROM sales_invoice_detail sd
+               JOIN product p ON sd.ProductID = p.ProductID
+               WHERE sd.SalesID = ?";
 
-if (!empty($search)) {
-    $search = $conn->real_escape_string($search);
-    $sql .= " WHERE si.SalesID LIKE '%$search%' OR c.FullName LIKE '%$search%' OR EXISTS (
-        SELECT 1 FROM sales_invoice_detail sid 
-        JOIN product p ON sid.ProductID = p.ProductID 
-        WHERE sid.SalesID = si.SalesID AND p.ProductName LIKE '%$search%'
-    )";
-}
+$stmt = $conn->prepare($sql_details);
+$stmt->bind_param("s", $salesID);
+$stmt->execute();
+$result_details = $stmt->get_result();
 
-$sql .= " ORDER BY si.Date DESC";
-
-// Log câu truy vấn để debug
-echo "<!-- SQL Query: " . htmlspecialchars($sql) . " -->";
-
-// Thực hiện truy vấn
-$result = $conn->query($sql);
-
-// Kiểm tra lỗi SQL
-if (!$result) {
-    echo "<p class='error'>Lỗi truy vấn: " . $conn->error . "</p>";
-    $conn->close();
-    exit;
-}
-
-// Hiển thị kết quả
-if ($result->num_rows > 0) {
-    echo "<div class='invoice-count'>Tìm thấy {$result->num_rows} hóa đơn</div>";
+// Generate HTML
+?>
+<div class="invoice-details">
+    <h2>Chi Tiết Hóa Đơn: <?php echo htmlspecialchars($salesID); ?></h2>
     
-    while ($row = $result->fetch_assoc()) {
-        $salesID = $row['SalesID'];
-        echo "<div class='invoice'>";
-        echo "<h3>Hóa đơn: " . htmlspecialchars($salesID) . "</h3>";
-        echo "<p>Khách hàng: " . htmlspecialchars($row['FullName'] ?? 'N/A') . " (" . htmlspecialchars($row['Username'] ?? 'N/A') . ")</p>";
-        echo "<p>Địa chỉ: " . htmlspecialchars($row['Address'] ?? 'N/A') . "</p>";
-        echo "<p>Điện thoại: " . htmlspecialchars($row['Phone'] ?? 'N/A') . "</p>";
-        echo "<p>Ngày: " . htmlspecialchars($row['Date']) . "</p>";
-        echo "<p>Mã khuyến mãi: " . htmlspecialchars($row['PromotionID'] ?: 'Không có') . "</p>";
-        echo "<p>Tổng tiền: " . number_format($row['TotalPrice'], 0, ',', '.') . "đ</p>";
+    <div class="invoice-info">
+        <div class="info-row">
+            <div class="info-label">Ngày mua:</div>
+            <div class="info-value"><?php echo htmlspecialchars($invoice['Date']); ?></div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Khách hàng:</div>
+            <div class="info-value"><?php echo htmlspecialchars($invoice['FullName']); ?></div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Số điện thoại:</div>
+            <div class="info-value"><?php echo htmlspecialchars($invoice['Phone']); ?></div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Địa chỉ:</div>
+            <div class="info-value"><?php echo htmlspecialchars($invoice['Address']); ?></div>
+        </div>
+    </div>
+    
+    <h3>Danh sách sản phẩm</h3>
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Sản phẩm</th>
+                <th>Tác giả</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+            $stt = 1;
+            $grandTotal = 0;
+            while ($detail = $result_details->fetch_assoc()) {
+                $grandTotal += $detail['TotalPrice'];
+            ?>
+                <tr>
+                    <td><?php echo $stt++; ?></td>
+                    <td><?php echo htmlspecialchars($detail['ProductName']); ?></td>
+                    <td><?php echo htmlspecialchars($detail['Author']); ?></td>
+                    <td><?php echo $detail['Quantity']; ?></td>
+                    <td><?php echo number_format($detail['Price'], 0, ',', '.'); ?>đ</td>
+                    <td><?php echo number_format($detail['TotalPrice'], 0, ',', '.'); ?>đ</td>
+                </tr>
+            <?php } ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="5" class="total-label">Tổng cộng:</th>
+                <th class="total-amount"><?php echo number_format($invoice['TotalPrice'], 0, ',', '.'); ?>đ</th>
+            </tr>
+        </tfoot>
+    </table>
+    
+    <div class="invoice-actions">
+        <button class="btn-print" onclick="printInvoice('<?php echo $salesID; ?>')">In hóa đơn</button>
+    </div>
+</div>
 
-        // Lấy danh sách sản phẩm theo SalesID
-        $product_sql = "
-            SELECT p.ProductName, p.Author, p.Publisher, sid.Price, sid.Quantity 
-            FROM sales_invoice_detail sid
-            JOIN product p ON sid.ProductID = p.ProductID
-            WHERE sid.SalesID = ?
-        ";
-        
-        $stmt = $conn->prepare($product_sql);
-        if (!$stmt) {
-            echo "<p class='error'>Lỗi chuẩn bị truy vấn: " . $conn->error . "</p>";
-            continue;
-        }
-        
-        $stmt->bind_param("s", $salesID);
-        $stmt->execute();
-        $product_result = $stmt->get_result();
-
-        if ($product_result && $product_result->num_rows > 0) {
-            echo "<table class='product-table'>";
-            echo "<thead>
-                    <tr>
-                        <th>Tên sản phẩm</th>
-                        <th>Tác giả</th>
-                        <th>Nhà xuất bản</th>
-                        <th>Số lượng</th>
-                        <th>Giá</th>
-                        <th>Thành tiền</th>
-                    </tr>
-                  </thead>";
-            echo "<tbody>";
-            $total = 0;
-            while ($product = $product_result->fetch_assoc()) {
-                $subtotal = $product['Price'] * $product['Quantity'];
-                $total += $subtotal;
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($product['ProductName']) . "</td>";
-                echo "<td>" . htmlspecialchars($product['Author']) . "</td>";
-                echo "<td>" . htmlspecialchars($product['Publisher']) . "</td>";
-                echo "<td>" . htmlspecialchars($product['Quantity']) . "</td>";
-                echo "<td>" . number_format($product['Price'], 0, ',', '.') . "đ</td>";
-                echo "<td>" . number_format($subtotal, 0, ',', '.') . "đ</td>";
-                echo "</tr>";
-            }
-            echo "</tbody>";
-            echo "<tfoot>
-                    <tr>
-                        <td colspan='5' style='text-align: right'><strong>Tổng cộng:</strong></td>
-                        <td><strong>" . number_format($total, 0, ',', '.') . "đ</strong></td>
-                    </tr>
-                  </tfoot>";
-            echo "</table>";
-            $stmt->close();
-        } else {
-            echo "<p>Không có sản phẩm nào trong hóa đơn này.</p>";
-            if ($stmt->error) {
-                echo "<p class='error'>Lỗi truy vấn: " . $stmt->error . "</p>";
-            }
-        }
-
-        // Thêm nút xem chi tiết và in hóa đơn
-        echo "<div class='invoice-actions'>";
-        echo "<button class='btn-view-invoice' onclick='viewInvoiceDetails(\"" . $salesID . "\")'>Xem chi tiết</button>";
-        echo "<button class='btn-print' onclick='printInvoice(\"" . $salesID . "\")'>In hóa đơn</button>";
-        echo "</div>";
-        echo "</div>";
+<script>
+    function printInvoice(salesID) {
+        // Open print window for this invoice
+        window.open('/webbantruyen/handle/printInvoice.php?id=' + salesID, '_blank');
     }
-} else {
-    echo "<p class='no-results'>Không tìm thấy hóa đơn nào.</p>";
-}
-
+    
+    function closeInvoiceDetails() {
+        // Close modal if in a modal context
+        if (window.parent.document.getElementById('invoice-modal')) {
+            window.parent.document.getElementById('invoice-modal').style.display = 'none';
+        }
+    }
+</script>
+<?php
 $conn->close();
 ?>

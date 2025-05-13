@@ -63,57 +63,7 @@ $details_result = $stmt->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hóa đơn <?php echo htmlspecialchars($salesID); ?></title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-        .invoice-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .invoice-header h1 {
-            margin-bottom: 5px;
-        }
-        .invoice-info {
-            margin-bottom: 20px;
-        }
-        .invoice-info p {
-            margin: 5px 0;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .total-row {
-            font-weight: bold;
-        }
-        .footer {
-            margin-top: 50px;
-            text-align: center;
-        }
-        @media print {
-            .no-print {
-                display: none;
-            }
-            body {
-                padding: 0;
-            }
-            .print-btn {
-                display: none;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/webbantruyen/view/layout/css/printInvoice.css">
 </head>
 <body>
     <div class="invoice-header">

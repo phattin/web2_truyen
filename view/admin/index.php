@@ -46,83 +46,7 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminHome.css">
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminForm.css">
-    <!-- Thêm CSS cho hóa đơn bán -->
-    <style>
-        .sales-invoice-container {
-            padding: 20px;
-        }
-        .search-container {
-            margin-bottom: 20px;
-            display: flex;
-        }
-        .search-input {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px 0 0 4px;
-            flex-grow: 1;
-        }
-        .search-button {
-            padding: 8px 15px;
-            border: none;
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            border-radius: 0 4px 4px 0;
-        }
-        .blue-btn {
-            background-color: #2196F3;
-        }
-        .invoice-list {
-            margin-top: 20px;
-        }
-        .invoice {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .product-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        .product-table th, .product-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .product-table th {
-            background-color: #f2f2f2;
-        }
-        .btn-print {
-            background-color: #ff9800;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-top: 10px;
-        }
-        .invoice-actions {
-            margin-top: 15px;
-            text-align: right;
-        }
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-        }
-        .error {
-            color: red;
-            font-weight: bold;
-        }
-        .no-results {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-        }
-    </style>
+
 </head>
 
 <body>
@@ -144,7 +68,7 @@ $conn->close();
                 <li onclick="Switch('ncc')"><a>Quản lý nhà cung cấp</a></li>
                 <li onclick="Switch('pq')"><a>Phân quyền</a></li>
                 <li onclick="Switch('role')"><a>ROLE</a></li>
-                <li onclick="Switch('tk')"><a>Thống kê</a></li>
+                <li onclick="LoadStatistics()"><a>Thống kê</a></li>
                 <li><a href="/webbantruyen/view/layout/page/logout.php"
                         onclick="return confirm('Bạn có chắc muốn đăng xuất?');">Đăng xuất</a></li>
             </ul>
@@ -166,9 +90,8 @@ $conn->close();
     <script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
     <script src="/webbantruyen/view/layout/js/them_ajax.js"></script>
     <script src="/webbantruyen/view/layout/js/Xoa.js"></script>
-    <script src="/webbantruyen/view/layout/js/HoaDon.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+    <script src="/webbantruyen/js/HoaDon.js"></script>
+    <script src="/webbantruyen/view/layout/js/statistics.js"></script>
     <script>
         // Hàm hiển thị hóa đơn bán
         function HienThiHoaDon() {

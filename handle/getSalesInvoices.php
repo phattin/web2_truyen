@@ -2,7 +2,12 @@
 //getSalesInvoices.php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/order_history_utils.php");
 
+// Lấy các tham số tìm kiếm
 $search = isset($_GET['search']) ? $_GET['search'] : '';
+$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
+$address = isset($_GET['address']) ? $_GET['address'] : '';
+
 $conn = connectToDatabase();
 
 // Kiểm tra kết nối
@@ -10,25 +15,61 @@ if (!$conn) {
     die("Lỗi kết nối đến cơ sở dữ liệu");
 }
 
+// Thêm điều kiện tìm kiếm và lọc
+$base_condition = " WHERE 1=1 "; // Điều kiện mặc định để có thể thêm các điều kiện khác
+
+// Nếu có từ khóa tìm kiếm hoặc khoảng thời gian hoặc địa chỉ
+if (!empty($search) || !empty($start_date) || !empty($end_date) || !empty($address)) {
+    $base_condition = " WHERE ";
+    $conditions = [];
+
+    if (!empty($search)) {
+        $search_escaped = $conn->real_escape_string($search);
+        $conditions[] = "(si.SalesID LIKE '%$search_escaped%' OR c.FullName LIKE '%$search_escaped%' OR EXISTS (
+            SELECT 1 FROM sales_invoice_detail sid 
+            JOIN product p ON sid.ProductID = p.ProductID 
+            WHERE sid.SalesID = si.SalesID AND p.ProductName LIKE '%$search_escaped%'
+        ))";
+    }
+
+    // Lọc theo khoảng thời gian
+    if (!empty($start_date) && !empty($end_date)) {
+        $start_date_escaped = $conn->real_escape_string($start_date);
+        $end_date_escaped = $conn->real_escape_string($end_date);
+        $conditions[] = "si.Date BETWEEN '$start_date_escaped' AND '$end_date_escaped'";
+    } elseif (!empty($start_date)) {
+        $start_date_escaped = $conn->real_escape_string($start_date);
+        $conditions[] = "si.Date >= '$start_date_escaped'";
+    } elseif (!empty($end_date)) {
+        $end_date_escaped = $conn->real_escape_string($end_date);
+        $conditions[] = "si.Date <= '$end_date_escaped'";
+    }
+
+    // Tìm kiếm theo địa chỉ
+    if (!empty($address)) {
+        $address_escaped = $conn->real_escape_string($address);
+        $conditions[] = "c.Address LIKE '%$address_escaped%'";
+    }
+
+    $base_condition .= implode(" AND ", $conditions);
+}
+
 $sql = "
     SELECT si.SalesID, c.FullName, c.Username, c.Address, c.Phone, si.Date, si.PromotionID, si.TotalPrice 
     FROM sales_invoice si
     LEFT JOIN customer c ON si.CustomerID = c.CustomerID
+    $base_condition
+    ORDER BY si.Date DESC
 ";
 
-if (!empty($search)) {
-    $search = $conn->real_escape_string($search);
-    $sql .= " WHERE si.SalesID LIKE '%$search%' OR c.FullName LIKE '%$search%' OR EXISTS (
-        SELECT 1 FROM sales_invoice_detail sid 
-        JOIN product p ON sid.ProductID = p.ProductID 
-        WHERE sid.SalesID = si.SalesID AND p.ProductName LIKE '%$search%'
-    )";
-}
-
-$sql .= " ORDER BY si.Date DESC";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
+    // In ra số lượng hóa
+    $result = $conn->query($sql);
+
+if ($result && $result->num_rows > 0) {
+    
     while ($row = $result->fetch_assoc()) {
         $salesID = $row['SalesID'];
         echo "<div class='invoice'>";
@@ -61,7 +102,7 @@ if ($result && $result->num_rows > 0) {
         if ($product_result && $product_result->num_rows > 0) {
             echo "<table class='product-table'>";
             echo "<thead>
-                    <tr style='background-color:rgb(18, 18, 18)'>
+                    <tr>
                         <th>Tên sản phẩm</th>
                         <th>Tác giả</th>
                         <th>Nhà xuất bản</th>
@@ -100,21 +141,19 @@ if ($result && $result->num_rows > 0) {
             }
         }
 
-        // Nút in hóa đơn
         echo "<div class='invoice-actions'>";
         echo "<button class='btn-print' onclick='printInvoice(\"" . $salesID . "\")'>In hóa đơn</button>";
         echo "</div>";
         echo "</div>";
     }
 } else {
-    echo "<p class='no-results'>Không tìm thấy hóa đơn nào.</p>";
+    // Kiểm tra xem có phải là do không tìm thấy kết quả hay do lỗi
     if ($conn->error) {
         echo "<p class='error'>Lỗi truy vấn: " . $conn->error . "</p>";
+    } else {
+        echo "<p class='no-results'>Không tìm thấy hóa đơn nào phù hợp với điều kiện tìm kiếm.</p>";
     }
 }
 
 $conn->close();
-?>
-<head>
-    <link rel="stylesheet" href="/webbantruyen/view/layout/css/HoaDon.css">
-</head>
+}
