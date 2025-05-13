@@ -1,3 +1,6 @@
+// CheckRole.js
+
+
 function HiddenAll() {
     $("#QLTK").css("display", "none");
     $("#QLSP").css("display", "none");
@@ -29,6 +32,26 @@ function showXSP(){
     $("#XSP").css("display", "block");
 }
 
+function ShowTTK() {
+    $("#XTK").css("display", "block");
+}
+function ShowSTK() {
+    $("#STK").css("display", "block");
+}
+function ShowXTK() {
+    $("#XTK").css("display", "block");
+}
+
+function ShowTHD() {
+    $("#THD").css("display", "block");
+}
+function ShowSHD() {
+    $("#SHD").css("display", "block");
+}
+function ShowXHD() {
+    $("#XHD").css("display", "block");
+}
+
 function CheckRole(RoleID) {
     $.ajax({
         type: "GET",
@@ -39,39 +62,40 @@ function CheckRole(RoleID) {
         if($row["FunctionID"] == "F001"){
             ShowTK();
             if($row["Option"] == "Thêm"){
-                
+                ShowTTK();
             }
             if($row["Option"] == "Sửa"){
-                
+                ShowSTK();
             }
             if($row["Option"] == "Xóa"){
-                
+                ShowXTK();
             }
         }
         if($row["FunctionID"] == "F002"){
             ShowSP();
             if($row["Option"] == "Thêm"){
-                
+                ShowTSP();
             }
             if($row["Option"] == "Sửa"){
-                
+                ShowSSP();
             }
             if($row["Option"] == "Xóa"){
-                
+                showXSP();   
             }
         }
         if($row["FunctionID"] == "F003"){
             ShowHD();
             if($row["Option"] == "Thêm"){
-                
+                ShowTHD();
             }  
             if($row["Option"] == "Sửa"){
-                
+                ShowSHD();
             }
             if($row["Option"] == "Xóa"){
-                
+                ShowXHD();
             }
         }
         }
     });        
 }
+CheckRole("R1");

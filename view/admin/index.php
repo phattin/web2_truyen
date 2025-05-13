@@ -32,7 +32,7 @@ if ($result->num_rows > 0) {
     exit;
 }
 
-CheckRole($row['RoleID']);
+
 $stmt->close();
 $conn->close();
 ?>
@@ -53,7 +53,7 @@ $conn->close();
 
 </head>
 
-<body>
+<body onload="CheckRole('R1');">
     <div class="container">
         <header>
             <h2>Xin chào <?php echo htmlspecialchars($username); ?>!</h2>
