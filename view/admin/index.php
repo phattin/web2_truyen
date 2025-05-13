@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start();/*
 require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
 
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
@@ -30,10 +30,12 @@ if ($result->num_rows > 0) {
     // Nếu không tìm thấy tài khoản, chuyển hướng đến trang đăng nhập
     header("Location: /webbantruyen/index.php?page=login");
     exit;
-}
-
+}*/
+ $IDrole = "R1";
+// Lấy thông tin RoleName từ bảng role
+/*
 $stmt->close();
-$conn->close();
+$conn->close();*/
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +51,7 @@ $conn->close();
 
 </head>
 
-<body>
+<body onload='CheckRole("<?= $GLOBALS["IDrole"] ?>")'>
     <div class="container">
         <header>
             <h2>Xin chào <?php echo htmlspecialchars($username); ?>!</h2>
@@ -57,18 +59,20 @@ $conn->close();
         <nav class="sidebar">
             <h3>Chức năng</h3>
             <ul>
-                <li onclick="Switch('tc')"><a>Trang chủ</a></li>
-                <li onclick="Switch('nv')"><a>Quản lý nhân viên</a></li>
-                <li onclick="Switch('kh')"><a>Quản lý khách hàng</a></li>
-                <li onclick="Switch('sp')"><a>Quản lý sản phẩm</a></li>
-                <li onclick="Switch('km')"><a>Quản lý khuyến mãi</a></li>
-                <li onclick="Switch('tl')"><a>Thể loại truyện</a></li>
-                <li onclick="HienThiHoaDon()"><a>Hóa đơn bán</a></li>
-                <li onclick="Switch('hdn')"><a>Hóa đơn nhập</a></li>
-                <li onclick="Switch('ncc')"><a>Quản lý nhà cung cấp</a></li>
-                <li onclick="Switch('pq')"><a>Phân quyền</a></li>
-                <li onclick="Switch('role')"><a>ROLE</a></li>
-                <li onclick="LoadStatistics()"><a>Thống kê</a></li>
+                <li onclick="Switch('tc','<?= $GLOBALS['IDrole'] ?>')" class="TC"><a>Trang chủ</a></li>
+                <li onclick="Switch('nv','<?= $GLOBALS['IDrole'] ?>')" class="QLTK"><a>Quản lý nhân viên</a></li>
+                <li onclick="Switch('kh','<?= $GLOBALS['IDrole'] ?>')" class="QLTK"><a>Quản lý khách hàng</a></li>
+                <li onclick="Switch('sp','<?= $GLOBALS['IDrole'] ?>')" class="QLSP"><a>Quản lý sản phẩm</a></li>
+                <li onclick="Switch('km','<?= $GLOBALS['IDrole'] ?>')" class="QLHD"><a>Quản lý khuyến mãi</a></li>
+                <li onclick="Switch('tl','<?= $GLOBALS['IDrole'] ?>')" class="QLSP"><a>Thể loại truyện</a></li>
+                <li onclick="HienThiHoaDon()" class="QLHD"><a>Hóa đơn bán</a></li>
+                <li onclick="Switch('hdn','<?= $GLOBALS['IDrole'] ?>')" class="QLHD"><a>Hóa đơn nhập</a></li>
+                <li onclick="Switch('ncc','<?= $GLOBALS['IDrole'] ?>')" class="QLHD"><a>Quản lý nhà cung cấp</a></li>
+                <li onclick="Switch('pq','<?= $GLOBALS['IDrole'] ?>')" class="QLTK"><a>Phân quyền</a></li>
+                <li onclick="Switch('role','<?= $GLOBALS['IDrole'] ?>')" class="QLTK"><a>ROLE</a></li>
+                <li onclick="LoadStatistics()" class="TK"><a>Thống kê</a></li>
+
+
                 <li><a href="/webbantruyen/view/layout/page/logout.php"
                         onclick="return confirm('Bạn có chắc muốn đăng xuất?');">Đăng xuất</a></li>
             </ul>
@@ -91,6 +95,7 @@ $conn->close();
     <script src="/webbantruyen/view/layout/js/Them.js"></script>
     <script src="/webbantruyen/view/layout/js/Sua.js"></script>
     <script src="/webbantruyen/view/layout/js/Xoa.js"></script>
+    <script src="/webbantruyen/view/layout/js/CheckRole.js"></script>
     <script src="/webbantruyen/view/layout/js/HoaDon.js"></script>
     <script src="/webbantruyen/view/layout/js/statistics.js"></script>
     <script>
