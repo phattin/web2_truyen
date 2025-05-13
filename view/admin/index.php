@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start();/*
 require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
 
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
@@ -30,11 +30,12 @@ if ($result->num_rows > 0) {
     // Nếu không tìm thấy tài khoản, chuyển hướng đến trang đăng nhập
     header("Location: /webbantruyen/index.php?page=login");
     exit;
-}
-
-
+}*/
+ $IDrole = "R1";
+// Lấy thông tin RoleName từ bảng role
+/*
 $stmt->close();
-$conn->close();
+$conn->close();*/
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +54,7 @@ $conn->close();
 
 </head>
 
-<body onload="CheckRole('R1');">
+<body onload='CheckRole("<?= $GLOBALS["IDrole"] ?>")'>
     <div class="container">
         <header>
             <h2>Xin chào <?php echo htmlspecialchars($username); ?>!</h2>
@@ -61,18 +62,18 @@ $conn->close();
         <nav class="sidebar">
             <h3>Chức năng</h3>
             <ul>
-                <li onclick="Switch('tc')" id="TC"><a>Trang chủ</a></li>
-                <li onclick="Switch('nv')" id="QLTK"><a>Quản lý nhân viên</a></li>
-                <li onclick="Switch('kh')" id="QLTK"><a>Quản lý khách hàng</a></li>
-                <li onclick="Switch('sp')" id="QLSP"><a>Quản lý sản phẩm</a></li>
-                <li onclick="Switch('km')" id="QLHD"><a>Quản lý khuyến mãi</a></li>
-                <li onclick="Switch('tl')" id="QLSP"><a>Thể loại truyện</a></li>
-                <li onclick="Switch('hdb')" id="QLHD"><a>Hóa đơn bán</a></li>
-                <li onclick="Switch('hdn')" id="QLHD"><a>Hóa đơn nhập</a></li>
-                <li onclick="Switch('ncc')" id="QLHD"><a>Quản lý nhà cung cấp</a></li>
-                <li onclick="Switch('pq')" id="QLTK"><a>Phân quyền</a></li>
-                <li onclick="Switch('role')" id="QLTK"><a>ROLE</a></li>
-                <li onclick="Switch('tk')" id="TK"><a>Thống kê</a></li>
+                <li onclick="Switch('tc','<?= $GLOBALS['IDrole'] ?>')" class="TC"><a>Trang chủ</a></li>
+                <li onclick="Switch('nv','<?= $GLOBALS['IDrole'] ?>')" class="QLTK"><a>Quản lý nhân viên</a></li>
+                <li onclick="Switch('kh','<?= $GLOBALS['IDrole'] ?>')" class="QLTK"><a>Quản lý khách hàng</a></li>
+                <li onclick="Switch('sp','<?= $GLOBALS['IDrole'] ?>')" class="QLSP"><a>Quản lý sản phẩm</a></li>
+                <li onclick="Switch('km','<?= $GLOBALS['IDrole'] ?>')" class="QLHD"><a>Quản lý khuyến mãi</a></li>
+                <li onclick="Switch('tl','<?= $GLOBALS['IDrole'] ?>')" class="QLSP"><a>Thể loại truyện</a></li>
+                <li onclick="Switch('hdb','<?= $GLOBALS['IDrole'] ?>')" class="QLHD"><a>Hóa đơn bán</a></li>
+                <li onclick="Switch('hdn','<?= $GLOBALS['IDrole'] ?>')" class="QLHD"><a>Hóa đơn nhập</a></li>
+                <li onclick="Switch('ncc','<?= $GLOBALS['IDrole'] ?>')" class="QLHD"><a>Quản lý nhà cung cấp</a></li>
+                <li onclick="Switch('pq','<?= $GLOBALS['IDrole'] ?>')" class="QLTK"><a>Phân quyền</a></li>
+                <li onclick="Switch('role','<?= $GLOBALS['IDrole'] ?>')" class="QLTK"><a>ROLE</a></li>
+                <li onclick="Switch('tk','<?= $GLOBALS['IDrole'] ?>')" class="TK"><a>Thống kê</a></li>
                 <li><a href="/webbantruyen/view/layout/page/logout.php"
                         onclick="return confirm('Bạn có chắc muốn đăng xuất?');">Đăng xuất</a></li>
             </ul>

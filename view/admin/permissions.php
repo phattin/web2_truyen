@@ -36,7 +36,7 @@ echo"
         $conn->close();
 echo "
     </table>
-    <input type='button' class='blue-btn' onclick='LuuRole()' style='width:100%' value='Lưu'>
+    <input type='button' class='blue-btn STK' onclick='LuuRole()' style='width:100%' value='Lưu'>
     <script src='../layout/js/permissions.js'></script>
 </html>"
 /*

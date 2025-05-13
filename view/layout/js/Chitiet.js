@@ -83,8 +83,8 @@ function ChitietRole(x){
                         <td><input type='checkbox' name='XHD' value='Xóa'></input></td>
                     </tr> 
                 </table>
-                <input type="submit" value="Xác Nhận Sửa" class="blue-btn">
-                <input type="button" value="Xóa Role" class="blue-btn" onclick='XoaRole("${response[0].RoleID}")'>
+                <input type="submit" value="Xác Nhận Sửa" class="blue-btn STK">
+                <input type="button" value="Xóa Role" class="blue-btn XTK" onclick='XoaRole("${response[0].RoleID}")'>
                 </form>
                 `  
             );        
