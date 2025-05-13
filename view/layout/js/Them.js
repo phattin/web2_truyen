@@ -41,3 +41,9 @@ function ThemKH(){
 function closeChucNang(){
     document.getElementById("Function").style.display = "none";
 }
+// Thêm Role
+function ThemRole(){
+    $("#overlay-chucnang").css("display","block");
+    $("#Function").css("display","block");
+    $("#Function").load("/webbantruyen/view/admin/ThemRole.php");
+}

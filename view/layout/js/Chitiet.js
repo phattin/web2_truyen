@@ -105,36 +105,95 @@ function ChitietRole(x){
                 <table>
                     <tr>
                         <th>Tên chức năng </th>
+                        <th>Xem </th>
                         <th>Thêm </th>
                         <th>Sửa </th>
                         <th>Xóa </th>
                     </tr>
                     <tr>
                         <th>Quản lý tài khoản</th>
+                        <td><input type='checkbox' name='XemTK' value='Xem'></input></td>
                         <td><input type='checkbox' name='TTK' value='Thêm'></input></td>
                         <td><input type='checkbox' name='STK' value='Sửa'></input></td>
                         <td><input type='checkbox' name='XTK' value='Xóa'></input></td>
                     </tr>
                     <tr>
                         <th>Quản lý sản phẩm</th>
+                        <td><input type='checkbox' name='XemSP' value='Xem'></input></td>
                         <td><input type='checkbox' name='TSP' value='Thêm'></input></td>
                         <td><input type='checkbox' name='SSP' value='Sửa'></input></td>
                         <td><input type='checkbox' name='XSP' value='Xóa'></input></td>
                     </tr>
                     <tr>
-                        <th>Quản lý hóa đơn</th>
-                        <td><input type='checkbox' name='THD' value='Thêm'></input></td>
-                        <td><input type='checkbox' name='SHD' value='Sửa'></input></td>
-                        <td><input type='checkbox' name='XHD' value='Xóa'></input></td>
-                    </tr> 
+                        <th>Quản lý hóa đơn nhập</th>
+                        <td><input type='checkbox' name='XemHDN' value='Xem'></input></td>
+                        <td><input type='checkbox' name='THDN' value='Thêm'></input></td>   
+                        <td><input type='checkbox' name='SHDN' value='Sửa'></input></td>
+                        <td><input type='checkbox' name='XHDN' value='Xóa'></input></td>
+                    </tr>
+                    <tr>
+                        <th>Quản lý hóa đơn bán  </th>
+                        <td><input type='checkbox' name='IHD' value='Xem'></input></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Quản lý nhân viên</th>
+                        <td><input type='checkbox' name='XemNV' value='Xem'></input></td>
+                        <td><input type='checkbox' name='TNV' value='Thêm'></input></td>
+                        <td><input type='checkbox' name='SNV' value='Sửa'></input></td>
+                        <td><input type='checkbox' name='XNV' value='Xóa'></input></td>
+                    </tr>
+                    <tr>
+                        <th>Quản lý khách hàng</th>
+                        <td><input type='checkbox' name='XemKH' value='Xem'></input></td>
+                        <td><input type='checkbox' name='TKH' value='Thêm'></input></td>
+                        <td><input type='checkbox' name='SKH' value='Sửa'></input></td>
+                        <td><input type='checkbox' name='XKH' value='Xóa'></input></td>
+                    <tr>
+                        <th>Quản lý Quyền</th>
+                        <td><input type='checkbox' name='XemRole' value='Xem'></input></td>
+                        <td><input type='checkbox' name='TQ' value='Thêm'></input></td>
+                        <td><input type='checkbox' name='SQ' value='Sửa'></input></td>
+                        <td><input type='checkbox' name='XQ' value='Xóa'></input></td>
+                    <tr>
+                        <th>Quản lý chủng loại</th>
+                        <td><input type='checkbox' name='XemCL' value='Xem'></input></td>
+                        <td><input type='checkbox' name='TCL' value='Thêm'></input></td>
+                        <td><input type='checkbox' name='SCL' value='Sửa'></input></td>
+                        <td><input type='checkbox' name='XCL' value='Xóa'></input></td>
+                    </tr>
+                    <tr>
+                        <th>Quản lý khuyến mãi</th>
+                        <td></td>
+                        <td><input type='checkbox' name='TKM' value='Thêm'></input></td>
+                        <td><input type='checkbox' name='SKM' value='Sửa'></input></td>
+                        <td><input type='checkbox' name='XKM' value='Xóa'></input></td>
+                    </tr>
+                    <tr>
+                        <th>Quản lý nhà cung cấp</th>
+                        <td><input type='checkbox' name='XemNCC' value='Xem'></input></td>
+                        <td><input type='checkbox' name='TNCC' value='Thêm'></input></td>
+                        <td><input type='checkbox' name='SNCC' value='Sửa'></input></td>
+                        <td><input type='checkbox' name='XNCC' value='Xóa'></input></td>
+                    </tr>
+                    <tr>
+                        <th>statistical</th>
+                        <td><input type='checkbox' name='XemS' value='Xem'></input></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                 </table>
-                <input type="submit" value="Xác Nhận Sửa" class="blue-btn STK">
-                <input type="button" value="Xóa Role" class="blue-btn XTK" onclick='XoaRole("${response[0].RoleID}")'>
                 </form>
                 `  
             );        
             response.forEach(element => {
             if(element.FunctionID == "F001"){
+                if(element.Option == "Xem"){
+                    $("input[name='XemTK'][value='Xem']").prop("checked", true);
+                }
                 if(element.Option == "Thêm"){
                     $("input[name='TTK'][value='Thêm']").prop("checked", true);
                 }
@@ -146,6 +205,9 @@ function ChitietRole(x){
                 }
             }
             if(element.FunctionID == "F002"){
+                if(element.Option == "Xem"){
+                    $("input[name='XemSP'][value='Xem']").prop("checked", true);
+                }
                 if(element.Option == "Thêm"){
                     $("input[name='TSP'][value='Thêm']").prop("checked", true);
                 }
@@ -157,16 +219,151 @@ function ChitietRole(x){
                 }
             }
             if(element.FunctionID == "F003"){
+                if(element.Option == "Xem"){
+                    $("input[name='XemHDN'][value='Xem']").prop("checked", true);
+                }
                 if(element.Option == "Thêm"){
-                    $("input[name='THD'][value='Thêm']").prop("checked", true);
-                }  
+                    $("input[name='THDN'][value='Thêm']").prop("checked", true);
+                }
                 if(element.Option == "Sửa"){
-                    $("input[name='SHD'][value='Sửa']").prop("checked", true);
+                    $("input[name='SHDN'][value='Sửa']").prop("checked", true);
                 }
                 if(element.Option == "Xóa"){
-                    $("input[name='XHD'][value='Xóa']").prop("checked", true);
+                    $("input[name='XHDN'][value='Xóa']").prop("checked", true);
                 }
             }
+            if(element.FunctionID == "F004"){
+                if(element.Option == "Xem"){
+                    $("input[name='IHD'][value='Xem']").prop("checked", true);
+                }
+            }
+            if(element.FunctionID == "F005"){
+                if(element.Option == "Xem"){
+                    $("input[name='XemNV'][value='Xem']").prop("checked", true);
+                }
+                if(element.Option == "Thêm"){
+                    $("input[name='TNV'][value='Thêm']").prop("checked", true);
+                }
+                if(element.Option == "Sửa"){
+                    $("input[name='SNV'][value='Sửa']").prop("checked", true);
+                }
+                if(element.Option == "Xóa"){
+                    $("input[name='XNV'][value='Xóa']").prop("checked", true);
+                }
+            }
+            if(element.FunctionID == "F006"){
+                if(element.Option == "Xem"){
+                    $("input[name='XemKH'][value='Xem']").prop("checked", true);
+                }
+                if(element.Option == "Thêm"){
+                    $("input[name='TKH'][value='Thêm']").prop("checked", true);
+                }
+                if(element.Option == "Sửa"){
+                    $("input[name='SKH'][value='Sửa']").prop("checked", true);
+                }
+                if(element.Option == "Xóa"){
+                    $("input[name='XKH'][value='Xóa']").prop("checked", true);
+                }
+            }
+            if(element.FunctionID == "F007"){
+                if(element.Option == "Xem"){
+                    $("input[name='XemRole'][value='Xem']").prop("checked", true);
+                }
+                if(element.Option == "Thêm"){
+                    $("input[name='TQ'][value='Thêm']").prop("checked", true);
+                }
+                if(element.Option == "Sửa"){
+                    $("input[name='SQ'][value='Sửa']").prop("checked", true);
+                }
+                if(element.Option == "Xóa"){
+                    $("input[name='XQ'][value='Xóa']").prop("checked", true);
+                }
+            }
+            if(element.FunctionID == "F008"){
+                if(element.Option == "Xem"){
+                    $("input[name='XemCL'][value='Xem']").prop("checked", true);
+                }
+                if(element.Option == "Thêm"){
+                    $("input[name='TCL'][value='Thêm']").prop("checked", true);
+                }
+                if(element.Option == "Sửa"){
+                    $("input[name='SCL'][value='Sửa']").prop("checked", true);
+                }
+                if(element.Option == "Xóa"){
+                    $("input[name='XCL'][value='Xóa']").prop("checked", true);
+                }
+            }
+            if(element.FunctionID == "F009"){
+                if(element.Option == "Xem"){
+                    $("input[name='XemKM'][value='Xem']").prop("checked", true);
+                }
+                if(element.Option == "Thêm"){
+                    $("input[name='TKM'][value='Thêm']").prop("checked", true);
+                }
+                if(element.Option == "Sửa"){
+                    $("input[name='SKM'][value='Sửa']").prop("checked", true);
+                }
+                if(element.Option == "Xóa"){
+                    $("input[name='XKM'][value='Xóa']").prop("checked", true);
+                }
+            }
+            if(element.FunctionID == "F010"){
+                if(element.Option == "Xem"){
+                    $("input[name='XemNCC'][value='Xem']").prop("checked", true);
+                }
+                if(element.Option == "Thêm"){
+                    $("input[name='TNCC'][value='Thêm']").prop("checked", true);
+                }
+                if(element.Option == "Sửa"){
+                    $("input[name='SNCC'][value='Sửa']").prop("checked", true);
+                }
+                if(element.Option == "Xóa"){
+                    $("input[name='XNCC'][value='Xóa']").prop("checked", true);
+                }
+            }
+            if(element.FunctionID == "F011"){
+                if(element.Option == "Xem"){
+                    $("input[name='XemS'][value='Xem']").prop("checked", true);
+                }
+            }
+            $("input[name='XemTK'][value='Xem']").prop("disabled", true);
+            $("input[name='TTK'][value='Thêm']").prop("disabled", true);
+            $("input[name='STK'][value='Sửa']").prop("disabled", true);  
+            $("input[name='XTK'][value='Xóa']").prop("disabled", true);
+            $("input[name='XemSP'][value='Xem']").prop("disabled", true);
+            $("input[name='TSP'][value='Thêm']").prop("disabled", true);
+            $("input[name='SSP'][value='Sửa']").prop("disabled", true);
+            $("input[name='XSP'][value='Xóa']").prop("disabled", true);
+            $("input[name='XemHDN'][value='Xem']").prop("disabled", true);
+            $("input[name='THDN'][value='Thêm']").prop("disabled", true);
+            $("input[name='SHDN'][value='Sửa']").prop("disabled", true);
+            $("input[name='XHDN'][value='Xóa']").prop("disabled", true);
+            $("input[name='IHD'][value='Xem']").prop("disabled", true);
+            $("input[name='XemNV'][value='Xem']").prop("disabled", true);
+            $("input[name='TNV'][value='Thêm']").prop("disabled", true);
+            $("input[name='SNV'][value='Sửa']").prop("disabled", true);
+            $("input[name='XNV'][value='Xóa']").prop("disabled", true);
+            $("input[name='XemKH'][value='Xem']").prop("disabled", true);
+            $("input[name='TKH'][value='Thêm']").prop("disabled", true);
+            $("input[name='SKH'][value='Sửa']").prop("disabled", true);
+            $("input[name='XKH'][value='Xóa']").prop("disabled", true);
+            $("input[name='XemRole'][value='Xem']").prop("disabled", true);
+            $("input[name='TQ'][value='Thêm']").prop("disabled", true);
+            $("input[name='SQ'][value='Sửa']").prop("disabled", true);
+            $("input[name='XQ'][value='Xóa']").prop("disabled", true);
+            $("input[name='XemCL'][value='Xem']").prop("disabled", true);
+            $("input[name='TCL'][value='Thêm']").prop("disabled", true);
+            $("input[name='SCL'][value='Sửa']").prop("disabled", true);
+            $("input[name='XCL'][value='Xóa']").prop("disabled", true);
+            $("input[name='XemKM'][value='Xem']").prop("disabled", true);
+            $("input[name='TKM'][value='Thêm']").prop("disabled", true);
+            $("input[name='SKM'][value='Sửa']").prop("disabled", true);
+            $("input[name='XKM'][value='Xóa']").prop("disabled", true);
+            $("input[name='XemNCC'][value='Xem']").prop("disabled", true);
+            $("input[name='TNCC'][value='Thêm']").prop("disabled", true);
+            $("input[name='SNCC'][value='Sửa']").prop("disabled", true);
+            $("input[name='XNCC'][value='Xóa']").prop("disabled", true);
+            $("input[name='XemS'][value='Xem']").prop("disabled", true);           
             });
             
         }
