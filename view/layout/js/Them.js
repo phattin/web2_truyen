@@ -4,6 +4,12 @@ function ThemSP(){
     $("#Function").css("display","block");
     $("#Function").load("/webbantruyen/view/admin/ThemSP.php");
 }
+// Them Hóa đơn nhập
+function themHDN(){
+    $("#overlay-chucnang").css("display","block");
+    $("#Function").css("display","block");
+    $("#Function").load("/webbantruyen/view/admin/themHDN.php");
+}
 
 function Close_ChucNang(){
     $("#overlay-chucnang").css("display","none");
