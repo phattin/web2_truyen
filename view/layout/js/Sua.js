@@ -22,8 +22,8 @@ function editSP(product_id){
                         </div>
                 
                         <div class="right-panel">
-                            <div >
-                                <label for="productID" style="display:none">Mã sản phẩm:</label>
+                            <div style="display:none">
+                                <label for="productID">Mã sản phẩm:</label>
                                 <input type="text" value="${response.productID}" id="productID" name="productID" readonly>
                             </div>
                             <div>
@@ -188,27 +188,4 @@ function Close_ChucNang(){
 function Close_Chitiet(){
     $("#overlay-chucnang").css("display","none");
     $("#overlay-chitiet").css("display","none");
-}
-
-// Them Nhan Vien
-function ThemNV(){
-    $("#Function").css("display","block");
-    $("#ChiTiet").css("display","none");
-    $("#Function").load("/webbantruyen/view/admin/ThemNV.php");
-}   
-
-
-// Them Khach Hang
-function ThemKH(){
-    $("#Function").css("display","block");
-    $("#ChiTiet").css("display","none");
-    $("#Function").load("/webbantruyen/view/admin/ThemKH.php");
-}
-
-
-// Them ROLE
-function ThemRole(){
-     $("#overlay-chucnang").css("display","block");
-    $("#Function").css("display","block");
-    $("#Function").load("/webbantruyen/view/admin/ThemRole.php");
 }

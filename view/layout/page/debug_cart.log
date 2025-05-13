@@ -4,8 +4,16 @@ Array
         (
             [id] => P001
             [name] => Truyện Doremon
-            [price] => 24000
-            [quantity] => 2
+            [price] => 44000
+            [quantity] => 1
+        )
+
+    [1] => Array
+        (
+            [id] => P002
+            [name] => Truyện Conan
+            [price] => 100000
+            [quantity] => 1
         )
 
 )

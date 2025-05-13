@@ -35,7 +35,52 @@ function ChitietSP(x){
     });
 }
 
-ChiTiet
+// ChitietSP
+function ChitietHDN(importID){
+    console.log(importID);
+    $.ajax({
+        type: "POST",
+        url: "/webbantruyen/view/admin/form.php",
+        data: { importID: importID },
+        dataType: "json",
+        success: function(response) {
+            console.log({response});
+            $("#overlay-chitiet").css("display","block");  
+            $("#Function").css("display","none"); 
+            let detailContent = "";
+            response.importDetails.forEach(function(detail) {
+                detailContent += `<tr>
+                    <td>${detail.ProductID}</td>
+                    <td>${detail.ProductName}</td>
+                    <td>${detail.Quantity}</td>
+                    <td>${detail.Price}</td>
+                    <td>${detail.TotalPrice}</td>
+                </tr>`;
+            });
+            $("#ChiTiet").html(
+                `
+                <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
+                <h2 style='text-align:center; margin:30px;'>Chi tiết hóa đơn nhập</h2>
+                <div class="chitiet-box" style="display:block">
+                    <div class="info-box" style="width:100%">
+                        <table class='product-admin-table'>
+                            <tr>
+                                <th>Mã sản phẩm</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                            </tr>`
+                            + detailContent +
+                        `</table>
+                    </div>
+                </div>
+                `  
+            );        
+        }
+    });
+}
+
 function Close_ChucNang(){
     $("#overlay-chitiet").css("display","none");
 }

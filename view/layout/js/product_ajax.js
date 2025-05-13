@@ -24,10 +24,9 @@ $(document).ready(function () {
                                         <h3>${product.ProductName}</h3>
                                         <p class="price">${(
                                           Math.round(
-                                            (parseInt(product.ImportPrice) *
-                                              parseFloat(product.ROS)) /
-                                              1000
-                                          ) * 1000
+                                                (parseDouble(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
                                         ).toLocaleString("vi-VN")} VNĐ</p>
                                         
                                         <!-- Form gửi dữ liệu sản phẩm đến cart.php -->
@@ -40,10 +39,9 @@ $(document).ready(function () {
                                             }">
                                             <input type="hidden" name="price" value="${(
                                               Math.round(
-                                                (parseInt(product.ImportPrice) *
-                                                  parseFloat(product.ROS)) /
-                                                  1000
-                                              ) * 1000
+                                                (parseDouble(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
                                             ).toLocaleString("vi-VN")}">
                                             <input type="hidden" name="quantity" value="1">
                                             <button type="button" class="btn-add-to-cart" data-id="${
@@ -122,10 +120,9 @@ $(document).ready(function () {
                                         <h3>${product.ProductName}</h3>
                                         <p class="price">${(
                                           Math.round(
-                                            (parseInt(product.ImportPrice) *
-                                              parseFloat(product.ROS)) /
-                                              1000
-                                          ) * 1000
+                                                (parseDouble(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
                                         ).toLocaleString("vi-VN")} VNĐ</p>
                                         
                                         <!-- Form gửi dữ liệu sản phẩm đến cart.php -->
@@ -138,10 +135,9 @@ $(document).ready(function () {
                                             }">
                                             <input type="hidden" name="price" value="${(
                                               Math.round(
-                                                (parseInt(product.ImportPrice) *
-                                                  parseFloat(product.ROS)) /
-                                                  1000
-                                              ) * 1000
+                                                (parseDouble(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
                                             ).toLocaleString("vi-VN")}">
                                             <input type="hidden" name="quantity" value="1">
                                             <button type="button" class="btn-add-to-cart" data-id="${
@@ -228,10 +224,9 @@ $(document).ready(function () {
                                         <h3>${product.ProductName}</h3>
                                         <p class="price">${(
                                           Math.round(
-                                            (parseInt(product.ImportPrice) *
-                                              parseFloat(product.ROS)) /
-                                              1000
-                                          ) * 1000
+                                                (parseDouble(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
                                         ).toLocaleString("vi-VN")} VNĐ</p>
                                         
                                         <!-- Form gửi dữ liệu sản phẩm đến cart.php -->
@@ -244,10 +239,9 @@ $(document).ready(function () {
                                             }">
                                             <input type="hidden" name="price" value="${(
                                               Math.round(
-                                                (parseInt(product.ImportPrice) *
-                                                  parseFloat(product.ROS)) /
-                                                  1000
-                                              ) * 1000
+                                                (parseDouble(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
                                             ).toLocaleString("vi-VN")}">
                                             <input type="hidden" name="quantity" value="1">
                                             <button type="button" class="btn-add-to-cart" data-id="${
@@ -355,10 +349,9 @@ $(document).ready(function () {
                                           <h3>${product.ProductName}</h3>
                                           <p class="price">${(
                                             Math.round(
-                                              (parseInt(product.ImportPrice) *
-                                                parseFloat(product.ROS)) /
-                                                1000
-                                            ) * 1000
+                                                (parseDouble(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
                                           ).toLocaleString("vi-VN")} VNĐ</p>
                                           
                                           <!-- Form gửi dữ liệu sản phẩm đến cart.php -->
@@ -371,12 +364,9 @@ $(document).ready(function () {
                                               }">
                                               <input type="hidden" name="price" value="${(
                                                 Math.round(
-                                                  (parseInt(
-                                                    product.ImportPrice
-                                                  ) *
-                                                    parseFloat(product.ROS)) /
-                                                    1000
-                                                ) * 1000
+                                                (parseDouble(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
                                               ).toLocaleString("vi-VN")}">
                                               <input type="hidden" name="quantity" value="1">
                                               <button type="button" class="btn-add-to-cart" data-id="${
@@ -453,10 +443,9 @@ $(document).ready(function () {
                                             <h3>${product.ProductName}</h3>
                                             <p class="price">${(
                                               Math.round(
-                                                (parseInt(product.ImportPrice) *
-                                                  parseFloat(product.ROS)) /
-                                                  1000
-                                              ) * 1000
+                                                (parseDouble(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
                                             ).toLocaleString("vi-VN")} VNĐ</p>
                                             
                                             <!-- Form gửi dữ liệu sản phẩm đến cart.php -->
@@ -469,12 +458,9 @@ $(document).ready(function () {
                                                 }">
                                                 <input type="hidden" name="price" value="${(
                                                   Math.round(
-                                                    (parseInt(
-                                                      product.ImportPrice
-                                                    ) *
-                                                      parseFloat(product.ROS)) /
-                                                      1000
-                                                  ) * 1000
+                                                (parseDouble(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
                                                 ).toLocaleString("vi-VN")}">
                                                 <input type="hidden" name="quantity" value="1">
                                                 <button type="button" class="btn-add-to-cart" data-id="${

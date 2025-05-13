@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 09, 2025 lúc 11:04 AM
+-- Thời gian đã tạo: Th5 12, 2025 lúc 03:44 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -42,7 +42,7 @@ INSERT INTO `account` (`Username`, `Password`, `RoleID`, `IsDeleted`) VALUES
 ('admin', 'admin123', 'R1', 0),
 ('kh01', 'password02', 'R3', 0),
 ('nv01', 'password01', 'R2', 0),
-('phattin', '$2y$10$LGxvas5xpea.HEvxLjVXxug4AdQaJnP5txgiDer2wNf2Fjy4W2KCy', 'R3', 0),
+('phattin', '$2y$10$LGxvas5xpea.HEvxLjVXxug4AdQaJnP5txgiDer2wNf2Fjy4W2KCy', 'R1', 0),
 ('phattin123', '$2y$10$U0q2hbQEySm2GG4ak93kJ.AThbIctl5iWNu0NqGek/XcQ8IZ6u/B2', 'R3', 0),
 ('tin', '$2y$10$2aX5DfDLqgukmqP7eKBY3OL/r0TW3kwQpxTc9ZbnoBlXiUZVGolqS', 'R3', 0);
 
@@ -107,9 +107,9 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`, `IsDeleted`) VALUES
 ('C001', 'Nguyễn Văn A', 'kh01', 'nguyenvana@gmail.com', 'Hà Nội', '0987654321', 1500000, 0),
-('C003', 'Nguyen Phat Tin', 'phattin123', 'phattin123@gmail.com', 'abc', '0987654321', 0, ''),
-('C004', 'Phat Tin', 'tin', 'tin@gmail.com', '123456', '0987654321', 0, ''),
-('C02', 'Nguyễn Phát Tín', 'phattin', 'phattin@gmail.com', '123/123', '0987654321', 0, '');
+('C003', 'Nguyen Phat Tin', 'phattin123', 'phattin123@gmail.com', 'abc', '0987654321', 0, 0),
+('C004', 'Phat Tin', 'tin', 'tin@gmail.com', '123456', '0987654321', 0, 0),
+('C02', 'Nguyễn Phát Tín', 'phattin', 'phattin@gmail.com', '123/123', '0987654321', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -332,8 +332,24 @@ CREATE TABLE `import_invoice` (
   `EmployeeID` varchar(10) NOT NULL,
   `SupplierID` varchar(10) NOT NULL,
   `Date` date NOT NULL,
-  `TotalPrice` int(10) NOT NULL
+  `TotalPrice` int(10) NOT NULL,
+  `Status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `import_invoice`
+--
+
+INSERT INTO `import_invoice` (`ImportID`, `EmployeeID`, `SupplierID`, `Date`, `TotalPrice`, `Status`) VALUES
+('I001', 'E001', 'S001', '2024-12-05', 20000000, ''),
+('I002', 'E001', 'S002', '2024-12-05', 3200000, ''),
+('I003', 'E001', 'S003', '2024-12-05', 2700000, ''),
+('I004', 'E001', 'S004', '2024-12-05', 2466000, ''),
+('I005', 'E001', 'S005', '2024-12-05', 2750000, ''),
+('I006', 'E001', 'S006', '2024-12-05', 3360000, ''),
+('I007', 'E001', 'S007', '2024-12-05', 10030000, ''),
+('I008', 'E001', 'S008', '2024-12-05', 14250000, ''),
+('I009', 'E001', 'S009', '2024-12-05', 4500000, '');
 
 -- --------------------------------------------------------
 
@@ -342,13 +358,28 @@ CREATE TABLE `import_invoice` (
 --
 
 CREATE TABLE `import_invoice_detail` (
-  `ImportDetailID` varchar(10) NOT NULL,
   `ImportID` varchar(10) NOT NULL,
   `ProductID` varchar(10) NOT NULL,
   `Quantity` int(11) NOT NULL,
   `Price` int(10) NOT NULL,
   `TotalPrice` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `import_invoice_detail`
+--
+
+INSERT INTO `import_invoice_detail` (`ImportID`, `ProductID`, `Quantity`, `Price`, `TotalPrice`) VALUES
+('I001', 'P001', 100, 20000, 2000000),
+('I001', 'P010', 88, 100000, 8800000),
+('I002', 'P002', 80, 40000, 3200000),
+('I003', 'P003', 120, 22500, 2700000),
+('I004', 'P004', 90, 27400, 2466000),
+('I005', 'P005', 110, 25000, 2750000),
+('I006', 'P006', 70, 48000, 3360000),
+('I007', 'P007', 85, 118000, 10030000),
+('I008', 'P008', 95, 150000, 14250000),
+('I009', 'P009', 75, 60000, 4500000);
 
 -- --------------------------------------------------------
 
@@ -375,16 +406,19 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `ImportPrice`, `ROS`, `Description`, `SupplierID`, `IsDeleted`) VALUES
-('P001', 'Truyện Doremon', 'doremon.jpg', 'Fujiko F. Fujio', 'NXB Kim Đồng', 100, 20000, 1.2, 'Truyện tranh hài hước', 'S001', 0),
-('P002', 'Truyện Conan', 'conan.jpg', 'Gosho Aoyama', 'NXB Kim Đồng', 80, 40000, 1.5, 'Truyện trinh thám nổi tiếng', 'S002', 0),
-('P003', 'Truyện One Piece', 'onepiece.jpg', 'Eiichiro Oda', 'NXB Kim Đồng', 120, 22500, 1.3, 'Truyện phiêu lưu hành động', 'S003', 0),
-('P004', 'Truyện Naruto', 'naruto.jpg', 'Masashi Kishimoto', 'NXB Kim Đồng', 90, 27400, 1.4, 'Truyện ninja hấp dẫn', 'S004', 0),
-('P005', 'Truyện Dragon Ball', 'dragonball.jpg', 'Akira Toriyama', 'NXB Kim Đồng', 110, 25000, 1.6, 'Truyện võ thuật viễn tưởng', 'S005', 0),
-('P006', 'Truyện Attack on Titan', 'aot.jpg', 'Hajime Isayama', 'NXB Kim Đồng', 70, 48000, 1.8, 'Truyện hành động kịch tính', 'S006', 0),
-('P007', 'Truyện Tokyo Revengers', 'tokyo.jpg', 'Ken Wakui', 'NXB Kim Đồng', 85, 118000, 1.7, 'Truyện du hành thời gian', 'S007', 0),
-('P008', 'Truyện Jujutsu Kaisen', 'jujutsu.jpg', 'Gege Akutami', 'NXB Kim Đồng', 95, 150000, 1.5, 'Truyện chiến đấu huyền bí', 'S008', 0),
-('P009', 'Truyện Black Clover', 'blackclover.jpg', 'Yūki Tabata', 'NXB Kim Đồng', 75, 60000, 1.3, 'Truyện phép thuật hành động', 'S009', 0),
-('P010', 'Truyện Fairy Tail', 'fairytail.jpg', 'Hiro Mashima', 'NXB Kim Đồng', 88, 100000, 1.4, 'Truyện phiêu lưu phép thuật', 'S010', 0);
+('P001', 'Truyện Doremon', 'doremon.jpg', 'Fujiko F. Fujio', 'NXB Kim Đồng', 100, 20000, 1.2, 'Truyện tranh hài hước', 'S001', '0'),
+('P002', 'Truyện Conan', 'conan.jpg', 'Gosho Aoyama', 'NXB Kim Đồng', 80, 40000, 1.5, 'Truyện trinh thám nổi tiếng', 'S002', '0'),
+('P003', 'Truyện One Piece', 'onepiece.jpg', 'Eiichiro Oda', 'NXB Kim Đồng', 120, 22500, 1.3, 'Truyện phiêu lưu hành động', 'S003', '0'),
+('P004', 'Truyện Naruto', 'naruto.jpg', 'Masashi Kishimoto', 'NXB Kim Đồng', 90, 27400, 1.4, 'Truyện ninja hấp dẫn', 'S004', '0'),
+('P005', 'Truyện Dragon Ball', 'dragonball.jpg', 'Akira Toriyama', 'NXB Kim Đồng', 110, 25000, 1.6, 'Truyện võ thuật viễn tưởng', 'S005', '0'),
+('P006', 'Truyện Attack on Titan', 'aot.jpg', 'Hajime Isayama', 'NXB Kim Đồng', 70, 48000, 1.8, 'Truyện hành động kịch tính', 'S006', '0'),
+('P007', 'Truyện Tokyo Revengers', 'tokyo.jpg', 'Ken Wakui', 'NXB Kim Đồng', 85, 118000, 1.7, 'Truyện du hành thời gian', 'S007', '0'),
+('P008', 'Truyện Jujutsu Kaisen', 'jujutsu.jpg', 'Gege Akutami', 'NXB Kim Đồng', 95, 150000, 1.5, 'Truyện chiến đấu huyền bí', 'S008', '0'),
+('P009', 'Truyện Black Clover', 'blackclover.jpg', 'Yūki Tabata', 'NXB Kim Đồng', 75, 60000, 1.3, 'Truyện phép thuật hành động', 'S009', '0'),
+('P010', 'Truyện Fairy Tail', 'fairytail.jpg', 'Hiro Mashima', 'NXB Kim Đồng', 88, 100000, 1.4, 'Truyện phiêu lưu phép thuật', 'S001', '0'),
+('P011', 'abc', 'tốt.jpg', 'abc', 'abc', 0, 0, 0, '0', 'S001', '0'),
+('P012', 'abc', 'tốt.jpg', 'abc', 'abc', 0, 0, 0, '0', 'S001', '0'),
+('P013', 'abc', 'tốt.jpg', 'abc', 'abc', 0, 0, 0, '0', 'S001', '1');
 
 -- --------------------------------------------------------
 
@@ -517,14 +551,14 @@ CREATE TABLE `supplier` (
 INSERT INTO `supplier` (`SupplierID`, `SupplierName`, `Phone`, `Email`, `Address`, `IsDeleted`) VALUES
 ('S001', 'Nhà cung cấp A', '0123456789', 'nhaccA@gmail.com', 'Hà Nội', 0),
 ('S002', 'Nhà cung cấp B', '0987654321', 'nhaccB@gmail.com', 'TP. Hồ Chí Minh', 0),
-('S003', 'Nhà cung cấp 3', '', '', '', ''),
-('S004', 'Nhà cung cấp 4', '', '', '', ''),
-('S005', 'Nhà cung cấp 5', '', '', '', ''),
-('S006', 'Nhà cung cấp 6', '', '', '', ''),
-('S007', 'Nhà cung cấp 7', '', '', '', ''),
-('S008', 'Nhà cung cấp 8', '', '', '', ''),
-('S009', 'Nhà cung cấp 9', '', '', '', ''),
-('S010', 'Nhà cung cấp 10', '', '', '', '');
+('S003', 'Nhà cung cấp 3', '', '', '', 0),
+('S004', 'Nhà cung cấp 4', '', '', '', 0),
+('S005', 'Nhà cung cấp 5', '', '', '', 0),
+('S006', 'Nhà cung cấp 6', '', '', '', 0),
+('S007', 'Nhà cung cấp 7', '', '', '', 0),
+('S008', 'Nhà cung cấp 8', '', '', '', 0),
+('S009', 'Nhà cung cấp 9', '', '', '', 0),
+('S010', 'Nhà cung cấp 10', '', '', '', 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -602,7 +636,6 @@ ALTER TABLE `import_invoice`
 -- Chỉ mục cho bảng `import_invoice_detail`
 --
 ALTER TABLE `import_invoice_detail`
-  ADD PRIMARY KEY (`ImportDetailID`),
   ADD KEY `fk_import` (`ImportID`),
   ADD KEY `fk_product_import` (`ProductID`);
 

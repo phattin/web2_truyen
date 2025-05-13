@@ -20,8 +20,8 @@ $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    if ($row['RoleID'] !== 'R1') {
-        // Nếu RoleID không phải 'R1', hiển thị thông báo và dừng chương trình
+    if ($row['RoleID'] === 'R003') {
+        // Nếu RoleID là 'R003', hiển thị thông báo và dừng chương trình
         echo "<script>alert('Bạn không có quyền truy cập vào trang này!'); window.location.href = '/webbantruyen/index.php';</script>";
         exit;
     }
@@ -42,9 +42,6 @@ $conn->close();*/
 <html lang="vi">
 
 <head>
-    <style>
-    </style>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ Admin</title>
@@ -68,12 +65,14 @@ $conn->close();*/
                 <li onclick="Switch('sp','<?= $GLOBALS['IDrole'] ?>')" class="QLSP"><a>Quản lý sản phẩm</a></li>
                 <li onclick="Switch('km','<?= $GLOBALS['IDrole'] ?>')" class="QLHD"><a>Quản lý khuyến mãi</a></li>
                 <li onclick="Switch('tl','<?= $GLOBALS['IDrole'] ?>')" class="QLSP"><a>Thể loại truyện</a></li>
-                <li onclick="Switch('hdb','<?= $GLOBALS['IDrole'] ?>')" class="QLHD"><a>Hóa đơn bán</a></li>
+                <li onclick="HienThiHoaDon()" class="QLHD"><a>Hóa đơn bán</a></li>
                 <li onclick="Switch('hdn','<?= $GLOBALS['IDrole'] ?>')" class="QLHD"><a>Hóa đơn nhập</a></li>
                 <li onclick="Switch('ncc','<?= $GLOBALS['IDrole'] ?>')" class="QLHD"><a>Quản lý nhà cung cấp</a></li>
                 <li onclick="Switch('pq','<?= $GLOBALS['IDrole'] ?>')" class="QLTK"><a>Phân quyền</a></li>
                 <li onclick="Switch('role','<?= $GLOBALS['IDrole'] ?>')" class="QLTK"><a>ROLE</a></li>
-                <li onclick="Switch('tk','<?= $GLOBALS['IDrole'] ?>')" class="TK"><a>Thống kê</a></li>
+                <li onclick="LoadStatistics()" class="TK"><a>Thống kê</a></li>
+
+
                 <li><a href="/webbantruyen/view/layout/page/logout.php"
                         onclick="return confirm('Bạn có chắc muốn đăng xuất?');">Đăng xuất</a></li>
             </ul>
@@ -83,8 +82,9 @@ $conn->close();*/
         <div id="overlay-chitiet" onclick="Close_Chitiet()" class="overlay-chitiet">
             <div id="ChiTiet" class="ChiTiet" onclick="event.stopPropagation();">></div>
         </div>
-        <div id="overlay-chucnang" onclick="Close_ChucNang()" class="overlay-chucnang">
-            <div id="Function" class="ChucNang" onclick="event.stopPropagation();"></div>
+        <div id="overlay-chucnang" class="overlay-chucnang">
+            <div id="Function" class="function-container" onclick="event.stopPropagation();"></div>
+            <button class="close-btn" onclick="closeOverlay()">X</button>
         </div>
 
     </div>
@@ -93,10 +93,38 @@ $conn->close();*/
     <script src="/webbantruyen/view/layout/js/permissions.js"></script>
     <script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
     <script src="/webbantruyen/view/layout/js/them_ajax.js"></script>
-    <script src="/webbantruyen/view/layout/js/Them.js"></script>
-    <script src="/webbantruyen/view/layout/js/Sua.js"></script>
     <script src="/webbantruyen/view/layout/js/Xoa.js"></script>
     <script src="/webbantruyen/view/layout/js/CheckRole.js"></script>
+    <script src="/webbantruyen/js/HoaDon.js"></script>
+    <script src="/webbantruyen/view/layout/js/statistics.js"></script>
+    <script>
+        // Hàm hiển thị hóa đơn bán
+        function HienThiHoaDon() {
+            $("#admin-content").load("/webbantruyen/view/admin/sales_invoice.php", function (response, status, xhr) {
+                if (status === "error") {
+                    console.error("Lỗi khi tải hóa đơn bán:", xhr.status, xhr.statusText);
+                    $("#admin-content").html("<p>Không thể tải hóa đơn bán.</p>");
+                } else {
+                    console.log("Đã tải trang hóa đơn bán thành công");
+                }
+            });
+        }
+
+        // Đóng overlay chi tiết
+        function Close_Chitiet() {
+            document.getElementById("overlay-chitiet").style.display = "none";
+        }
+
+        // Đóng overlay chức năng
+        function Close_ChucNang() {
+            document.getElementById("overlay-chucnang").style.display = "none";
+        }
+
+        // Hàm đóng overlay (sử dụng trong HoaDon.js)
+        function closeOverlay() {
+            document.getElementById("overlay-chucnang").style.display = "none";
+        }
+    </script>
 </body>
 
 </html>
