@@ -76,11 +76,10 @@ $conn->close();
 
         <main id="admin-content"></main>
         <div id="overlay-chitiet" onclick="Close_Chitiet()" class="overlay-chitiet">
-            <div id="ChiTiet" class="ChiTiet" onclick="event.stopPropagation();">></div>
+            <div id="ChiTiet" class="ChiTiet" onclick="event.stopPropagation();"></div>
         </div>
-        <div id="overlay-chucnang" class="overlay-chucnang">
-            <div id="Function" class="function-container" onclick="event.stopPropagation();"></div>
-            <button class="close-btn" onclick="closeOverlay()">X</button>
+        <div id="overlay-chucnang" onclick="Close_ChucNang()" class="overlay-chucnang">
+            <div id="Function" class="ChucNang" class="function-container" onclick="event.stopPropagation();"></div>
         </div>
 
     </div>
@@ -89,8 +88,10 @@ $conn->close();
     <script src="/webbantruyen/view/layout/js/permissions.js"></script>
     <script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
     <script src="/webbantruyen/view/layout/js/them_ajax.js"></script>
+    <script src="/webbantruyen/view/layout/js/Them.js"></script>
+    <script src="/webbantruyen/view/layout/js/Sua.js"></script>
     <script src="/webbantruyen/view/layout/js/Xoa.js"></script>
-    <script src="/webbantruyen/js/HoaDon.js"></script>
+    <script src="/webbantruyen/view/layout/js/HoaDon.js"></script>
     <script src="/webbantruyen/view/layout/js/statistics.js"></script>
     <script>
         // Hàm hiển thị hóa đơn bán
