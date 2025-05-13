@@ -44,7 +44,7 @@ if (session_status() === PHP_SESSION_NONE)
         $ros = $productHome['ROS'];
         
         // Tính toán giá bán
-        $price = round($importPrice * $ros / 1000) * 1000;
+        $price = round($importPrice * ( 1 + $ros ));
         $formattedPrice = number_format($price, 0, ',', '.') . ' VNĐ';
     ?>
         <div class="product-item">

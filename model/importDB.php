@@ -56,12 +56,12 @@
         }
 
         // Thêm phiếu nhập mới
-        public function addImport($importID, $employeeID, $supplierID, $date, $totalPrice) {
+        public function addImport($importID, $employeeID, $supplierID, $date, $totalPrice, $ros, $status) {
             $conn = connectDB::getConnection();
-            $sql = "INSERT INTO import_invoice (ImportID, EmployeeID, SupplierID, Date, TotalPrice) 
-                    VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO import_invoice (ImportID, EmployeeID, SupplierID, Date, TotalPrice, ROS, Status) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssssd", $importID, $employeeID, $supplierID, $date, $totalPrice);
+            $stmt->bind_param("ssssdds", $importID, $employeeID, $supplierID, $date, $totalPrice, $ros, $status);
             $success = $stmt->execute();
             $stmt->close();
             connectDB::closeConnection($conn);
@@ -94,6 +94,27 @@
             $newID = 'I' . str_pad($num, 3, '0', STR_PAD_LEFT);
 
             return $newID;
+        }
+
+        public static function updateImportStatus($importID, $status) {
+            $conn = connectDB::getConnection();
+            if (!$conn) {
+                return false;
+            }
+
+            $query = "UPDATE import_invoice SET Status = ? WHERE ImportID = ?";
+            $stmt = $conn->prepare($query);
+            if (!$stmt) {
+                return false;
+            }
+
+            // Gắn tham số vào statement: 2 chuỗi (ss)
+            $stmt->bind_param("ss", $status, $importID);
+            $success = $stmt->execute();
+
+            $stmt->close();
+            connectDB::closeConnection($conn);
+            return $success;
         }
     }
 ?>

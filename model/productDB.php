@@ -203,12 +203,12 @@
             $sql .= " LEFT JOIN genre_detail gd ON p.ProductID = gd.ProductID";
 
             if ($minPrice !== null) {
-                $conditions[] = "p.ImportPrice * p.ROS >= ?";
+                $conditions[] = "p.ImportPrice * ( 1 + p.ROS ) >= ?";
                 $params[] = $minPrice;
                 $types .= "d";
             }
             if ($maxPrice !== null) {
-                $conditions[] = "p.ImportPrice * p.ROS <= ?";
+                $conditions[] = "p.ImportPrice * ( 1 + p.ROS ) <= ?";
                 $params[] = $maxPrice;
                 $types .= "d";
             }
@@ -258,12 +258,12 @@
             $sql .= " LEFT JOIN genre_detail gd ON p.ProductID = gd.ProductID";
 
             if ($minPrice !== null) {
-                $conditions[] = "p.ImportPrice * p.ROS >= ?";
+                $conditions[] = "p.ImportPrice * ( 1 + p.ROS ) >= ?";
                 $params[] = $minPrice;
                 $types .= "d";
             }
             if ($maxPrice !== null) {
-                $conditions[] = "p.ImportPrice * p.ROS <= ?";
+                $conditions[] = "p.ImportPrice * ( 1 + p.ROS ) <= ?";
                 $params[] = $maxPrice;
                 $types .= "d";
             }
@@ -304,6 +304,53 @@
             $productList = $result->fetch_all(MYSQLI_ASSOC);
             $stmt->close();
             return $productList;
+        }
+
+        public function updateProductQuantity($productID, $quantity) {
+            // Mở database
+            $conn = ConnectDB::getConnection();
+            // Lệnh sql
+            $strSQL = "UPDATE product SET Quantity = ? WHERE ProductID = ?";
+            // Thực hiện sql
+            $stmt = $conn->prepare($strSQL);
+            if (!$stmt) 
+                die("Lỗi chuẩn bị SQL: " . $conn->error);
+
+            $product = $this->getProductByID($productID);
+            if (!$product) {
+                die("Lỗi: Không tìm thấy sản phẩm với ID $productID");
+            }
+
+            $newQuantity = $product["Quantity"] + $quantity;
+            $stmt->bind_param("is", $newQuantity, $productID);
+            
+            // Thực hiện chức năng
+            $success = $stmt->execute();
+            // Đóng kết nối
+            $stmt->close();
+            ConnectDB::closeConnection($conn);
+
+            return $success;
+        }
+
+
+        public function updateProductPrice($productID, $price, $ros) {
+            // Mở database
+            $conn = ConnectDB::getConnection();
+            // Lệnh sql
+            $strSQL = "UPDATE product SET ImportPrice = ?, ROS = ? WHERE ProductID = ?";
+            // Thực hiện sql
+            $stmt = $conn->prepare($strSQL);
+            if (!$stmt) 
+                die("Lỗi chuẩn bị SQL: " . $conn->error);
+            $stmt->bind_param("dds", $price, $ros, $productID);
+            // Thực hiện chức năng
+            $success = $stmt->execute();
+            // Đóng kết nối
+            $stmt->close();
+            ConnectDB::closeConnection($conn);
+        
+            return $success;
         }
     }
 ?>
