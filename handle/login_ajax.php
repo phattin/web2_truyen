@@ -10,8 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $sql = "SELECT a.Username, a.Password, a.RoleID 
             FROM account a 
-            JOIN customer c ON a.Username = c.Username 
-            WHERE c.Email = ? OR a.Username = ?";
+            JOIN employee e ON a.Username = e.Username 
+            WHERE e.Email = ? OR a.Username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $identifier, $identifier);
     $stmt->execute();
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['username'] = $user['Username'];
             $_SESSION['role'] = $user['RoleID'];
 
-            $redirectURL = ($user['RoleID'] === 'R1') ? "/webbantruyen/index.php?page=admin" : "/webbantruyen/index.php";
+            $redirectURL = ($user['RoleID'] !== 'R3') ? "/webbantruyen/index.php?page=admin" : "/webbantruyen/index.php";
 
             echo json_encode([
                 "success" => true,

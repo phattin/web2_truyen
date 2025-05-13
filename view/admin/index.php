@@ -20,8 +20,8 @@ $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    if ($row['RoleID'] !== 'R1') {
-        // Nếu RoleID không phải 'R1', hiển thị thông báo và dừng chương trình
+    if ($row['RoleID'] === 'R003') {
+        // Nếu RoleID là 'R003', hiển thị thông báo và dừng chương trình
         echo "<script>alert('Bạn không có quyền truy cập vào trang này!'); window.location.href = '/webbantruyen/index.php';</script>";
         exit;
     }
