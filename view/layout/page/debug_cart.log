@@ -2,10 +2,10 @@ Array
 (
     [0] => Array
         (
-            [id] => P001
-            [name] => Truyện Doremon
-            [price] => 24000
-            [quantity] => 2
+            [id] => P002
+            [name] => Truyện Conan
+            [price] => 60000
+            [quantity] => 1
         )
 
 )
