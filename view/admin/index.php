@@ -1,5 +1,5 @@
 <?php
-session_start();/*
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
 
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
@@ -17,7 +17,7 @@ $stmt = $conn->prepare("SELECT RoleID FROM account WHERE Username = ?");
 $stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
-
+$IDrole = "";
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     if ($row['RoleID'] === 'R003') {
@@ -25,17 +25,16 @@ if ($result->num_rows > 0) {
         echo "<script>alert('Bạn không có quyền truy cập vào trang này!'); window.location.href = '/webbantruyen/index.php';</script>";
         exit;
     }
-
+    else
+        $IDrole = $row['RoleID'];
 } else {
     // Nếu không tìm thấy tài khoản, chuyển hướng đến trang đăng nhập
     header("Location: /webbantruyen/index.php?page=login");
     exit;
-}*/
- $IDrole = "R1";
-// Lấy thông tin RoleName từ bảng role
-/*
+}
+
 $stmt->close();
-$conn->close();*/
+$conn->close();
 ?>
 
 <!DOCTYPE html>
