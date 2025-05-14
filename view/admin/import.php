@@ -20,7 +20,7 @@
 
 <?php
 echo"
-    <input type='button' value='Nhập hàng' class='blue-btn' onclick='themHDN()' style='width:100%;'>
+    <input type='button' value='Nhập hàng' class='blue-btn THDN' onclick='themHDN()' style='width:100%;'>
     <table class='product-admin-table'>
         <tr>
             <th>Mã hóa đơn nhập</th>
@@ -56,7 +56,7 @@ echo"
                         </select>
                     </td>
                     <td class='function-icon'>
-                        <i class='fa-regular fa-eye detail-icon' onclick='ChitietHDN(`".$import["ImportID"]."`)'></i>
+                        <i class='fa-regular fa-eye detail-icon XemHDN' onclick='ChitietHDN(`".$import["ImportID"]."`)'></i>
                     </td>
                 </tr>";
         }

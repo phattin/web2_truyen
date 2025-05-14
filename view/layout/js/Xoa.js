@@ -59,10 +59,16 @@ function XoaRole(x){
         type: "GET",
         url: "../admin/XLXoaRole.php",
         data: { RoleID: x },
-        success:
-    function() {
-                alert("Xóa ROLE thành công");
-                location.reload();
+        dataType: "json",
+        success: function (response) {
+            console.log(response);
+            if (response.status==="success") {
+                alert("Xóa thành công");
+                
+            } else {
+                alert("Có lỗi xảy ra, vui lòng thử lại sau: " + response.message);
             }
+            location.reload();
+        },
     });
 }

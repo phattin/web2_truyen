@@ -50,6 +50,8 @@ function LuuRole() {
         dataType: "json",
         success: function (respose) {
             console.log(respose);
+            alert("Lưu thành công");
+            location.reload();
         }
     });
 }
