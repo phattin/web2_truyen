@@ -68,10 +68,12 @@
             // Mở database
             $conn = connectDB::getConnection();
             // Lệnh SQL đúng
-            $strSQL = "SELECT * 
+            $strSQL = "SELECT DISTINCT genre.* 
                        FROM genre
                        JOIN genre_detail ON genre.GenreID = genre_detail.GenreID 
-                       WHERE genre_detail.ProductID = ?";
+                       JOIN category ON category.CategoryID = genre_detail.CategoryID
+                       JOIN product ON product.CategoryID = category.CategoryID 
+                       WHERE ProductID = ?";
         
             // Thực hiện SQL
             $stmt = $conn->prepare($strSQL);

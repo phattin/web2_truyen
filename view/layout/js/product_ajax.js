@@ -24,7 +24,7 @@ $(document).ready(function () {
                                         <h3>${product.ProductName}</h3>
                                         <p class="price">${(
                                           Math.round(
-                                                (parseDouble(product.ImportPrice) *
+                                                (parseFloat(product.ImportPrice) *
                                                   ( 1 + parseFloat(product.ROS) ) 
                                               ) )
                                         ).toLocaleString("vi-VN")} VNĐ</p>
@@ -39,7 +39,7 @@ $(document).ready(function () {
                                             }">
                                             <input type="hidden" name="price" value="${(
                                               Math.round(
-                                                (parseDouble(product.ImportPrice) *
+                                                (parseFloat(product.ImportPrice) *
                                                   ( 1 + parseFloat(product.ROS) ) 
                                               ) )
                                             ).toLocaleString("vi-VN")}">
@@ -120,7 +120,7 @@ $(document).ready(function () {
                                         <h3>${product.ProductName}</h3>
                                         <p class="price">${(
                                           Math.round(
-                                                (parseDouble(product.ImportPrice) *
+                                                (parseFloat(product.ImportPrice) *
                                                   ( 1 + parseFloat(product.ROS) ) 
                                               ) )
                                         ).toLocaleString("vi-VN")} VNĐ</p>
@@ -135,7 +135,103 @@ $(document).ready(function () {
                                             }">
                                             <input type="hidden" name="price" value="${(
                                               Math.round(
-                                                (parseDouble(product.ImportPrice) *
+                                                (parseFloat(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
+                                            ).toLocaleString("vi-VN")}">
+                                            <input type="hidden" name="quantity" value="1">
+                                            <button type="button" class="btn-add-to-cart" data-id="${
+                                              product.ProductID
+                                            }">Thêm vào giỏ hàng</button>
+                                        </form>
+                                    </div>`;
+        });
+        htmlContent += `</div>`;
+        //Phan trang
+        var total_pages = response.total_pages;
+        if (total_pages != 1) {
+          htmlContent += `<div class="pagination"><ul>`;
+          for (i = 1; i <= total_pages; i++) {
+            if (i != 1)
+              var s =
+                '<li class="btn-pagination" data-page="' +
+                page +
+                '" data-page_number="' +
+                i +
+                '">' +
+                i +
+                "</li>";
+            else
+              var s =
+                '<li class="btn-pagination active" data-page="' +
+                page +
+                '" data-page_number="' +
+                i +
+                '">' +
+                i +
+                "</li>";
+            htmlContent += s;
+          }
+          htmlContent +=
+            '<li class="btn-pagination" data-page="${page}" data-page_number="2">&gt;</li>';
+          htmlContent += `</ul></div>`;
+        }
+        // Duyệt qua từng sản phẩm trong response và tạo HTML cho chúng
+        $("main.container").html(htmlContent);
+        history.pushState({ page: page }, "", "?act=" + page);
+      },
+      error: function (xhr, status, error) {
+        console.error("Lỗi Ajax:", error);
+        console.log("Phản hồi từ Server:", xhr.responseText); // Xem nội dung server trả về
+        alert("Lỗi: " + error);
+      },
+    });
+  });
+
+  //Click vào chủng loại
+  $(".menu-list-category").on("click", function (event) {
+    event.preventDefault();
+    var page = $(this).data("page");
+    var id = $(this).data("category");
+    page += "&category=" + id;
+    console.log("page: " + page);
+    console.log("categoryID: " + id);
+
+    $.ajax({
+      type: "GET",
+      url: "/webbantruyen/handle/switch_navbar.php?act=" + page,
+      dataType: "json",
+      success: function (response) {
+        console.log("response:", response);
+        htmlContent = `<div class="product-grid">`;
+        response.data.forEach(function (product) {
+          htmlContent += `<div class="product-item">
+                                        <a href="index.php?page=product_detail&id=${
+                                          product.ProductID
+                                        }">
+                                            <img src="view/layout/images/${
+                                              product.ProductImg
+                                            }" alt="${product.ProductName}">
+                                        </a>
+                                        <h3>${product.ProductName}</h3>
+                                        <p class="price">${(
+                                          Math.round(
+                                                (parseFloat(product.ImportPrice) *
+                                                  ( 1 + parseFloat(product.ROS) ) 
+                                              ) )
+                                        ).toLocaleString("vi-VN")} VNĐ</p>
+                                        
+                                        <!-- Form gửi dữ liệu sản phẩm đến cart.php -->
+                                        <form action="view/layout/page/cart.php" method="POST">
+                                            <input type="hidden" name="id" value="${
+                                              product.ProductID
+                                            }">
+                                            <input type="hidden" name="name" value="${
+                                              product.ProductName
+                                            }">
+                                            <input type="hidden" name="price" value="${(
+                                              Math.round(
+                                                (parseFloat(product.ImportPrice) *
                                                   ( 1 + parseFloat(product.ROS) ) 
                                               ) )
                                             ).toLocaleString("vi-VN")}">
@@ -212,6 +308,8 @@ $(document).ready(function () {
       success: function (response) {
         console.log("response:", response);
         htmlContent = `<div class="product-grid">`;
+        if(response.data == null || response.data == [])
+          htmlContent += "<h3>Không tìm thấy sản phẩm nào</h3>"
         response.data.forEach(function (product) {
           htmlContent += `<div class="product-item">
                                         <a href="index.php?page=product_detail&id=${
@@ -224,7 +322,7 @@ $(document).ready(function () {
                                         <h3>${product.ProductName}</h3>
                                         <p class="price">${(
                                           Math.round(
-                                                (parseDouble(product.ImportPrice) *
+                                                (parseFloat(product.ImportPrice) *
                                                   ( 1 + parseFloat(product.ROS) ) 
                                               ) )
                                         ).toLocaleString("vi-VN")} VNĐ</p>
@@ -239,7 +337,7 @@ $(document).ready(function () {
                                             }">
                                             <input type="hidden" name="price" value="${(
                                               Math.round(
-                                                (parseDouble(product.ImportPrice) *
+                                                (parseFloat(product.ImportPrice) *
                                                   ( 1 + parseFloat(product.ROS) ) 
                                               ) )
                                             ).toLocaleString("vi-VN")}">
@@ -299,32 +397,28 @@ $(document).ready(function () {
     event.preventDefault();
     const page = "home";
 
-    const minPrice = $("#min-price").val();
-    const maxPrice = $("#max-price").val();
+    const minPrice = parseInt($("#min-price").val()) || null;
+    const maxPrice = parseInt($("#max-price").val()) || null;
 
-    if (parseInt(minPrice) > parseInt(maxPrice)) {
+    if (minPrice && maxPrice && minPrice > maxPrice) {
       alert("Vui lòng nhập khoảng giá hợp lệ.");
       return;
     }
 
-    // Lấy các thể loại đã chọn
-    const selectedGenres = [];
-    $(".dropdown-filter-list input[type='checkbox']:checked").each(function () {
-      selectedGenres.push($(this).attr("id"));
-    });
+    // Lấy từ khóa tìm kiếm tên truyện
+    const searchKeyword = $("#filter-search").val().trim();
 
-    // Lấy trạng thái của truyện mới và truyện hot
-    const isNew = $("#new-filter").prop("checked");
-    const isHot = $("#hot-filter").prop("checked");
+    // Lấy các chủng loại đã chọn
+    const selectedCategories = $(".filter-list-category input:checked").map(function () {
+      return this.id;
+    }).get();
 
-    // Tạo dữ liệu để gửi đến máy chủ
     const filterData = {
+      search: searchKeyword,
       min_price: minPrice,
       max_price: maxPrice,
-      genres: selectedGenres,
-      is_new: isNew,
-      is_hot: isHot,
-      act: "filter", // Hoặc một hành động khác để xử lý lọc ở máy chủ
+      categories: selectedCategories,
+      act: "filter"
     };
 
     console.log("Dữ liệu lọc:", filterData);
@@ -335,87 +429,48 @@ $(document).ready(function () {
       data: filterData,
       dataType: "json",
       success: function (response) {
-        console.log("response:", response);
-        htmlContent = `<div class="product-grid">`;
+        console.log(response);
+        let htmlContent = `<div class="product-grid">`;
         response.data.forEach(function (product) {
-          htmlContent += `<div class="product-item">
-                                          <a href="index.php?page=product_detail&id=${
-                                            product.ProductID
-                                          }">
-                                              <img src="view/layout/images/${
-                                                product.ProductImg
-                                              }" alt="${product.ProductName}">
-                                          </a>
-                                          <h3>${product.ProductName}</h3>
-                                          <p class="price">${(
-                                            Math.round(
-                                                (parseDouble(product.ImportPrice) *
-                                                  ( 1 + parseFloat(product.ROS) ) 
-                                              ) )
-                                          ).toLocaleString("vi-VN")} VNĐ</p>
-                                          
-                                          <!-- Form gửi dữ liệu sản phẩm đến cart.php -->
-                                          <form action="view/layout/page/cart.php" method="POST">
-                                              <input type="hidden" name="id" value="${
-                                                product.ProductID
-                                              }">
-                                              <input type="hidden" name="name" value="${
-                                                product.ProductName
-                                              }">
-                                              <input type="hidden" name="price" value="${(
-                                                Math.round(
-                                                (parseDouble(product.ImportPrice) *
-                                                  ( 1 + parseFloat(product.ROS) ) 
-                                              ) )
-                                              ).toLocaleString("vi-VN")}">
-                                              <input type="hidden" name="quantity" value="1">
-                                              <button type="button" class="btn-add-to-cart" data-id="${
-                                                product.ProductID
-                                              }">Thêm vào giỏ hàng</button>
-                                          </form>
-                                      </div>`;
+          const price = Math.round(parseFloat(product.ImportPrice) * (1 + parseFloat(product.ROS)));
+          htmlContent += `
+            <div class="product-item">
+              <a href="index.php?page=product_detail&id=${product.ProductID}">
+                <img src="view/layout/images/${product.ProductImg}" alt="${product.ProductName}">
+              </a>
+              <h3>${product.ProductName}</h3>
+              <p class="price">${price.toLocaleString("vi-VN")} VNĐ</p>
+              <form action="view/layout/page/cart.php" method="POST">
+                <input type="hidden" name="id" value="${product.ProductID}">
+                <input type="hidden" name="name" value="${product.ProductName}">
+                <input type="hidden" name="price" value="${price}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="button" class="btn-add-to-cart" data-id="${product.ProductID}">Thêm vào giỏ hàng</button>
+              </form>
+            </div>`;
         });
         htmlContent += `</div>`;
-        //Phan trang
-        var total_pages = response.total_pages;
-        if (total_pages != 1) {
+
+        // Phân trang
+        if (response.total_pages && response.total_pages > 1) {
           htmlContent += `<div class="pagination"><ul>`;
-          for (i = 1; i <= total_pages; i++) {
-            if (i != 1)
-              var s =
-                '<li class="btn-pagination" data-page="' +
-                page +
-                '" data-page_number="' +
-                i +
-                '">' +
-                i +
-                "</li>";
-            else
-              var s =
-                '<li class="btn-pagination active" data-page="' +
-                page +
-                '" data-page_number="' +
-                i +
-                '">' +
-                i +
-                "</li>";
-            htmlContent += s;
+          for (let i = 1; i <= response.total_pages; i++) {
+            htmlContent += `<li class="btn-pagination ${i === 1 ? "active" : ""}" data-page="${page}" data-page_number="${i}">${i}</li>`;
           }
-          htmlContent +=
-            '<li class="btn-pagination" data-page="${page}" data-page_number="2">&gt;</li>';
           htmlContent += `</ul></div>`;
         }
-        // Duyệt qua từng sản phẩm trong response và tạo HTML cho chúng
+
         $("main.container").html(htmlContent);
         history.pushState({ page: page }, "", "?act=" + page);
       },
       error: function (xhr, status, error) {
         console.error("Lỗi Ajax:", error);
-        console.log("Phản hồi từ Server:", xhr.responseText); // Xem nội dung server trả về
+        console.log("Phản hồi từ Server:", xhr.responseText);
         alert("Lỗi: " + error);
       },
     });
   });
+
   
 
   //Hàm tìm kiếm
@@ -443,7 +498,7 @@ $(document).ready(function () {
                                             <h3>${product.ProductName}</h3>
                                             <p class="price">${(
                                               Math.round(
-                                                (parseDouble(product.ImportPrice) *
+                                                (parseFloat(product.ImportPrice) *
                                                   ( 1 + parseFloat(product.ROS) ) 
                                               ) )
                                             ).toLocaleString("vi-VN")} VNĐ</p>
@@ -458,7 +513,7 @@ $(document).ready(function () {
                                                 }">
                                                 <input type="hidden" name="price" value="${(
                                                   Math.round(
-                                                (parseDouble(product.ImportPrice) *
+                                                (parseFloat(product.ImportPrice) *
                                                   ( 1 + parseFloat(product.ROS) ) 
                                               ) )
                                                 ).toLocaleString("vi-VN")}">

@@ -21,12 +21,19 @@
     // Lấy thể loại từ URL nếu có
     $genre = isset($_GET['genre']) ? $_GET['genre'] : '';
 
+    // Lấy chủng loại từ URL nếu có
+    $category = isset($_GET['category']) ? $_GET['category'] : '';
+
     // Lấy toàn bộ sản phẩm
     $products = productDB::getAllProduct();
 
     // Lọc sản phẩm theo thể loại
     if ($genre != '')
         $products = productDB::getProductHasGenre($genre);
+
+    // Lọc sản phẩm theo chủng loại
+    if ($category != '')
+        $products = productDB::getProductHasCategory($category);
 
     $productsFound = $products; // Khởi tạo mảng sản phẩm đã tìm kiếm
     // // Gửi mảng vào để tìm kiếm

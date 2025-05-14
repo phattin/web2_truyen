@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 13, 2025 lúc 06:51 PM
+-- Thời gian đã tạo: Th5 14, 2025 lúc 06:24 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -49,40 +49,23 @@ INSERT INTO `account` (`Username`, `Password`, `RoleID`, `IsDeleted`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `catalogs`
+-- Cấu trúc bảng cho bảng `category`
 --
 
-CREATE TABLE `catalogs` (
-  `CatalogsID` varchar(10) NOT NULL,
-  `CatalogsName` varchar(50) NOT NULL
+CREATE TABLE `category` (
+  `CategoryID` varchar(10) NOT NULL,
+  `CategoryName` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `catalogs`
+-- Đang đổ dữ liệu cho bảng `category`
 --
 
-INSERT INTO `catalogs` (`CatalogsID`, `CatalogsName`) VALUES
-('C001', 'Hot'),
-('C002', 'Mới');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `catalogs_detail`
---
-
-CREATE TABLE `catalogs_detail` (
-  `ProductID` varchar(10) NOT NULL,
-  `CatalogsID` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `catalogs_detail`
---
-
-INSERT INTO `catalogs_detail` (`ProductID`, `CatalogsID`) VALUES
-('P001', 'C001'),
-('P002', 'C002');
+INSERT INTO `category` (`CategoryID`, `CategoryName`) VALUES
+('CG001', 'Truyện tranh siêu nhiên Nhật Bản'),
+('CG002', 'Truyện tranh trinh thám Nhật Bản'),
+('CG003', 'Truyện tranh tình cảm Hàn Quốc'),
+('CG004', 'Truyện tranh thiếu nhi Nhật Bản');
 
 -- --------------------------------------------------------
 
@@ -175,7 +158,7 @@ INSERT INTO `function` (`FunctionID`, `FunctionName`) VALUES
 CREATE TABLE `function_detail` (
   `RoleID` varchar(10) NOT NULL,
   `FunctionID` varchar(10) NOT NULL,
-  `Option` enum('Thêm','Sửa','Xóa') NOT NULL
+  `Option` enum('Xem','Thêm','Sửa','Xóa') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -183,43 +166,43 @@ CREATE TABLE `function_detail` (
 --
 
 INSERT INTO `function_detail` (`RoleID`, `FunctionID`, `Option`) VALUES
-('R001', 'F001', ''),
+('R001', 'F001', 'Xem'),
 ('R001', 'F001', 'Thêm'),
 ('R001', 'F001', 'Sửa'),
 ('R001', 'F001', 'Xóa'),
-('R001', 'F002', ''),
+('R001', 'F002', 'Xem'),
 ('R001', 'F002', 'Thêm'),
 ('R001', 'F002', 'Sửa'),
 ('R001', 'F002', 'Xóa'),
-('R001', 'F003', ''),
+('R001', 'F003', 'Xem'),
 ('R001', 'F003', 'Thêm'),
 ('R001', 'F003', 'Sửa'),
-('R001', 'F004', ''),
+('R001', 'F004', 'Xem'),
 ('R001', 'F004', 'Sửa'),
-('R001', 'F005', ''),
+('R001', 'F005', 'Xem'),
 ('R001', 'F005', 'Thêm'),
 ('R001', 'F005', 'Sửa'),
 ('R001', 'F005', 'Xóa'),
-('R001', 'F006', ''),
+('R001', 'F006', 'Xem'),
 ('R001', 'F006', 'Sửa'),
 ('R001', 'F006', 'Xóa'),
-('R001', 'F007', ''),
+('R001', 'F007', 'Xem'),
 ('R001', 'F007', 'Thêm'),
 ('R001', 'F007', 'Sửa'),
 ('R001', 'F007', 'Xóa'),
-('R001', 'F008', ''),
+('R001', 'F008', 'Xem'),
 ('R001', 'F008', 'Thêm'),
 ('R001', 'F008', 'Sửa'),
 ('R001', 'F008', 'Xóa'),
-('R001', 'F009', ''),
+('R001', 'F009', 'Xem'),
 ('R001', 'F009', 'Thêm'),
 ('R001', 'F009', 'Sửa'),
 ('R001', 'F009', 'Xóa'),
-('R001', 'F010', ''),
+('R001', 'F010', 'Xem'),
 ('R001', 'F010', 'Thêm'),
 ('R001', 'F010', 'Sửa'),
 ('R001', 'F010', 'Xóa'),
-('R001', 'F011', '');
+('R001', 'F011', 'Xem');
 
 -- --------------------------------------------------------
 
@@ -283,7 +266,7 @@ INSERT INTO `genre` (`GenreID`, `GenreName`) VALUES
 --
 
 CREATE TABLE `genre_detail` (
-  `ProductID` varchar(10) NOT NULL,
+  `CategoryID` varchar(10) NOT NULL,
   `GenreID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -291,141 +274,45 @@ CREATE TABLE `genre_detail` (
 -- Đang đổ dữ liệu cho bảng `genre_detail`
 --
 
-INSERT INTO `genre_detail` (`ProductID`, `GenreID`) VALUES
-('P001', 'G001'),
-('P002', 'G002'),
-('P001', 'G003'),
-('P001', 'G025'),
-('P001', 'G034'),
-('P002', 'G016'),
-('P002', 'G004'),
-('P002', 'G003'),
-('P002', 'G028'),
-('P002', 'G021'),
-('P001', 'G016'),
-('P003', 'G016'),
-('P003', 'G004'),
-('P003', 'G001'),
-('P003', 'G009'),
-('P003', 'G011'),
-('P003', 'G028'),
-('P003', 'G033'),
-('P003', 'G003'),
-('P004', 'G016'),
-('P004', 'G028'),
-('P004', 'G011'),
-('P004', 'G009'),
-('P004', 'G001'),
-('P004', 'G004'),
-('P004', 'G033'),
-('P004', 'G003'),
-('P005', 'G016'),
-('P005', 'G004'),
-('P005', 'G011'),
-('P005', 'G028'),
-('P005', 'G033'),
-('P006', 'G016'),
-('P006', 'G028'),
-('P006', 'G011'),
-('P006', 'G009'),
-('P006', 'G021'),
-('P006', 'G004'),
-('P006', 'G014'),
-('P006', 'G003'),
-('P007', 'G016'),
-('P007', 'G028'),
-('P007', 'G024'),
-('P007', 'G009'),
-('P007', 'G004'),
-('P007', 'G023'),
-('P008', 'G016'),
-('P008', 'G028'),
-('P008', 'G011'),
-('P008', 'G001'),
-('P008', 'G004'),
-('P008', 'G033'),
-('P008', 'G003'),
-('P009', 'G016'),
-('P009', 'G028'),
-('P009', 'G011'),
-('P009', 'G009'),
-('P009', 'G001'),
-('P009', 'G004'),
-('P009', 'G033'),
-('P009', 'G021'),
-('P010', 'G016'),
-('P010', 'G003'),
-('P010', 'G011'),
-('P010', 'G033'),
-('P010', 'G023'),
-('P010', 'G001'),
-('P001', 'G001'),
-('P002', 'G002'),
-('P001', 'G003'),
-('P001', 'G025'),
-('P001', 'G034'),
-('P002', 'G016'),
-('P002', 'G004'),
-('P002', 'G003'),
-('P002', 'G028'),
-('P002', 'G021'),
-('P001', 'G016'),
-('P003', 'G016'),
-('P003', 'G004'),
-('P003', 'G001'),
-('P003', 'G009'),
-('P003', 'G011'),
-('P003', 'G028'),
-('P003', 'G033'),
-('P003', 'G003'),
-('P004', 'G016'),
-('P004', 'G028'),
-('P004', 'G011'),
-('P004', 'G009'),
-('P004', 'G001'),
-('P004', 'G004'),
-('P004', 'G033'),
-('P004', 'G003'),
-('P005', 'G016'),
-('P005', 'G004'),
-('P005', 'G011'),
-('P005', 'G028'),
-('P005', 'G033'),
-('P006', 'G016'),
-('P006', 'G028'),
-('P006', 'G011'),
-('P006', 'G009'),
-('P006', 'G021'),
-('P006', 'G004'),
-('P006', 'G014'),
-('P006', 'G003'),
-('P007', 'G016'),
-('P007', 'G028'),
-('P007', 'G024'),
-('P007', 'G009'),
-('P007', 'G004'),
-('P007', 'G023'),
-('P008', 'G016'),
-('P008', 'G028'),
-('P008', 'G011'),
-('P008', 'G001'),
-('P008', 'G004'),
-('P008', 'G033'),
-('P008', 'G003'),
-('P009', 'G016'),
-('P009', 'G028'),
-('P009', 'G011'),
-('P009', 'G009'),
-('P009', 'G001'),
-('P009', 'G004'),
-('P009', 'G033'),
-('P009', 'G021'),
-('P010', 'G016'),
-('P010', 'G003'),
-('P010', 'G011'),
-('P010', 'G033'),
-('P010', 'G023'),
-('P010', 'G001');
+INSERT INTO `genre_detail` (`CategoryID`, `GenreID`) VALUES
+('CG004', 'G001'),
+('CG002', 'G002'),
+('CG004', 'G003'),
+('CG004', 'G025'),
+('CG004', 'G034'),
+('CG002', 'G016'),
+('CG002', 'G004'),
+('CG002', 'G003'),
+('CG002', 'G028'),
+('CG002', 'G021'),
+('CG004', 'G016'),
+('CG001', 'G016'),
+('CG001', 'G004'),
+('CG001', 'G001'),
+('CG001', 'G009'),
+('CG001', 'G011'),
+('CG001', 'G028'),
+('CG001', 'G033'),
+('CG001', 'G003'),
+('CG004', 'G001'),
+('CG002', 'G002'),
+('CG004', 'G003'),
+('CG004', 'G025'),
+('CG004', 'G034'),
+('CG002', 'G016'),
+('CG002', 'G004'),
+('CG002', 'G003'),
+('CG002', 'G028'),
+('CG002', 'G021'),
+('CG004', 'G016'),
+('CG001', 'G016'),
+('CG001', 'G004'),
+('CG001', 'G001'),
+('CG001', 'G009'),
+('CG001', 'G011'),
+('CG001', 'G028'),
+('CG001', 'G033'),
+('CG001', 'G003');
 
 -- --------------------------------------------------------
 
@@ -520,6 +407,7 @@ CREATE TABLE `product` (
   `ProductID` varchar(10) NOT NULL,
   `ProductName` varchar(50) NOT NULL,
   `ProductImg` varchar(255) NOT NULL,
+  `CategoryID` varchar(10) NOT NULL,
   `Author` varchar(50) NOT NULL,
   `Publisher` varchar(50) NOT NULL,
   `Quantity` int(5) NOT NULL,
@@ -534,18 +422,17 @@ CREATE TABLE `product` (
 -- Đang đổ dữ liệu cho bảng `product`
 --
 
-INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `Author`, `Publisher`, `Quantity`, `ImportPrice`, `ROS`, `Description`, `SupplierID`, `IsDeleted`) VALUES
-('P001', 'Truyện Doremon', 'doremon.jpg', 'Fujiko F. Fujio', 'NXB Kim Đồng', 30, 20000, 1.2, 'Truyện tranh hài hước', 'S001', '0'),
-('P002', 'Truyện Conan', 'conan.jpg', 'Gosho Aoyama', 'NXB Kim Đồng', 80, 40000, 1.5, 'Truyện trinh thám nổi tiếng', 'S002', '0'),
-('P003', 'Truyện One Piece', 'onepiece.jpg', 'Eiichiro Oda', 'NXB Kim Đồng', 120, 22500, 1.3, 'Truyện phiêu lưu hành động', 'S003', '0'),
-('P004', 'Truyện Naruto', 'naruto.jpg', 'Masashi Kishimoto', 'NXB Kim Đồng', 90, 27400, 1.4, 'Truyện ninja hấp dẫn', 'S004', '0'),
-('P005', 'Truyện Dragon Ball', 'dragonball.jpg', 'Akira Toriyama', 'NXB Kim Đồng', 110, 25000, 1.6, 'Truyện võ thuật viễn tưởng', 'S005', '0'),
-('P006', 'Truyện Attack on Titan', 'aot.jpg', 'Hajime Isayama', 'NXB Kim Đồng', 70, 48000, 1.8, 'Truyện hành động kịch tính', 'S006', '0'),
-('P007', 'Truyện Tokyo Revengers', 'tokyo.jpg', 'Ken Wakui', 'NXB Kim Đồng', 85, 118000, 1.7, 'Truyện du hành thời gian', 'S007', '0'),
-('P008', 'Truyện Jujutsu Kaisen', 'jujutsu.jpg', 'Gege Akutami', 'NXB Kim Đồng', 95, 150000, 1.5, 'Truyện chiến đấu huyền bí', 'S008', '0'),
-('P009', 'Truyện Black Clover', 'blackclover.jpg', 'Yūki Tabata', 'NXB Kim Đồng', 75, 60000, 1.3, 'Truyện phép thuật hành động', 'S009', '0'),
-('P010', 'Truyện Fairy Tail', 'fairytail.jpg', 'Hiro Mashima', 'NXB Kim Đồng', 88, 100000, 1.4, 'Truyện phiêu lưu phép thuật', 'S001', '0'),
-('P011', 'abc', 'tốt.jpg', 'abc', 'abc', 0, 0, 0, '0', 'S001', '0');
+INSERT INTO `product` (`ProductID`, `ProductName`, `ProductImg`, `CategoryID`, `Author`, `Publisher`, `Quantity`, `ImportPrice`, `ROS`, `Description`, `SupplierID`, `IsDeleted`) VALUES
+('P001', 'Truyện Doremon', 'doremon.jpg', 'CG004', 'Fujiko F. Fujio', 'NXB Kim Đồng', 30, 20000, 1.2, 'Truyện tranh hài hước', 'S001', '0'),
+('P002', 'Truyện Conan', 'conan.jpg', 'CG002', 'Gosho Aoyama', 'NXB Kim Đồng', 80, 40000, 1.5, 'Truyện trinh thám nổi tiếng', 'S002', '0'),
+('P003', 'Truyện One Piece', 'onepiece.jpg', 'CG001', 'Eiichiro Oda', 'NXB Kim Đồng', 120, 22500, 1.3, 'Truyện phiêu lưu hành động', 'S003', '0'),
+('P004', 'Truyện Naruto', 'naruto.jpg', 'CG001', 'Masashi Kishimoto', 'NXB Kim Đồng', 90, 27400, 1.4, 'Truyện ninja hấp dẫn', 'S004', '0'),
+('P005', 'Truyện Dragon Ball', 'dragonball.jpg', 'CG001', 'Akira Toriyama', 'NXB Kim Đồng', 110, 25000, 1.6, 'Truyện võ thuật viễn tưởng', 'S005', '0'),
+('P006', 'Truyện Attack on Titan', 'aot.jpg', 'CG001', 'Hajime Isayama', 'NXB Kim Đồng', 70, 48000, 1.8, 'Truyện hành động kịch tính', 'S006', '0'),
+('P007', 'Truyện Tokyo Revengers', 'tokyo.jpg', 'CG001', 'Ken Wakui', 'NXB Kim Đồng', 85, 118000, 1.7, 'Truyện du hành thời gian', 'S007', '0'),
+('P008', 'Truyện Jujutsu Kaisen', 'jujutsu.jpg', 'CG001', 'Gege Akutami', 'NXB Kim Đồng', 95, 150000, 1.5, 'Truyện chiến đấu huyền bí', 'S008', '0'),
+('P009', 'Truyện Black Clover', 'blackclover.jpg', 'CG001', 'Yūki Tabata', 'NXB Kim Đồng', 75, 60000, 1.3, 'Truyện phép thuật hành động', 'S009', '0'),
+('P010', 'Truyện Fairy Tail', 'fairytail.jpg', 'CG001', 'Hiro Mashima', 'NXB Kim Đồng', 88, 100000, 1.4, 'Truyện phiêu lưu phép thuật', 'S001', '0');
 
 -- --------------------------------------------------------
 
@@ -681,17 +568,10 @@ ALTER TABLE `account`
   ADD KEY `fk_role` (`RoleID`);
 
 --
--- Chỉ mục cho bảng `catalogs`
+-- Chỉ mục cho bảng `category`
 --
-ALTER TABLE `catalogs`
-  ADD PRIMARY KEY (`CatalogsID`);
-
---
--- Chỉ mục cho bảng `catalogs_detail`
---
-ALTER TABLE `catalogs_detail`
-  ADD PRIMARY KEY (`ProductID`,`CatalogsID`),
-  ADD KEY `CatalogsID` (`CatalogsID`);
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`CategoryID`);
 
 --
 -- Chỉ mục cho bảng `customer`
@@ -731,7 +611,7 @@ ALTER TABLE `genre`
 --
 ALTER TABLE `genre_detail`
   ADD KEY `fk_genre` (`GenreID`),
-  ADD KEY `fk_product_genre` (`ProductID`);
+  ADD KEY `fk_genre_category` (`CategoryID`);
 
 --
 -- Chỉ mục cho bảng `import_invoice`
@@ -753,7 +633,8 @@ ALTER TABLE `import_invoice_detail`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`ProductID`),
-  ADD KEY `fk_supplier_product` (`SupplierID`);
+  ADD KEY `fk_supplier_product` (`SupplierID`),
+  ADD KEY `fk_product_category` (`CategoryID`);
 
 --
 -- Chỉ mục cho bảng `promotion`
@@ -801,13 +682,6 @@ ALTER TABLE `account`
   ADD CONSTRAINT `fk_role` FOREIGN KEY (`RoleID`) REFERENCES `role` (`RoleID`);
 
 --
--- Các ràng buộc cho bảng `catalogs_detail`
---
-ALTER TABLE `catalogs_detail`
-  ADD CONSTRAINT `catalogs_detail_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`),
-  ADD CONSTRAINT `catalogs_detail_ibfk_2` FOREIGN KEY (`CatalogsID`) REFERENCES `catalogs` (`CatalogsID`);
-
---
 -- Các ràng buộc cho bảng `customer`
 --
 ALTER TABLE `customer`
@@ -831,7 +705,7 @@ ALTER TABLE `function_detail`
 --
 ALTER TABLE `genre_detail`
   ADD CONSTRAINT `fk_genre` FOREIGN KEY (`GenreID`) REFERENCES `genre` (`GenreID`),
-  ADD CONSTRAINT `fk_product_genre` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`);
+  ADD CONSTRAINT `fk_genre_category` FOREIGN KEY (`CategoryID`) REFERENCES `category` (`CategoryID`);
 
 --
 -- Các ràng buộc cho bảng `import_invoice`
@@ -851,6 +725,7 @@ ALTER TABLE `import_invoice_detail`
 -- Các ràng buộc cho bảng `product`
 --
 ALTER TABLE `product`
+  ADD CONSTRAINT `fk_product_category` FOREIGN KEY (`CategoryID`) REFERENCES `category` (`CategoryID`),
   ADD CONSTRAINT `fk_supplier_product` FOREIGN KEY (`SupplierID`) REFERENCES `supplier` (`SupplierID`);
 
 --

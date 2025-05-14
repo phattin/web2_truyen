@@ -1,6 +1,8 @@
 <?php
     require_once 'model/genreDB.php';
     $genres = genreDB::getAllGenre();
+    require_once 'model/categoryDB.php';
+    $categories = categoryDB::getAllCategory();
 ?>
 <nav>
     <div class="container">
@@ -18,8 +20,20 @@
                     </ul>
                 </div>
             </li>
-            <li><div class="menu-item" data-page="Hot">Hot</div></li>
-            <li><div class="menu-item" data-page="New">New</div></li>
+            <li class="dropdown">
+                <div class="menu-item" >Chủng loại ▼</div>
+                <div class="dropdown-menu">
+                    <ul class="dropdown-menu-list">
+                        <?php
+                        foreach ($categories as $category) {
+                            echo '<li data-mode="category" data-category="'.$category["CategoryID"].'" class="menu-list-category"><div>'.$category["CategoryName"].'</div></li>';
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </li>
+            <li><div class="menu-list-genre" data-mode="genre" data-genre="G016">Manga</div></li>
+            <li><div class="menu-list-genre" data-mode="genre" data-genre="G018">Manhwa</div></li>
         </ul>
     </div>
 </nav>
@@ -27,19 +41,21 @@
     <div class="filter-header">Bộ lọc:</div>
     <ul class="filter-list">
         <li class="filter-item">
-        <div class="filter-item" >Thể loại ▼</div>
+            <input type="text" placeholder="Tìm tên truyện" id="filter-search">
+        </li>
+        <li class="filter-item">
+            <div class="filter-item" >Chủng loại ▼</div>
             <div class="dropdown-filter">
-                <ul class="dropdown-filter-list">
+                <ul class="dropdown-filter-list" style="display: block;">
                     <?php
-                    foreach ($genres as $genre) {
-                        echo '<li class="filter-list-genre"><label for="'.$genre["GenreID"].'">'.$genre["GenreName"].'</label> <input id="'.$genre["GenreID"].'" type="checkbox"> </li>';
+                    foreach ($categories as $category) {
+                        echo '<li class="filter-list-category"><label for="'.$category["CategoryID"].'">'.$category["CategoryName"].'</label> <input id="'.$category["CategoryID"].'" type="checkbox"> </li>';
                     }
                     ?>
                 </ul>
             </div>
         </li>
-        <li class="filter-item"><label for="new-filter">Truyện mới</label> <input id="new-filter" type="checkbox"></li>
-        <li class="filter-item"><label for="hot-filter">Truyện hot</label> <input id="hot-filter" type="checkbox"></li>
+        
         <li class="filter-item">Giá:  
             <span class="filter-price-range">
                 <input type="number" id="min-price" placeholder="Từ" min="0"> -
