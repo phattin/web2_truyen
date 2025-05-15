@@ -15,7 +15,7 @@ function connectToDatabase() {
 /**
  * Xây dựng điều kiện tìm kiếm dựa trên username, từ khóa, địa chỉ và khoảng thời gian
  * 
- * @param mysqli $conn Kết nối cơ sở dữ liệu
+ * @param mysqli $conn
  * @param string $username Tên đăng nhập của khách hàng
  * @param string $search Từ khóa tìm kiếm
  * @param string $start_date Ngày bắt đầu

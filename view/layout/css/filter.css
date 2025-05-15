@@ -1,0 +1,109 @@
+/* Bộ lọc mặc định (PC) */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    font-family: sans-serif;
+    justify-content: space-between;
+}
+
+.filter-header {
+    font-weight: bold;
+    font-size: 18px;
+    min-width: 100px;
+}
+
+.filter-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-item input[type="text"],
+.filter-item input[type="number"] {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 120px;
+}
+
+.dropdown-filter {
+    position: relative;
+}
+
+.dropdown-filter-list {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    top: 100%;
+    left: 0;
+    z-index: 100;
+    width: 280px;
+    display: none;
+}
+
+.filter-item:hover .dropdown-filter-list {
+    display: block;
+}
+
+.filter-button {
+    padding: 8px 16px;
+    background-color: #074b80;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* ✅ Responsive Mobile (<768px) */
+@media (max-width: 768px) {
+    .filter-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .filter-list {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .filter-item {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filter-item input[type="text"],
+    .filter-item input[type="number"] {
+        width: 100%;
+    }
+
+    .dropdown-filter-list {
+        position: static;
+        width: 100%;
+    }
+
+    .filter-button {
+        align-self: center;
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -131,7 +131,7 @@
                     error: function (xhr, status, error) {
                         console.error("Lỗi:", error);
                         console.log("Phản hồi từ server:", xhr.responseText);
-                        alert("Có lỗi xảy ra trong quá trình đăng nhập. Vui lòng thử lại.");
+                        alert("Sai tên tài khoản hoặc Email ");
                     }
                 });
             });

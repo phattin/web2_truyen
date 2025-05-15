@@ -1,0 +1,95 @@
+      @media screen and (max-width: 992px) {
+            .container {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .search-bar {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                margin-top: 10px;
+            }
+
+            .search-bar input {
+                width: 85%;
+                font-size: 16px;
+                padding: 8px;
+            }
+
+            .search-bar i {
+                font-size: 18px;
+                padding: 8px;
+            }
+
+            .auth-container {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .user-menu {
+                margin-left: 0;
+            }
+
+            .user-info {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .dropdown-menu {
+                left: auto;
+                right: 0;
+                margin-left: 0;
+            }
+
+            #cart-icon {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .cart-count {
+                top: -4px;
+                right: -4px;
+                width: 18px;
+                height: 18px;
+                font-size: 11px;
+            }
+
+            .auth-buttons a {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .logo img {
+                width: 120px;
+            }
+
+            .search-bar input {
+                font-size: 14px;
+                padding: 6px;
+            }
+
+            .search-bar i {
+                font-size: 16px;
+                padding: 6px;
+            }
+
+            .user-info span {
+                display: none;
+            }
+
+            .user-info i {
+                font-size: 18px;
+            }
+
+            .dropdown-menu a {
+                font-size: 14px;
+                padding: 8px 10px;
+            }
+        }
