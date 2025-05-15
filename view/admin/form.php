@@ -54,43 +54,72 @@
         echo json_encode($data);
         
     }
-//chitiet NV
-if(isset($_POST["usernameNV"])) {
-    $username = $_POST["usernameNV"];
+// chi tiet TK 
+if(isset($_POST["Username"])) {
+        $Username = $_POST["Username"];
 
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
-    $conn = connectDB::getConnection();
-    $sql_data='SELECT * FROM `employee` WHERE `Username`="'.$username.'";';
-    $result_sql=$conn->query( $sql_data );
-    while($row=$result_sql->fetch_assoc()){
-        $employeeID = $row["EmployeeID"];
-        $fullname = $row["Fullname"];
-        $username = $row["Username"];
-        $birthDay = $row["BirthDay"];
-        $phone = $row["Phone"];
-        $email = $row["Email"];
-        $address = $row["Address"];
-        $Gender = $row["Gender"];
-        $salary = $row["Salary"];
-        $startDate = $row["StartDate"];
-        $status = $row["Status"];
-    };
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
+        $conn = connectDB::getConnection();
+        $sql_data='SELECT * FROM `account` WHERE `Username` ="'.$Username.'";';
+        $result_sql=$conn->query( $sql_data );
+        while($row=$result_sql->fetch_assoc()){
+            $username = $row["Username"];
+            $Password = $row["Password"];
+            $RoleID = $row["RoleID"];
+            $isDeleted = isset($row["IsDeleted"]) ? (int) $row["IsDeleted"] : 0;
+        };
+ 
+        header('Content-Type: application/json');
 
-    echo json_encode([
-        "employeeID" => $employeeID,
-        "fullname" => $fullname,
-        "username" => $username,
-        "birthDay" => $birthDay,
-        "phone" => $phone,
-        "email" => $email,
-        "address" => $address,
-        "Gender" => $Gender,
-        "salary" => $salary,
-        "startDate" => $startDate,
-        "status" => $status,
-    ]);
-    $conn->close();
-}
+        echo json_encode([
+            "username" => $username,
+            "Password" => $Password,
+            "RoleID" => $RoleID,
+            "isDeleted" => $isDeleted,
+        ]);
+    }
+
+
+//chitiet NV 
+    if(isset($_POST["EmployeeID"])) {
+        $EmployeeID = $_POST["EmployeeID"];
+
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
+        $conn = connectDB::getConnection();
+        $sql_data='SELECT * FROM `employee` WHERE `EmployeeID` ="'.$EmployeeID.'";';
+        $result_sql=$conn->query( $sql_data );
+        while($row=$result_sql->fetch_assoc()){
+            $employeeID = $row["EmployeeID"];
+            $fullname = $row["Fullname"];
+            $username = $row["Username"];
+            $birthDay = $row["BirthDay"];
+            $phone = $row["Phone"];
+            $email = $row["Email"];
+            $address = $row["Address"];
+            $Gender = $row["Gender"];
+            $salary = $row["Salary"];
+            $startDate = $row["StartDate"];
+            $isDeleted = isset($row["IsDeleted"]) ? (int) $row["IsDeleted"] : 0;
+        };
+        if(is_null($isDeleted)){
+            $isDeleted='0';
+        }
+        header('Content-Type: application/json');
+
+        echo json_encode([
+            "employeeID" => $employeeID,
+            "fullname" => $fullname,
+            "username" => $username,
+            "birthDay" => $birthDay,
+            "phone" => $phone,
+            "email" => $email,
+            "address" => $address,
+            "Gender" => $Gender,
+            "salary" => $salary,
+            "startDate" => $startDate,
+            "isDeleted" => $isDeleted,
+        ]);
+    }
 
 //chitiet KH
 

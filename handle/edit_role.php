@@ -1,5 +1,5 @@
 <?php
-include("../../model/ThemSuaXoa.php");
+include("../model/ThemSuaXoa.php");
 $thong_tin =[];
 $thong_tin = $_POST;
 $a= new ThemSuaXoa();
@@ -163,6 +163,6 @@ if(isset($thong_tin['XemTK'])) {
     }
 
 echo "<script>alert('ĐÃ THAY ĐỔI CHỨC NĂNG ROLE!!!!');</script>";
-header("Location: ../admin/");
+header("Location: ../view/admin/");
 
 ?>

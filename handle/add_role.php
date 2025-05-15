@@ -1,7 +1,7 @@
 <?php
-include("../../model/ThemSuaXoa.php");
-include("../../model/ID.php");
-include("../../model/connectDB.php");
+include("../model/ThemSuaXoa.php");
+include("../model/ID.php");
+include("../model/connectDB.php");
 $a = new connectDB();
 $conn = $a->getConnection();
 
@@ -171,6 +171,6 @@ if (isset($_POST['submit'])) {
 
 
     echo "<script>alert('ĐÃ THÊM ROLE MỚI!!!!');</script>";
-    header("Location: ../admin/");
+    header("Location: ../view/admin/");
 }
 ?>

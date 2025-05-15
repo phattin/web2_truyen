@@ -13,8 +13,7 @@
     if(isset($_GET["ProductName"])){
         $ProductID = $newIDSP; // ID sản phẩm mới
         $ProductName = $_GET["ProductName"];
-        $ProductImg = $_GET["ProductImg"];
-        $Author = $_GET["Author"];
+         $Author = $_GET["Author"];
         $Publisher = $_GET["Publisher"];
         $Quantity = (int) $_GET["Quantity"];
         $ImportPrice = (int) $_GET["ImportPrice"];
@@ -32,7 +31,8 @@
         $a = new ThemSuaXoa();
         $a->Them($sql);
         header("Location: /webbantruyen/view/admin/");
-    }
+    }     $ProductImg = $_GET["ProductImg"];
+  
 
     //Xóa sản phẩm
     if(isset($_GET["ProductID"])){

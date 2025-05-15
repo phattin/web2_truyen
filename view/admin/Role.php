@@ -18,7 +18,7 @@ while ($row = $result_acc->fetch_assoc()) {
             <td>" . $row["RoleID"] . "</td>
             <td>" . $row["RoleName"] . "</td>
             <td class='function-icon'>
-                <i class='fa-regular fa-eye detail-icon' onclick='ChitietRole(\"" . $row["RoleID"] . "\") ')'></i>
+                <i class='fa-regular fa-eye detail-icon XemQ' onclick='ChitietRole(\"" . $row["RoleID"] . "\") ')'></i>
                 <div class='SSP'><i class='fa-regular fa-pen-to-square edit-icon ' onclick='SuaRole(\"" . $row["RoleID"] . "\") ')'></i></div>
                 <div class='XSP'><i class='fa-regular fa-trash-can delete-icon '  onclick='XoaRole(\"".$row["RoleID"]."\")'></i></div>
             </td>

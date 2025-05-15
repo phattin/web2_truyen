@@ -2,7 +2,7 @@
 <html lang="vi">
      <div class="Them" style="position: relative;">
         <button value="X" class="blue-btn" onclick="Close_ChucNang()">Close</button>
-        <form action="XLThemRole.php" method="POST">
+        <form action="../../handle/add_role.php" method="POST">
             <table>
                 <tr>
                     <td><p>RoleName:</p><input type="text" name="RoleName"></td>

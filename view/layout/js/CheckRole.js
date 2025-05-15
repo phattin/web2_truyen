@@ -230,7 +230,6 @@ function CheckRole(RoleID) {
         data: { RoleID: RoleID },
         dataType: "json",
         success: function (response) {
-            console.log(response);
             HiddenAll();
             response.forEach(response => {
                 if(response["FunctionID"] === "F001"){
