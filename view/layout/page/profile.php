@@ -10,10 +10,9 @@ $totalSpending = 0;
 
 // Lấy thông tin người dùng
 if (!empty($username)) {
-    $sql = "SELECT c.Email, c.Fullname, c.Address, c.Phone, c.TotalSpending 
+    $sql = "SELECT c.Email, c.Fullname, c.Address, c.Phone, c.TotalSpending, c.Username
             FROM customer c 
-            JOIN account a ON a.Username = c.Username 
-            WHERE a.Username = ?";
+            WHERE c.Username = ?";
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("s", $username);
         $stmt->execute();
@@ -38,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone = trim($_POST['phone'] ?? '');
 
     if (!empty($newUsername) && !empty($newEmail)) {
+        // Kiểm tra username và email đã tồn tại chưa (trừ của người dùng hiện tại)
         $checkSQL = "SELECT Username, Email FROM customer WHERE (Username = ? OR Email = ?) AND Username != ?";
         if ($stmt = $conn->prepare($checkSQL)) {
             $stmt->bind_param("sss", $newUsername, $newEmail, $username);
@@ -45,50 +45,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
-                echo "<script>alert('❌ Username hoặc Email đã tồn tại!'); window.location.href='profile.php';</script>";
+                // Kiểm tra chi tiết để hiển thị thông báo lỗi cụ thể
+                $existingData = $result->fetch_assoc();
+                if ($existingData['Username'] == $newUsername) {
+                    echo "<script>alert('Username đã tồn tại!'); window.location.href='index.php?page=profile';</script>";
+                } else {
+                    echo "<script>alert('Email đã tồn tại!'); window.location.href='index.php?page=profile';</script>";
+                }
                 exit();
             } else {
-                $conn->begin_transaction();
                 try {
-                    // Vô hiệu hóa kiểm tra khóa ngoại
-                    $conn->query("SET FOREIGN_KEY_CHECKS=0;");
-
-                    // Cập nhật customer trước
+                    // Chỉ cập nhật thông tin trong bảng customer, cho phép đổi Username
                     $updateCustomerSQL = "UPDATE customer SET Username = ?, Email = ?, Fullname = ?, Address = ?, Phone = ? WHERE Username = ?";
                     if ($stmt = $conn->prepare($updateCustomerSQL)) {
                         $stmt->bind_param("ssssss", $newUsername, $newEmail, $fullname, $address, $phone, $username);
                         if (!$stmt->execute()) {
-                            throw new Exception("❌ Lỗi cập nhật khách hàng: " . $stmt->error);
+                            throw new Exception("Lỗi cập nhật thông tin: " . $stmt->error);
                         }
+                        
+                        // Cập nhật session với username mới
+                        $_SESSION['username'] = $newUsername;
+                        echo "<script>alert('Cập nhật thành công!'); window.location.href='index.php?page=profile';</script>";
+                        exit();
                     }
-
-                    // Cập nhật account
-                    $updateAccountSQL = "UPDATE account SET Username = ? WHERE Username = ?";
-                    if ($stmt = $conn->prepare($updateAccountSQL)) {
-                        $stmt->bind_param("ss", $newUsername, $username);
-                        if (!$stmt->execute()) {
-                            throw new Exception("❌ Lỗi cập nhật tài khoản: " . $stmt->error);
-                        }
-                    }
-
-                    // Bật lại kiểm tra khóa ngoại
-                    $conn->query("SET FOREIGN_KEY_CHECKS=1;");
-
-                    $conn->commit();
-                    $_SESSION['username'] = $newUsername;
-                    echo "<script>alert('✅ Cập nhật thành công!'); window.location.href='index.php?page=profile';</script>";
-                    exit();
                 } catch (Exception $e) {
-                    $conn->rollback();
                     echo "<script>alert('" . addslashes($e->getMessage()) . "'); window.location.href='index.php?page=profile';</script>";
                     exit();
                 }
             }
         } else {
-            die("❌ Lỗi kiểm tra dữ liệu trùng: " . $conn->error);
+            die("Lỗi kiểm tra dữ liệu trùng: " . $conn->error);
         }
     } else {
-        echo "<script>alert('⚠️ Vui lòng nhập đầy đủ thông tin!'); window.location.href='index.php?page=profile';</script>";
+        echo "<script>alert('Vui lòng nhập đầy đủ thông tin!'); window.location.href='index.php?page=profile';</script>";
         exit();
     }
 }
@@ -115,8 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn cập nhật thông tin?');">
             <div class="profile-info">
                 <p><strong>Username:</strong> <input type="text" name="username"
-                        value="<?= htmlspecialchars($username) ?>" disabled> <button type="button" class="btn-edit"
-                        onclick="toggleEdit(this)">Sửa</button></p>
+                        value="<?= htmlspecialchars($username) ?>" disabled> <button type="button" class="btn-edit" onclick="toggleEdit(this)">Sửa</button></p>
                 <p><strong>Email:</strong> <input type="email" name="email" value="<?= htmlspecialchars($email) ?>"
                         disabled> <button type="button" class="btn-edit" onclick="toggleEdit(this)">Sửa</button></p>
                 <p><strong>Họ và tên:</strong> <input type="text" name="fullname"

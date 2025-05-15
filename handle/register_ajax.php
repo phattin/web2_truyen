@@ -55,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = trim($_POST['address'] ?? '');
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm-password'] ?? '';
-    $roleID = 'R003';
     $isDeleted = 0; // Giá trị mặc định cho IsDeleted
 
     // Kiểm tra dữ liệu đầu vào
@@ -109,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         // Kiểm tra tên đăng nhập đã tồn tại chưa
-        $stmt = $conn->prepare("SELECT * FROM account WHERE Username = ?");
+        $stmt = $conn->prepare("SELECT * FROM customer WHERE Username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $usernameResult = $stmt->get_result();
@@ -132,41 +131,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
 
-        // Bắt đầu transaction để đảm bảo tính nhất quán của dữ liệu
-        $conn->begin_transaction();
-
         // Mã hóa mật khẩu
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        // Thêm tài khoản vào bảng account
-        $stmt = $conn->prepare("INSERT INTO account (Username, Password, RoleID, IsDeleted) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("sssi", $username, $hashedPassword, $roleID, $isDeleted);
+        // Tạo CustomerID
+        $customerID = generateCustomerID($conn);
+        
+        // Thêm thông tin vào bảng customer với Password và IsDeleted
+        $stmt = $conn->prepare("INSERT INTO customer (CustomerID, Username, Fullname, Email, Phone, Address, Password, IsDeleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssi", $customerID, $username, $fullname, $email, $phone, $address, $hashedPassword, $isDeleted);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            // Tạo CustomerID và thêm vào bảng customer
-            $customerID = generateCustomerID($conn);
-            $stmt = $conn->prepare("INSERT INTO customer (CustomerID, Username, Fullname, Email, Phone, Address) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssss", $customerID, $username, $fullname, $email, $phone, $address);
-            $stmt->execute();
-
-            if ($stmt->affected_rows > 0) {
-                // Hoàn tất transaction
-                $conn->commit();
-                $response["success"] = true;
-                $response["message"] = "Đăng ký thành công!";
-            } else {
-                // Rollback nếu thêm vào bảng customer thất bại
-                $conn->rollback();
-                $response["message"] = "Lỗi khi thêm thông tin khách hàng: " . $stmt->error;
-            }
+            $response["success"] = true;
+            $response["message"] = "Đăng ký thành công!";
         } else {
-            // Rollback nếu thêm vào bảng account thất bại
-            $conn->rollback();
-            $response["message"] = "Lỗi khi tạo tài khoản: " . $stmt->error;
+            $response["message"] = "Lỗi khi đăng ký tài khoản: " . $stmt->error;
         }
     } catch (Exception $e) {
-        @$conn->rollback();
         $response["message"] = "Lỗi hệ thống: " . $e->getMessage();
     }
 }

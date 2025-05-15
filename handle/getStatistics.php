@@ -6,6 +6,17 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/order_history_util
 $startDate = isset($_POST['startDate']) ? $_POST['startDate'] : null;
 $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : null;
 
+// Lấy tham số sắp xếp
+$customerSort = isset($_POST['customerSort']) ? $_POST['customerSort'] : 'desc';
+$productSort = isset($_POST['productSort']) ? $_POST['productSort'] : 'desc';
+$invoiceSort = isset($_POST['invoiceSort']) ? $_POST['invoiceSort'] : 'desc';
+
+// Đảm bảo tham số sắp xếp hợp lệ
+$validSortOrders = ['asc', 'desc'];
+$customerSort = in_array($customerSort, $validSortOrders) ? $customerSort : 'desc';
+$productSort = in_array($productSort, $validSortOrders) ? $productSort : 'desc';
+$invoiceSort = in_array($invoiceSort, $validSortOrders) ? $invoiceSort : 'desc';
+
 if (!$startDate || !$endDate) {
     echo json_encode([
         'status' => 'error',
@@ -29,14 +40,14 @@ try {
     // Summary statistics
     $summary = getOrderSummary($conn, $startDate, $endDate);
     
-    // Top 5 customers
-    $topCustomers = getTopCustomers($conn, $startDate, $endDate);
+    // Top 5 customers với tham số sắp xếp
+    $topCustomers = getTopCustomers($conn, $startDate, $endDate, $customerSort);
     
-    // Top 5 products
-    $topProducts = getTopProducts($conn, $startDate, $endDate);
+    // Top 5 products với tham số sắp xếp
+    $topProducts = getTopProducts($conn, $startDate, $endDate, $productSort);
     
-    // Invoice list
-    $invoices = getInvoiceList($conn, $startDate, $endDate);
+    // Invoice list với tham số sắp xếp
+    $invoices = getInvoiceList($conn, $startDate, $endDate, $invoiceSort);
     
     // Generate HTML output
     $html = generateStatisticsHTML($summary, $topCustomers, $topProducts, $invoices);
@@ -73,8 +84,9 @@ function getOrderSummary($conn, $startDate, $endDate) {
 
 /**
  * Lấy top 5 khách hàng mua nhiều nhất
+ * @param string $sortOrder 'asc' hoặc 'desc'
  */
-function getTopCustomers($conn, $startDate, $endDate) {
+function getTopCustomers($conn, $startDate, $endDate, $sortOrder = 'desc') {
     $sql = "
         SELECT 
             c.CustomerID, 
@@ -86,7 +98,7 @@ function getTopCustomers($conn, $startDate, $endDate) {
         JOIN customer c ON si.CustomerID = c.CustomerID
         WHERE si.Date BETWEEN ? AND ?
         GROUP BY c.CustomerID, c.FullName, c.Username
-        ORDER BY TotalSpent DESC
+        ORDER BY TotalSpent " . strtoupper($sortOrder) . "
         LIMIT 5
     ";
     
@@ -99,8 +111,9 @@ function getTopCustomers($conn, $startDate, $endDate) {
 
 /**
  * Lấy top 5 sản phẩm bán chạy nhất
+ * @param string $sortOrder 'asc' hoặc 'desc'
  */
-function getTopProducts($conn, $startDate, $endDate) {
+function getTopProducts($conn, $startDate, $endDate, $sortOrder = 'desc') {
     $sql = "
         SELECT 
             p.ProductID,
@@ -113,7 +126,7 @@ function getTopProducts($conn, $startDate, $endDate) {
         JOIN product p ON sid.ProductID = p.ProductID
         WHERE si.Date BETWEEN ? AND ?
         GROUP BY p.ProductID, p.ProductName, p.Author
-        ORDER BY TotalQuantity DESC
+        ORDER BY TotalQuantity " . strtoupper($sortOrder) . "
         LIMIT 5
     ";
     
@@ -126,8 +139,9 @@ function getTopProducts($conn, $startDate, $endDate) {
 
 /**
  * Lấy danh sách hóa đơn trong khoảng thời gian
+ * @param string $sortOrder 'asc' hoặc 'desc'
  */
-function getInvoiceList($conn, $startDate, $endDate) {
+function getInvoiceList($conn, $startDate, $endDate, $sortOrder = 'desc') {
     $sql = "
         SELECT 
             si.SalesID, 
@@ -138,7 +152,7 @@ function getInvoiceList($conn, $startDate, $endDate) {
         FROM sales_invoice si
         JOIN customer c ON si.CustomerID = c.CustomerID
         WHERE si.Date BETWEEN ? AND ?
-        ORDER BY si.Date DESC, si.TotalPrice DESC
+        ORDER BY si.TotalPrice " . strtoupper($sortOrder) . ", si.Date DESC
     ";
     
     $stmt = $conn->prepare($sql);

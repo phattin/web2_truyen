@@ -2,17 +2,9 @@ Array
 (
     [0] => Array
         (
-            [id] => P002
-            [name] => Truyện Conan
-            [price] => 100000
-            [quantity] => 1
-        )
-
-    [1] => Array
-        (
-            [id] => P003
-            [name] => Truyện One Piece
-            [price] => 51750
+            [id] => P001
+            [name] => Truyện Doremon
+            [price] => 44000
             [quantity] => 1
         )
 

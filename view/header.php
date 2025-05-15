@@ -13,6 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="view/layout/css/right_header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- FontAwesome -->
+    <link rel="stylesheet" href="view/layout/css/headerResponsive.css">
 </head>
 
 <body>
