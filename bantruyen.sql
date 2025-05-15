@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 14, 2025 lúc 06:24 AM
+-- Thời gian đã tạo: Th5 15, 2025 lúc 10:08 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `account` (
   `Username` varchar(50) NOT NULL,
   `Password` varchar(255) NOT NULL,
+  `EmployeeID` varchar(10) NOT NULL,
   `RoleID` varchar(10) NOT NULL,
   `IsDeleted` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -38,13 +39,8 @@ CREATE TABLE `account` (
 -- Đang đổ dữ liệu cho bảng `account`
 --
 
-INSERT INTO `account` (`Username`, `Password`, `RoleID`, `IsDeleted`) VALUES
-('admin', 'admin123', 'R001', 0),
-('kh01', 'password02', 'R003', 0),
-('nv01', 'password01', 'R002', 0),
-('phattin', '$2y$10$LGxvas5xpea.HEvxLjVXxug4AdQaJnP5txgiDer2wNf2Fjy4W2KCy', 'R001', 0),
-('phattin123', '$2y$10$U0q2hbQEySm2GG4ak93kJ.AThbIctl5iWNu0NqGek/XcQ8IZ6u/B2', 'R003', 0),
-('tin', '$2y$10$2aX5DfDLqgukmqP7eKBY3OL/r0TW3kwQpxTc9ZbnoBlXiUZVGolqS', 'R003', 0);
+INSERT INTO `account` (`Username`, `Password`, `EmployeeID`, `RoleID`, `IsDeleted`) VALUES
+('phattin', '$2y$10$LGxvas5xpea.HEvxLjVXxug4AdQaJnP5txgiDer2wNf2Fjy4W2KCy', 'E002', 'R001', 0);
 
 -- --------------------------------------------------------
 
@@ -77,6 +73,7 @@ CREATE TABLE `customer` (
   `CustomerID` varchar(10) NOT NULL,
   `Fullname` varchar(50) NOT NULL,
   `Username` varchar(50) NOT NULL,
+  `Password` varchar(500) NOT NULL,
   `Email` varchar(50) NOT NULL,
   `Address` varchar(255) NOT NULL,
   `Phone` varchar(25) NOT NULL,
@@ -88,10 +85,10 @@ CREATE TABLE `customer` (
 -- Đang đổ dữ liệu cho bảng `customer`
 --
 
-INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`, `Phone`, `TotalSpending`, `IsDeleted`) VALUES
-('C001', 'Nguyễn Văn A', 'kh01', 'nguyenvana@gmail.com', 'Hà Nội', '0987654321', 1500000, 0),
-('C003', 'Nguyen Phat Tin', 'phattin123', 'phattin123@gmail.com', 'abc', '0987654321', 0, 0),
-('C004', 'Phat Tin', 'tin', 'tin@gmail.com', '123456', '0987654321', 0, 0);
+INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Password`, `Email`, `Address`, `Phone`, `TotalSpending`, `IsDeleted`) VALUES
+('C001', 'Nguyễn Văn A', 'kh01', '', 'nguyenvana@gmail.com', 'Hà Nội', '0987654321', 1500000, 0),
+('C003', 'Nguyen Phat Tin', 'phattin123', '', 'phattin123@gmail.com', 'abc', '0987654321', 0, 0),
+('C004', 'Phat Tin', 'tin', '', 'tin@gmail.com', '123456', '0987654321', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -102,7 +99,6 @@ INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Email`, `Address`
 CREATE TABLE `employee` (
   `EmployeeID` varchar(10) NOT NULL,
   `Fullname` varchar(50) NOT NULL,
-  `Username` varchar(50) NOT NULL,
   `BirthDay` date NOT NULL,
   `Phone` varchar(12) NOT NULL,
   `Email` varchar(50) NOT NULL,
@@ -117,9 +113,9 @@ CREATE TABLE `employee` (
 -- Đang đổ dữ liệu cho bảng `employee`
 --
 
-INSERT INTO `employee` (`EmployeeID`, `Fullname`, `Username`, `BirthDay`, `Phone`, `Email`, `Address`, `Gender`, `Salary`, `StartDate`, `IsDeleted`) VALUES
-('E001', 'Trần Văn B', 'nv01', '1990-05-20', '0981234567', 'tranvanb@gmail.com', 'Hồ Chí Minh', 'Nam', 7000000, '2024-01-01', 0),
-('E002', 'Phát Tín', 'phattin', '2005-01-01', '0987654123', 'phattin@gmail.com', 'abc', 'Nam', 10000000, '2024-12-12', 0);
+INSERT INTO `employee` (`EmployeeID`, `Fullname`, `BirthDay`, `Phone`, `Email`, `Address`, `Gender`, `Salary`, `StartDate`, `IsDeleted`) VALUES
+('E001', 'Trần Văn B', '1990-05-20', '0981234567', 'tranvanb@gmail.com', 'Hồ Chí Minh', 'Nam', 7000000, '2024-01-01', 0),
+('E002', 'Phát Tín', '2005-01-01', '0987654123', 'phattin@gmail.com', 'abc', 'Nam', 10000000, '2024-12-12', 0);
 
 -- --------------------------------------------------------
 
@@ -565,7 +561,8 @@ INSERT INTO `supplier` (`SupplierID`, `SupplierName`, `Phone`, `Email`, `Address
 --
 ALTER TABLE `account`
   ADD PRIMARY KEY (`Username`),
-  ADD KEY `fk_role` (`RoleID`);
+  ADD KEY `fk_role` (`RoleID`),
+  ADD KEY `fk_account_employee` (`EmployeeID`);
 
 --
 -- Chỉ mục cho bảng `category`
@@ -584,8 +581,7 @@ ALTER TABLE `customer`
 -- Chỉ mục cho bảng `employee`
 --
 ALTER TABLE `employee`
-  ADD PRIMARY KEY (`EmployeeID`),
-  ADD KEY `fk_account_employee` (`Username`);
+  ADD PRIMARY KEY (`EmployeeID`);
 
 --
 -- Chỉ mục cho bảng `function`
@@ -679,19 +675,8 @@ ALTER TABLE `supplier`
 -- Các ràng buộc cho bảng `account`
 --
 ALTER TABLE `account`
+  ADD CONSTRAINT `fk_account_employee` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`),
   ADD CONSTRAINT `fk_role` FOREIGN KEY (`RoleID`) REFERENCES `role` (`RoleID`);
-
---
--- Các ràng buộc cho bảng `customer`
---
-ALTER TABLE `customer`
-  ADD CONSTRAINT `fk_account_customer` FOREIGN KEY (`Username`) REFERENCES `account` (`Username`);
-
---
--- Các ràng buộc cho bảng `employee`
---
-ALTER TABLE `employee`
-  ADD CONSTRAINT `fk_account_employee` FOREIGN KEY (`Username`) REFERENCES `account` (`Username`);
 
 --
 -- Các ràng buộc cho bảng `function_detail`
