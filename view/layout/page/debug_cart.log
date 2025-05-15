@@ -10,9 +10,9 @@ Array
 
     [1] => Array
         (
-            [id] => P001
-            [name] => Truyện Doremon
-            [price] => 44000
+            [id] => P003
+            [name] => Truyện One Piece
+            [price] => 51750
             [quantity] => 1
         )
 

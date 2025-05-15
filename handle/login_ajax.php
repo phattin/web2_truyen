@@ -8,12 +8,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $identifier = trim($_POST['identifier'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
-    $sql = "SELECT a.Username, a.Password, a.RoleID 
+    // Tìm kiếm trong cả hai bảng employee và customer bằng UNION
+    $sql = "SELECT a.Username, a.Password, a.RoleID, 'employee' as UserType 
             FROM account a 
             JOIN employee e ON a.Username = e.Username 
-            WHERE e.Email = ? OR a.Username = ?";
+            WHERE e.Email = ? OR a.Username = ?
+            UNION
+            SELECT a.Username, a.Password, a.RoleID, 'customer' as UserType 
+            FROM account a 
+            JOIN customer c ON a.Username = c.Username 
+            WHERE c.Email = ? OR a.Username = ?";
+            
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $identifier, $identifier);
+    $stmt->bind_param("ssss", $identifier, $identifier, $identifier, $identifier);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -22,8 +29,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $user['Password'])) {
             $_SESSION['username'] = $user['Username'];
             $_SESSION['role'] = $user['RoleID'];
+            $_SESSION['userType'] = $user['UserType'];
 
-            $redirectURL = ($user['RoleID'] !== 'R003') ? "/webbantruyen/index.php?page=admin" : "/webbantruyen/index.php";
+            // Xác định URL chuyển hướng dựa vào role
+            if ($user['RoleID'] == 'R001') {
+                $redirectURL = "/webbantruyen/index.php?page=admin";
+            } else if ($user['RoleID'] == 'R003') {
+                $redirectURL = "/webbantruyen/index.php";
+            } else {
+                $redirectURL = "/webbantruyen/index.php";
+            }
 
             echo json_encode([
                 "success" => true,
