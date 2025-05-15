@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = trim($_POST['address'] ?? '');
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm-password'] ?? '';
-    $roleID = 'R3';
+    $roleID = 'R003';
     $isDeleted = 0; // Giá trị mặc định cho IsDeleted
 
     // Kiểm tra dữ liệu đầu vào
