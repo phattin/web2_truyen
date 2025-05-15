@@ -18,18 +18,25 @@ function themKM(){
     $("#Function").load("/webbantruyen/view/admin/themKM.php");
 }
 
-function Close_ChucNang(){
-    $("#overlay-chucnang").css("display","none");
+// Them Tai Khoan
+function ThemTK(){
+    $("#overlay-chucnang").css("display","block");
+    $("#Function").css("display","block");
+    $("#Function").load("/webbantruyen/view/admin/ThemTK.php");
+}   
+function closeChucNang(){
+    document.getElementById("overlay-chucnang").style.display = "none";
 }
+
 
 // Them Nhan Vien
 function ThemNV(){
+    $("#overlay-chucnang").css("display","block");
     $("#Function").css("display","block");
-    $("#ChiTiet").css("display","none");
     $("#Function").load("/webbantruyen/view/admin/ThemNV.php");
 }   
 function closeChucNang(){
-    document.getElementById("Function").style.display = "none";
+    document.getElementById("overlay-chucnang").style.display = "none";
 }
 
 // Them Khach Hang

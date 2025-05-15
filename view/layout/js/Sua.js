@@ -323,7 +323,7 @@ function SuaRole(x){
                 `
                 <h2>Chỉnh sửa quyền ${response[0].RoleName} </h2>
                 <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
-                <form action="../admin/SuaRole.php" method="POST">
+                <form action="../../handle/edit_role.php" method="POST">
                 <input type="hidden" name="RoleID" value="${response[0].RoleID}">
                 <table>
                     <tr>
@@ -554,4 +554,265 @@ function SuaRole(x){
             
         }
     });
+}
+
+
+function SuaTK(x){
+    let UsernameOld;
+    $.ajax({        
+        type: "POST",
+        url: "../admin/form.php",
+        data: { Username: x },
+        dataType: "json",
+        success: function(response) {
+            UsernameOld = response.username;
+            console.log(UsernameOld)
+            console.log(response);
+            $("#overlay-chitiet").css("display","block");   
+            $("#ChiTiet").html(
+                `
+                <div class='ThemTK' style="text-align: center;">
+                    <button value='X' class='blue-btn' onclick='Close_ChucNang()()'>Close</button>
+                    <form >
+                        <label>Username:</label>
+                        ${response.username}<br>
+                        
+
+                        <label>Password:</label><br>
+                        ${response.Password}<br>
+
+                        <label>RoleID:</label>
+                        ${response.RoleID}<br>
+
+                        <label>isDeleted:</label>
+                        <select name='isDeleted' id='isDeleted'>
+                        <option value='0' selected>0</option>
+                        <option value='1'>1</option>
+                        </select><br>
+
+                        <input type='submit' id='ThemTKSubmit' name='submit' value='Xác nhận sửa' class='blue-btn'>
+                        <input type='reset' name='reset' value='Nhập lại' class='blue-btn'>
+                    </form>
+                </div>
+                `
+            );   
+            /*
+            let DSUsername ;
+            $.ajax({
+                type: 'POST',
+                url: '../../view/admin/AccList.php',
+                dataType:"json",
+                success:function (response) {
+                    DSUsername = response;
+                },
+            })
+            */
+            if(response.isDeleted === "0"){
+                $("#isDeleted").val('0');
+            }else if(response.isDeleted === "1"){
+                $("#isDeleted").val('1');
+            }
+            $('#ThemTKSubmit').on('click', function (e) {
+                e.preventDefault();
+
+             //   const UsernameNew = $('#Username').val();
+                const IsDeleted = $("#isDeleted").val();
+               // console.log(DSUsername);
+/*
+                if (
+                UsernameNew === ''
+                ) {
+                    alert('Vui lòng điền đầy đủ thông tin!');
+                    return;
+                }
+                //Tên không chứa số và kí tự đặc biệt có quyền chứa số
+                const nameRegex = /^[a-z0-9A-Z]+$/;
+                console.log(UsernameNew)
+                if (!nameRegex.test(UsernameNew)) {
+                    alert('Username không chứa kí tự đặc biệt khoản trắng và dấu!');
+                    return;
+                }
+
+                if (DSUsername.includes(UsernameNew)) {
+                    alert('Username đã tồn tại!');
+                    return;
+                }
+                */
+                console.log(UsernameOld)
+                $.ajax({
+                type: 'POST',
+                url: '../../handle/edit_account.php',
+                data: {
+                    UsernameOld : UsernameOld,
+                    IsDeleted : IsDeleted,
+                },
+                dataType:"json",
+                success:function (response) {
+                console.log(response);
+                if (response.status==="success") {
+                    alert("Sửa thông tin tài khoản thành công");
+                    
+                } else {
+                    alert("Có lỗi xảy ra, vui lòng thử lại sau: " + response.message);
+                }
+                location.reload();
+                },
+                })
+            })
+        }
+    })
+
+}
+
+function SuaNV(x){
+    $.ajax({        
+        type: "POST",
+        url: "../admin/form.php",
+        data: { EmployeeID: x },
+        dataType: "json",
+        success: function(response) {
+            console.log({response});
+            $("#overlay-chitiet").css("display","block");   
+            $("#ChiTiet").html(
+                `
+                <div class='ThemNV'>
+                    <button value='X' class='blue-btn' onclick='Close_ChucNang()()'>Close</button>
+                    <form>
+                        <label>ID:${response["employeeID"]}</label>
+
+                        <label>Fullname:</label>
+                        <input type='text' name='Fullname' id='Fullname' value='${response["fullname"]}'>
+
+                        <label>Username:</label>
+                        <select name='Username' id='Username'>
+                        "<option name='username' value='${response["username"]}'>${response["username"]}</option>";
+                        </select>
+
+                        <label>BirthDay:</label>
+                        <input type='date' name='BirthDay' id='BirthDay' value='${response["birthDay"]}'>
+
+                        <label>Phone:</label>
+                        <input type='text' name='Phone' id="Phone" value='${response["phone"]}'>
+
+                        <label>Email:</label>
+                        <input type='email' name='Email' id="Email" value='${response["email"]}'>
+
+                        <label>Address:</label>
+                        <input type='text' name='Address' id="Address" value='${response["address"]}'>
+
+                        <div class='gender-group'>
+                            <label>Gender:</label>
+                            <input type='radio' name='Gender' id="GenderNu" value='NỮ'>Nữ
+                            <input type='radio' name='Gender' id="GenderNam" value='NAM' >Nam
+                        </div>
+
+                        <label>Salary:</label>
+                        <input type='text' name='Salary' id="Salary" value='${response["salary"]}' >
+
+                        <label>startDate:${response["startDate"]}</label>
+                
+                        <label>isDeleted</label>
+                        <select name='isDeleted' id='isDeleted'>
+                        <option value='0'>0</option>
+                        <option value='1'>1</option>
+                        </select><br>
+
+                        <input type='submit' id='SuaNVSubmit' name='submit' value='Xác Nhận sửa' class='blue-btn'>
+                        <input type='reset' name='reset' value='Nhập lại' class='blue-btn'>
+                    </form>
+                </div>
+                `
+            );   
+            if(response.Gender === "Nữ"){
+                $("#GenderNu").prop("checked",true);
+            }else if(response.Gender === "Nam"){
+                $("#GenderNam").prop("checked",true);
+
+             if(response.isDeleted === "0"){
+                $("#isDeleted").val('0');
+            }else if(response.isDeleted === "1"){
+                $("#isDeleted").val('1');
+            }
+
+            $('#SuaNVSubmit').on('click', function (e) {
+                        e.preventDefault();
+                        const EmployeeID = response.employeeID;
+                        const Fullname = $('#Fullname').val();
+                        const Username = $('#Username').val();
+                        const BirthDay = $('#BirthDay').val();
+                        const Phone = $('#Phone').val();
+                        const Email = $('#Email').val();
+                        const Address = $('#Address').val();
+                        const Salary = $('#Salary').val();
+                        const IsDeleted = $("#isDeleted").val();
+                        let Gender = '';
+                        if(($('#GenderNu').prop('checked'))){
+                            Gender = $('#GenderNu').val();
+                        }else if($('#GenderNam').prop('checked')){
+                            Gender = $('#GenderNam').val();
+                        }
+                        if (
+                        Fullname === '' ||
+                        BirthDay === '' ||
+                        Phone === '' ||
+                        Email === '' ||
+                        Address === '' ||
+                        Salary === ''  ||
+                        Gender === '' ||
+                        (!$('#GenderNu').prop('checked') && !$('#GenderNam').prop('checked'))
+                        ) {
+                            alert('Vui lòng điền đầy đủ thông tin!');
+                            return;
+                        }
+                        //Tên không chứa số và kí tự đặc biệt có quyền chứa số
+                        const nameRegex = /^[a-zA-ZÀ-ỹ0-9\s]+$/;
+                        console.log(Fullname)
+                        if (!nameRegex.test(Fullname)) {
+                            alert('Tên không chứa kí tự đặc biệt!');
+                            return;
+                        }
+
+                        const phoneRegex = /^0\d{9}$/;
+                        if (!phoneRegex.test(Phone)) {
+                            alert('SĐT không hợp lệ!');
+                            return;
+                        }
+                        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                        const emailRegex = /^[^\n@]+@[^\n@]+\.(com)+$/;
+                        if (!emailRegex.test(Email)) {
+                            alert('Email không hợp lệ!');
+                            return;
+                        }
+
+
+                        $.ajax({
+                        type: 'POST',
+                        url: '../../handle/edit_employee.php',
+                        data: {
+                            EmployeeID : EmployeeID,
+                            Fullname : Fullname,
+                            Username : Username,
+                            BirthDay : BirthDay,
+                            Phone : Phone,
+                            Email : Email,
+                            Address : Address,
+                            Salary : Salary,
+                            Gender : Gender,
+                            IsDeleted : IsDeleted,
+                        },
+                        dataType:"json",
+                        success:function (response) {
+                        console.log(response);
+                        if (response.status==="success") {
+                            alert("Sửa thông tin nhân viên thành công");
+                        } else {
+                            alert("Có lỗi xảy ra, vui lòng thử lại sau: " + response.message);
+                        }
+                        },
+                        })
+                    })
+            }     
+        }
+    })
+
 }

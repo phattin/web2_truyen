@@ -4,6 +4,13 @@ function Switch(x,y){
         case 'tc':
             // $("#admin-content").load("home.php");
             break;
+        case 'tk':
+            $("#admin-content").load("/webbantruyen/view/admin/account.php", function () {
+                setTimeout(function () {
+                    CheckRole(y);
+                }, 50); 
+            });
+            break;
         case 'nv':
             $("#admin-content").load("/webbantruyen/view/admin/employee.php", function () {
                 setTimeout(function () {

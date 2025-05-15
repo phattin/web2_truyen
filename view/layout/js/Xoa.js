@@ -53,11 +53,12 @@ function xoaKM(id) {
         });
     }
 }
+
 function XoaRole(x){
     console.log(x);
     $.ajax({
         type: "GET",
-        url: "../admin/XLXoaRole.php",
+        url: "../../handle/delete_role.php",
         data: { RoleID: x },
         dataType: "json",
         success: function (response) {
@@ -70,5 +71,42 @@ function XoaRole(x){
             }
             location.reload();
         },
+    });
+}
+
+function XoaNV(ID){
+    $.ajax({
+    type: "GET",
+    url: "../../handle/delete_employee.php",
+    data: { IDaccount: ID },
+    dataType: "json",
+    success: function (response) {
+        console.log(response);
+        if (response.status==="success") {
+            alert("Xóa thành công");
+            
+        } else {
+            alert("Có lỗi xảy ra, vui lòng thử lại sau: " + response.message);
+        }
+        location.reload();
+    },
+    });
+}
+
+function XoaTK(X){
+    $.ajax({
+    type: "GET",
+    url: "../../handle/delete_account.php",
+    data: { Username : X},
+    dataType: "json",
+    success: function (response) {
+        console.log(response);
+        if (response.status==="success") {
+            alert("Xóa thành công");
+        } else {
+            alert("Có lỗi xảy ra, vui lòng thử lại sau: " + response.message);
+        }
+        location.reload();
+    },
     });
 }

@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start();/*
 require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
 
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
@@ -35,7 +35,8 @@ if ($result->num_rows > 0) {
 
 $stmt->close();
 $conn->close();
-
+*/
+$IDrole="R001";
 ?>
 
 <!DOCTYPE html>

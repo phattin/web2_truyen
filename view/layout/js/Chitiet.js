@@ -83,6 +83,7 @@ function ChitietHDN(importID){
 
 function Close_ChucNang(){
     $("#overlay-chitiet").css("display","none");
+    $("#overlay-chucnang").css("display","none");
 }
 // chitietRole
 function ChitietRole(x){
@@ -371,22 +372,24 @@ function ChitietRole(x){
 }
 
 
+
 // ChitietNV
 function ChitietNV(x){
-    var Username = x;
-    $.ajax({
+    
+
+    $.ajax({        
         type: "POST",
         url: "../admin/form.php",
-        data: { usernameNV: Username },
+        data: { EmployeeID: x },
         dataType: "json",
         success: function(response) {
             console.log({response});
-            $("#ChiTiet").css("display","block");   
+            $("#overlay-chitiet").css("display","block");   
             $("#ChiTiet").html(
                 `
                 <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
-                <div class="form">
-                    <div class="info-box">
+                <div style="text-align:center">
+                   
                         <p>EmployeeID:${response.employeeID}</p>
                         <p>Fullname:${response.fullname}</p>
                         <p>Username:${response.username}</p>
@@ -397,11 +400,9 @@ function ChitietNV(x){
                         <p>Gender:${response.Gender}</p>
                         <p>Salary:${response.salary}</p>
                         <p>StartDate:${response.startDate}</p>
-                        <p>status:${response.status}</p>
-                    </div>
+                        <p>isDeleted:${response.isDeleted}</p>
+                    
                 </div>
-                <input type="button" value="Sửa" class="blue-btn" onclick="Close_ChucNang()">
-                <input type="button" value="Xóa" class="blue-btn" onclick="Close_ChucNang()">
                 `  
             );        
         }
@@ -426,14 +427,14 @@ function ChitietKH(x){
                 <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
                 <div class="form">
                     <div class="info-box">
-                        <p>CustomerID:${response.CustomerID}</p>
-                        <p>Fullname:${response.Fullname}</p>
-                        <p>Username:${response.Username}</p>
-                        <p>Phone:${response.Phone}</p>
-                        <p>Email:${response.Email}</p>
-                        <p>Address:${response.Address}</p>
-                        <p>TotalSpending:${response.TotalSpending}</p>
-                        <p>status:${response.status}</p>
+                        <p><strong>CustomerID:</strong>${response.CustomerID}</p>
+                        <p><strong>Fullname:</strong>${response.Fullname}</p>
+                        <p><strong>Username:</strong>${response.Username}</p>
+                        <p><strong>Phone:</strong>${response.Phone}</p>
+                        <p><strong>Email:</strong>${response.Email}</p>
+                        <p><strong>Address:</strong>${response.Address}</p>
+                        <p><strong>TotalSpending:</strong>${response.TotalSpending}</p>
+                        <p><strong>status:</strong>${response.status}</p>
                     </div>
                 </div>
                 <input type="button" value="Sửa" class="blue-btn" onclick="Close_ChucNang()">
@@ -444,3 +445,32 @@ function ChitietKH(x){
     })
 }
 
+// chi tiet TK
+
+function ChitietTK(x){
+
+     $.ajax({        
+        type: "POST",
+        url: "../admin/form.php",
+        data: { Username: x },
+        dataType: "json",
+        success: function(response) {
+            console.log({response});
+            $("#overlay-chitiet").css("display","block");   
+            $("#ChiTiet").html(
+                `
+                <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
+                <div style="text-align:center">
+                
+                        <p><strong>Username:</strong>${response.username}</p>
+                        <p><strong>Password:</strong>${response.Password}</p>
+                        <p><strong>RoleID:</strong>${response.RoleID}</p>
+                        <p><strong>isDeleted:</strong>${response.isDeleted}</p>
+                    
+                </div>
+                `  
+            );        
+        }
+    })
+
+}
