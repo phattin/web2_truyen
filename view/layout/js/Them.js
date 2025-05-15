@@ -21,23 +21,16 @@ function themKM(){
 // Them Tai Khoan
 function ThemTK(){
     $("#overlay-chucnang").css("display","block");
-    $("#Function").css("display","block");
     $("#Function").load("/webbantruyen/view/admin/ThemTK.php");
 }   
-function closeChucNang(){
-    document.getElementById("overlay-chucnang").style.display = "none";
-}
 
 
 // Them Nhan Vien
 function ThemNV(){
     $("#overlay-chucnang").css("display","block");
-    $("#Function").css("display","block");
     $("#Function").load("/webbantruyen/view/admin/ThemNV.php");
 }   
-function closeChucNang(){
-    document.getElementById("overlay-chucnang").style.display = "none";
-}
+
 
 // Them Khach Hang
 function ThemKH(){
@@ -45,12 +38,9 @@ function ThemKH(){
     $("#ChiTiet").css("display","none");
     $("#Function").load("/webbantruyen/view/admin/ThemKH.php");
 }
-function closeChucNang(){
-    document.getElementById("Function").style.display = "none";
-}
+
 // Thêm Role
 function ThemRole(){
     $("#overlay-chucnang").css("display","block");
-    $("#Function").css("display","block");
     $("#Function").load("/webbantruyen/view/admin/ThemRole.php");
 }

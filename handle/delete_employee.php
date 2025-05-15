@@ -3,7 +3,7 @@ include("../model/ThemSuaXoa.php");
 
 header('Content-Type: application/json');
 
-$id = $_GET['IDaccount'] ?? null;
+$id = $_GET['EmployeeID'] ?? null;
 
 if (!$id) {
     echo json_encode(["status" => "error", "message" => "Thiếu RoleID"]);
@@ -12,8 +12,8 @@ if (!$id) {
 
 $a = new ThemSuaXoa();
 
-// Xóa ở bảng `function_detail` trước (nếu có khóa ngoại)
-// Xóa ở bảng `role` sau
+
+$a->Xoa("DELETE FROM `account` WHERE EmployeeID = '$id'");
 $a->Xoa("DELETE FROM `employee` WHERE EmployeeID = '$id'");
 
 echo json_encode(["status" => "success"]);

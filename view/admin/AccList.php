@@ -7,7 +7,7 @@ $data =[];
 while($row=$result_sql->fetch_assoc()){
     $data[] = $row["Username"];
 };
-$dsacc=implode(',', $data);
+$ds = implode(',', $data);
 header('Content-Type: application/json');
-echo json_encode($dsacc);
+echo json_encode($ds);
 ?>

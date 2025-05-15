@@ -115,7 +115,9 @@
     font-weight: 600;
 }
 
+.ThemNV select,
 .ThemNV input[type="text"],
+.ThemNV input[type="password"],
 .ThemNV input[type="email"],
 .ThemNV input[type="number"],
 .ThemNV input[type="date"] {
@@ -141,3 +143,28 @@
     font-weight: 400;
 }
 
+/* chi tiet NV*/
+.employee-card {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px 30px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+  line-height: 1.6;
+  font-size: 16px;
+  text-align: left;
+}
+
+.employee-card div {
+  margin-bottom: 8px;
+}
+
+.employee-card strong {
+  width: 120px;
+  display: inline-block;
+  color: #555;
+}

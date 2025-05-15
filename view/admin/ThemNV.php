@@ -5,21 +5,6 @@
         <label>Fullname:</label>
         <input type='text' name='Fullname' id='Fullname'>
 
-        <label>Username:</label>
-        <select name='Username' id='Username'>
-    
-        <?php
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
-        $conn = connectDB::getConnection();
-        $sql_data_acc = 'SELECT Username FROM `account` WHERE RoleID != "R002" ';
-        $result_acc = $conn->query($sql_data_acc);
-        while ($row = $result_acc->fetch_assoc()) {
-            echo "<option name='username' value='".$row["Username"]."'>".$row["Username"]." </option>";
-        }
-        $conn->close();
-        ?>
-        </select>
-
         <label>BirthDay:</label>
         <input type='date' name='BirthDay' id='BirthDay'>
 
@@ -51,7 +36,6 @@
     $('#ThemNVSubmit').on('click', function (e) {
         e.preventDefault();
         const Fullname = $('#Fullname').val();
-        const Username = $('#Username').val();
         const BirthDay = $('#BirthDay').val();
         const Phone = $('#Phone').val();
         const Email = $('#Email').val();
@@ -102,7 +86,6 @@
         url: '../../handle/add_employee.php',
         data: {
             Fullname : Fullname,
-            Username : Username,
             BirthDay : BirthDay,
             Phone : Phone,
             Email : Email,

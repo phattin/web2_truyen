@@ -78,7 +78,7 @@ function XoaNV(ID){
     $.ajax({
     type: "GET",
     url: "../../handle/delete_employee.php",
-    data: { IDaccount: ID },
+    data: { EmployeeID: ID },
     dataType: "json",
     success: function (response) {
         console.log(response);

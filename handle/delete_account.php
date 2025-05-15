@@ -12,8 +12,6 @@ if (!$id) {
 
 $a = new ThemSuaXoa();
 
-$a->Xoa("DELETE FROM `customer` WHERE Username = '$id'");
-$a->Xoa("DELETE FROM `employee` WHERE Username = '$id'");
 $a->Xoa("DELETE FROM `account` WHERE Username = '$id'");
 
 echo json_encode(["status" => "success"]);

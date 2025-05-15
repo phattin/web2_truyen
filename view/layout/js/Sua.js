@@ -297,19 +297,10 @@ function suaKM(promotionID) {
         }
     });
 }
-function Close_ChucNang(){
-    $("#overlay-chucnang").css("display","none");
-    $("#overlay-chitiet").css("display","none");
-}
-function Close_Chitiet(){
-    $("#overlay-chucnang").css("display","none");
-    $("#overlay-chitiet").css("display","none");
-}
+
 
 function SuaRole(x){
     console.log(x);
-     $("#overlay-chucnang").css("display", "block");
-    $("#Function").css("display", "block");
     var RoleID = x;
     $.ajax({
         type: "POST",
@@ -318,7 +309,7 @@ function SuaRole(x){
         dataType: "json",
         success: function(response) {
             console.log({response});
-            $("#overlay-chitiet").css("display","block");   
+            $("#overlay-chucnang").css("display", "block");
             $("#Function").html(
                 `
                 <h2>Chỉnh sửa quyền ${response[0].RoleName} </h2>
@@ -557,111 +548,159 @@ function SuaRole(x){
 }
 
 
-function SuaTK(x){
+function SuaTK(x) {
     let UsernameOld;
-    $.ajax({        
+    let hashPass;
+
+    $.ajax({
         type: "POST",
         url: "../admin/form.php",
         data: { Username: x },
         dataType: "json",
-        success: function(response) {
+        success: function (response) {
             UsernameOld = response.username;
-            console.log(UsernameOld)
-            console.log(response);
-            $("#overlay-chitiet").css("display","block");   
-            $("#ChiTiet").html(
-                `
-                <div class='ThemTK' style="text-align: center;">
-                    <button value='X' class='blue-btn' onclick='Close_ChucNang()()'>Close</button>
-                    <form >
-                        <label>Username:</label>
-                        ${response.username}<br>
-                        
+            hashPass = response.Password;
 
-                        <label>Password:</label><br>
-                        ${response.Password}<br>
+            $("#overlay-chucnang").css("display", "block");
 
-                        <label>RoleID:</label>
-                        ${response.RoleID}<br>
+            $.get("../admin/get-employee-options.php", function (optionsHTML) {
+                $("#Function").html(`
+                    <div class='ThemNV employee-card'>
+                        <button value='X' class='blue-btn' onclick='Close_ChucNang()'>Close</button>
+                        <form>
+                            <label><strong>Username:</strong></label>
+                            <input type="text" name="username" id="Username" value="${response.username}"><br>
 
-                        <label>isDeleted:</label>
-                        <select name='isDeleted' id='isDeleted'>
-                        <option value='0' selected>0</option>
-                        <option value='1'>1</option>
-                        </select><br>
+                            <label><strong>Password Old:</strong></label>
+                            <input type="password" id="PasswordOld"><br>
 
-                        <input type='submit' id='ThemTKSubmit' name='submit' value='Xác nhận sửa' class='blue-btn'>
-                        <input type='reset' name='reset' value='Nhập lại' class='blue-btn'>
-                    </form>
-                </div>
-                `
-            );   
-            /*
-            let DSUsername ;
-            $.ajax({
-                type: 'POST',
-                url: '../../view/admin/AccList.php',
-                dataType:"json",
-                success:function (response) {
-                    DSUsername = response;
-                },
-            })
-            */
-            if(response.isDeleted === "0"){
-                $("#isDeleted").val('0');
-            }else if(response.isDeleted === "1"){
-                $("#isDeleted").val('1');
-            }
-            $('#ThemTKSubmit').on('click', function (e) {
-                e.preventDefault();
+                            <label><strong>Password New:</strong></label>
+                            <input type="password" id="PasswordNew"><br>
 
-             //   const UsernameNew = $('#Username').val();
-                const IsDeleted = $("#isDeleted").val();
-               // console.log(DSUsername);
-/*
-                if (
-                UsernameNew === ''
-                ) {
-                    alert('Vui lòng điền đầy đủ thông tin!');
-                    return;
-                }
-                //Tên không chứa số và kí tự đặc biệt có quyền chứa số
-                const nameRegex = /^[a-z0-9A-Z]+$/;
-                console.log(UsernameNew)
-                if (!nameRegex.test(UsernameNew)) {
-                    alert('Username không chứa kí tự đặc biệt khoản trắng và dấu!');
-                    return;
-                }
+                            <label><strong>RoleID:</strong></label>
+                            ${response.RoleID}<br>
 
-                if (DSUsername.includes(UsernameNew)) {
-                    alert('Username đã tồn tại!');
-                    return;
-                }
-                */
-                console.log(UsernameOld)
+                            <label><strong>EmployeeID:</strong></label>
+                            <select id="EmployeeID">${optionsHTML}</select><br>
+
+                            <label><strong>isDeleted:</strong></label>
+                            <select id="isDeleted">
+                                <option value='0'>0</option>
+                                <option value='1'>1</option>
+                            </select><br>
+
+                            <input type='submit' id='ThemTKSubmit' value='Xác nhận sửa' class='blue-btn'>
+                            <input type='reset' value='Nhập lại' class='blue-btn'>
+                        </form>
+                    </div>
+                `);
+
+                // Set isDeleted value
+                $("#isDeleted").val(response.isDeleted);
+
+                // Load danh sách Username sau khi form đã sẵn sàng
                 $.ajax({
-                type: 'POST',
-                url: '../../handle/edit_account.php',
-                data: {
-                    UsernameOld : UsernameOld,
-                    IsDeleted : IsDeleted,
-                },
-                dataType:"json",
-                success:function (response) {
-                console.log(response);
-                if (response.status==="success") {
-                    alert("Sửa thông tin tài khoản thành công");
-                    
-                } else {
-                    alert("Có lỗi xảy ra, vui lòng thử lại sau: " + response.message);
-                }
-                location.reload();
-                },
-                })
-            })
-        }
-    })
+                    type: 'POST',
+                    url: '../../view/admin/AccList.php',
+                    dataType: "json",
+                    success: function (DSUsername) {
+                        // Gắn sự kiện nút submit sau khi danh sách đã sẵn sàng
+                        $('#ThemTKSubmit').on('click', function (e) {
+                            e.preventDefault();
+                            const UsernameNew = $('#Username').val();
+                            const PasswordOld = $('#PasswordOld').val();
+                            const PasswordNew = $('#PasswordNew').val();
+                            const EmployeeID = $('#EmployeeID').val();
+                            const IsDeleted = $('#isDeleted').val();
 
+                            // Kiểm tra dữ liệu nhập
+                            if (UsernameNew.trim() === '' || PasswordOld.trim() === '' || PasswordNew.trim() === '') {
+                                alert('Vui lòng điền đầy đủ thông tin!');
+                                return;
+                            }
+
+                            if (PasswordNew.length < 6) {
+                                alert("Mật khẩu phải có ít nhất 6 ký tự!");
+                                return;
+                            }
+
+                            const nameRegex = /^[a-zA-Z0-9]+$/;
+                            if (!nameRegex.test(UsernameNew)) {
+                                alert('Username không chứa ký tự đặc biệt, khoảng trắng và dấu!');
+                                return;
+                            }
+
+                            let DSname = [];
+                            DSname = DSUsername.split(",");
+                            console.log(DSname)
+                            DSname.forEach(element => {
+                                if (UsernameNew === element && UsernameNew !== UsernameOld) {
+                                    alert('Username đã tồn tại!');
+                                    return;
+                                }
+                            });
+
+                            // Gửi yêu cầu kiểm tra mật khẩu cũ
+                            $.ajax({
+                                type: 'POST',
+                                url: '../../view/admin/CheckPass.php',
+                                data: {
+                                    PasswordOld: PasswordOld,
+                                    hashPass: hashPass,
+                                },
+                                dataType: "json",
+                                success: function (isCorrect) {
+                                    if (!isCorrect) {
+                                        alert('Mật khẩu cũ không đúng!');
+                                        return;
+                                    }
+
+                                    if (PasswordNew === PasswordOld) {
+                                        alert('Mật khẩu mới không được giống mật khẩu cũ!');
+                                        return;
+                                    }
+
+                                    // Gửi yêu cầu sửa
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '../../handle/edit_account.php',
+                                        data: {
+                                            UsernameOld: UsernameOld,
+                                            UsernameNew: UsernameNew,
+                                            PasswordNew: PasswordNew,
+                                            EmployeeID: EmployeeID,
+                                            IsDeleted: IsDeleted,
+                                        },
+                                        dataType: "json",
+                                        success: function (res) {
+                                            if (res.status === "success") {
+                                                alert("Sửa thông tin tài khoản thành công");
+                                                location.reload();
+                                            } else {
+                                                alert("Lỗi: " + res.message);
+                                            }
+                                        },
+                                        error: function () {
+                                            alert("Lỗi khi gửi yêu cầu cập nhật!");
+                                        }
+                                    });
+                                },
+                                error: function () {
+                                    alert("Lỗi khi kiểm tra mật khẩu!");
+                                }
+                            });
+                        });
+                    },
+                    error: function () {
+                        alert("Không thể lấy danh sách tài khoản!");
+                    }
+                });
+            });
+        },
+        error: function () {
+            alert("Không thể lấy dữ liệu người dùng!");
+        }
+    });
 }
 
 function SuaNV(x){
@@ -676,17 +715,12 @@ function SuaNV(x){
             $("#ChiTiet").html(
                 `
                 <div class='ThemNV'>
-                    <button value='X' class='blue-btn' onclick='Close_ChucNang()()'>Close</button>
+                    <button value='X' class='blue-btn' onclick='Close_ChucNang()'>Close</button>
                     <form>
                         <label>ID:${response["employeeID"]}</label>
 
                         <label>Fullname:</label>
                         <input type='text' name='Fullname' id='Fullname' value='${response["fullname"]}'>
-
-                        <label>Username:</label>
-                        <select name='Username' id='Username'>
-                        "<option name='username' value='${response["username"]}'>${response["username"]}</option>";
-                        </select>
 
                         <label>BirthDay:</label>
                         <input type='date' name='BirthDay' id='BirthDay' value='${response["birthDay"]}'>
@@ -727,7 +761,7 @@ function SuaNV(x){
                 $("#GenderNu").prop("checked",true);
             }else if(response.Gender === "Nam"){
                 $("#GenderNam").prop("checked",true);
-
+            }
              if(response.isDeleted === "0"){
                 $("#isDeleted").val('0');
             }else if(response.isDeleted === "1"){
@@ -738,7 +772,6 @@ function SuaNV(x){
                         e.preventDefault();
                         const EmployeeID = response.employeeID;
                         const Fullname = $('#Fullname').val();
-                        const Username = $('#Username').val();
                         const BirthDay = $('#BirthDay').val();
                         const Phone = $('#Phone').val();
                         const Email = $('#Email').val();
@@ -777,7 +810,6 @@ function SuaNV(x){
                             alert('SĐT không hợp lệ!');
                             return;
                         }
-                        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                         const emailRegex = /^[^\n@]+@[^\n@]+\.(com)+$/;
                         if (!emailRegex.test(Email)) {
                             alert('Email không hợp lệ!');
@@ -791,7 +823,6 @@ function SuaNV(x){
                         data: {
                             EmployeeID : EmployeeID,
                             Fullname : Fullname,
-                            Username : Username,
                             BirthDay : BirthDay,
                             Phone : Phone,
                             Email : Email,
@@ -808,11 +839,12 @@ function SuaNV(x){
                         } else {
                             alert("Có lỗi xảy ra, vui lòng thử lại sau: " + response.message);
                         }
+                        location.reload();
                         },
                         })
                     })
             }     
-        }
+    
     })
 
 }

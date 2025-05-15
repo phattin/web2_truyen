@@ -6,7 +6,6 @@ $conn = connectDB::getConnection();
 
 $ID = generateNextID($conn, "employee", "EmployeeID", "E");
 $fullname= $_POST["Fullname"];
-$username= $_POST["Username"];
 $birthDay= $_POST["BirthDay"];
 $phone =$_POST["Phone"];
 $email= $_POST["Email"];
@@ -17,8 +16,8 @@ $startDate= date("Y-m-d");
 
 $a = new ThemSuaXoa();
 $sql = "INSERT INTO `employee`
-(`EmployeeID`, `Fullname`, `Username`, `BirthDay`, `Phone`, `Email`, `Address`, `Gender`, `Salary`, `StartDate`, `IsDeleted`) 
-VALUES ('$ID','$fullname','$username','$birthDay','$phone','$email','$address','$genre','$salary','$startDate','0')";
+(`EmployeeID`, `Fullname`, `BirthDay`, `Phone`, `Email`, `Address`, `Gender`, `Salary`, `StartDate`, `IsDeleted`) 
+VALUES ('$ID','$fullname','$birthDay','$phone','$email','$address','$genre','$salary','$startDate','0')";
 $a->Them("$sql");
 $conn->close();
 

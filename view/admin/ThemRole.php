@@ -5,7 +5,7 @@
         <form action="../../handle/add_role.php" method="POST">
             <table>
                 <tr>
-                    <td><p>RoleName:</p><input type="text" name="RoleName"></td>
+                    <td><p>RoleName:</p><input type="text" name="RoleName" required></td>
                 </tr>
             </table>
             <p>Chức năng:</p>

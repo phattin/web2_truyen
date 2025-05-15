@@ -6,7 +6,6 @@ echo"
         <tr>
             <th>EmployeeID</th>
             <th>Fullname</th>
-            <th>Username</th>
             <th>Status</th>
         </tr>";
         require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
@@ -17,7 +16,6 @@ echo"
             echo "<tr>
                     <td>" . $row["EmployeeID"] . "</td>
                     <td>" . $row["Fullname"].  "</td>
-                    <td>" . $row["Username"] . "</td>
                     <td class='function-icon'>
                         <i class='fa-regular fa-eye detail-icon XemVN' onclick='ChitietNV(\"" . $row["EmployeeID"] . "\") ')'></i>
                         <div class='SNV'><i class='fa-regular fa-pen-to-square edit-icon ' onclick='SuaNV(\"" . $row["EmployeeID"] . "\") ')'></i></div>

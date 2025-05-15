@@ -66,6 +66,7 @@ if(isset($_POST["Username"])) {
             $username = $row["Username"];
             $Password = $row["Password"];
             $RoleID = $row["RoleID"];
+            $EmployeeID = $row["EmployeeID"];
             $isDeleted = isset($row["IsDeleted"]) ? (int) $row["IsDeleted"] : 0;
         };
  
@@ -75,12 +76,13 @@ if(isset($_POST["Username"])) {
             "username" => $username,
             "Password" => $Password,
             "RoleID" => $RoleID,
+            "EmployeeID" => $EmployeeID,
             "isDeleted" => $isDeleted,
         ]);
     }
 
 
-//chitiet NV 
+//chitiet NV  
     if(isset($_POST["EmployeeID"])) {
         $EmployeeID = $_POST["EmployeeID"];
 
@@ -91,7 +93,6 @@ if(isset($_POST["Username"])) {
         while($row=$result_sql->fetch_assoc()){
             $employeeID = $row["EmployeeID"];
             $fullname = $row["Fullname"];
-            $username = $row["Username"];
             $birthDay = $row["BirthDay"];
             $phone = $row["Phone"];
             $email = $row["Email"];
@@ -109,7 +110,6 @@ if(isset($_POST["Username"])) {
         echo json_encode([
             "employeeID" => $employeeID,
             "fullname" => $fullname,
-            "username" => $username,
             "birthDay" => $birthDay,
             "phone" => $phone,
             "email" => $email,

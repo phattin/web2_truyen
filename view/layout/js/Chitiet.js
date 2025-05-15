@@ -81,9 +81,13 @@ function ChitietHDN(importID){
     });
 }
 
-function Close_ChucNang(){
+function Close_Chitiet(){
+    $("#overlay-chucnang").css("display","none");    
     $("#overlay-chitiet").css("display","none");
-    $("#overlay-chucnang").css("display","none");
+}
+function Close_ChucNang(){
+    $("#overlay-chucnang").css("display","none");    
+    $("#overlay-chitiet").css("display","none");
 }
 // chitietRole
 function ChitietRole(x){
@@ -100,7 +104,7 @@ function ChitietRole(x){
             $("#ChiTiet").html(
                 `
                 <h2>Chỉnh sửa quyền ${response[0].RoleName} </h2>
-                <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
+                <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
                 <form action="../admin/SuaRole.php" method="POST">
                 <input type="hidden" name="RoleID" value="${response[0].RoleID}">
                 <table>
@@ -375,32 +379,29 @@ function ChitietRole(x){
 
 // ChitietNV
 function ChitietNV(x){
-    
-
+    console.log(x);
     $.ajax({        
         type: "POST",
         url: "../admin/form.php",
         data: { EmployeeID: x },
         dataType: "json",
         success: function(response) {
-            console.log({response});
             $("#overlay-chitiet").css("display","block");   
             $("#ChiTiet").html(
                 `
-                <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
-                <div style="text-align:center">
+                <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
+                <div class="employee-card">
                    
-                        <p>EmployeeID:${response.employeeID}</p>
-                        <p>Fullname:${response.fullname}</p>
-                        <p>Username:${response.username}</p>
-                        <p>BirthDay:${response.birthDay}</p>
-                        <p>Phone:${response.phone}</p>
-                        <p>Email:${response.email}</p>
-                        <p>Address:${response.address}</p>
-                        <p>Gender:${response.Gender}</p>
-                        <p>Salary:${response.salary}</p>
-                        <p>StartDate:${response.startDate}</p>
-                        <p>isDeleted:${response.isDeleted}</p>
+                        <p><strong>EmployeeID:</strong>${response.employeeID}</p>
+                        <p><strong>Fullname:</strong>${response.fullname}</p>
+                        <p><strong>BirthDay:</strong>${response.birthDay}</p>
+                        <p><strong>Phone:</strong>${response.phone}</p>
+                        <p><strong>Email:</strong>${response.email}</p>
+                        <p><strong>Address:</strong>${response.address}</p>
+                        <p><strong>Gender:</strong>${response.Gender}</p>
+                        <p><strong>Salary:</strong>${response.salary}</p>
+                        <p><strong>StartDate:</strong>${response.startDate}</p>
+                        <p><strong>isDeleted:</strong>${response.isDeleted}</p>
                     
                 </div>
                 `  
@@ -424,7 +425,7 @@ function ChitietKH(x){
             $("#ChiTiet").css("display","block");   
             $("#ChiTiet").html(
                 `
-                <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
+                <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
                 <div class="form">
                     <div class="info-box">
                         <p><strong>CustomerID:</strong>${response.CustomerID}</p>
@@ -459,12 +460,13 @@ function ChitietTK(x){
             $("#overlay-chitiet").css("display","block");   
             $("#ChiTiet").html(
                 `
-                <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
-                <div style="text-align:center">
+                <input type="button" value="X" class="blue-btn" onclick="Close_Chitiet()">
+                <div class="employee-card">
                 
                         <p><strong>Username:</strong>${response.username}</p>
-                        <p><strong>Password:</strong>${response.Password}</p>
+                        <p><strong>Password:</strong>*************</p>
                         <p><strong>RoleID:</strong>${response.RoleID}</p>
+                        <p><strong>EmployeeID:</strong>${response.EmployeeID}</p>
                         <p><strong>isDeleted:</strong>${response.isDeleted}</p>
                     
                 </div>
