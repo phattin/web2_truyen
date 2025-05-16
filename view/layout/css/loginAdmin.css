@@ -1,0 +1,187 @@
+        /* Base Styles */
+        :root {
+            --primary-color: #4a76a8;
+            --primary-hover: #3a5f8b;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+            --background-color: #f5f7fa;
+            --form-bg-color: #ffffff;
+            --text-color: #333333;
+            --border-color: #dcdfe6;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+
+        body {
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Login Form Container */
+        .login-form-container {
+            background-color: var(--form-bg-color);
+            border-radius: 10px;
+            box-shadow: 0 8px 20px var(--shadow-color);
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-form-container h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+            position: relative;
+        }
+
+        .login-form-container h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 118, 168, 0.2);
+            outline: none;
+        }
+
+        /* Button */
+        .login-submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 14px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-submit-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .login-submit-btn:disabled {
+            background-color: #a0b4cb;
+            cursor: not-allowed;
+        }
+
+        /* Links */
+        .login-links {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .login-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .login-links a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        /* Message Styles */
+        .message-container {
+            margin-bottom: 20px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .message-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .message-content i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.15);
+            color: #c0392b;
+            border-left: 4px solid var(--error-color);
+        }
+
+        .success-message {
+            background-color: rgba(46, 204, 113, 0.15);
+            color: #27ae60;
+            border-left: 4px solid var(--success-color);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 480px) {
+            .login-form-container {
+                padding: 20px;
+            }
+
+            .login-form-container h2 {
+                font-size: 24px;
+            }
+
+            .form-group input {
+                padding: 10px 12px;
+            }
+
+            .login-submit-btn {
+                padding: 12px;
+            }
+        }
