@@ -54,7 +54,7 @@
 
                 // Gửi dữ liệu qua AJAX
                 $.ajax({
-                    url: "/webbantruyen/handle/login_ajax.php", // Đường dẫn xử lý đăng nhập
+                    url: "/webbantruyen/handle/customer_login_ajax.php", // Đường dẫn xử lý đăng nhập
                     type: "POST",
                     data: {
                         identifier: identifier,

@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = trim($_POST['address'] ?? '');
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm-password'] ?? '';
-    $isDeleted = 0; // Giá trị mặc định cho IsDeleted
+    $IsBlocked = 0; // Giá trị mặc định cho IsDeleted
 
     // Kiểm tra dữ liệu đầu vào
     if (empty($username)) {
@@ -138,8 +138,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $customerID = generateCustomerID($conn);
         
         // Thêm thông tin vào bảng customer với Password và IsDeleted
-        $stmt = $conn->prepare("INSERT INTO customer (CustomerID, Username, Fullname, Email, Phone, Address, Password, IsDeleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssi", $customerID, $username, $fullname, $email, $phone, $address, $hashedPassword, $isDeleted);
+        $stmt = $conn->prepare("INSERT INTO customer (CustomerID, Username, Fullname, Email, Phone, Address, Password, IsBlocked) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssi", $customerID, $username, $fullname, $email, $phone, $address, $hashedPassword, $IsBlocked);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {

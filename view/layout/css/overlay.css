@@ -1,0 +1,54 @@
+      h2 {
+            margin-left: 25%;
+        }
+
+        .user-info-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            background-color: #074B80;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .user-info:hover {
+            background-color: #074B80;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+            display: none;
+            z-index: 100;
+        }
+
+        .user-info-container:hover .user-dropdown {
+            display: block;
+        }
+
+        .logout-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            color: #dc3545;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #074B80;
+            border-radius: 4px;
+        }
