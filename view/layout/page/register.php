@@ -12,7 +12,7 @@
             position: relative;
             display: flex;
             align-items: center;
-            width: 100%;
+            width: 200px;
             border: 1px solid #ccc;
             border-radius: 5px;
             overflow: hidden;
@@ -33,6 +33,7 @@
             font-size: 16px;
         }
 
+        .input-group select,
         .input-group input {
             flex: 1;
             padding: 10px;
@@ -45,8 +46,8 @@
 
 <body>
     <script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
-    <div class="container" style="position: relative;">
-        <div class="form-container">
+    <div class="container" style="position: relative; min-width: 500px;">
+        <div class="form-container" style="min-width: 450px;">
             <div class="close-btn" onclick="goBack()">✖</div>
 
             <h2>Đăng ký</h2>
@@ -82,13 +83,34 @@
                         <input type="password" name="password" id="password" placeholder="Mật khẩu" required>
                     </div>
                     <div class="input-group">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <input type="text" name="address" id="address" placeholder="Địa chỉ" required>
-                    </div>
-                    <div class="input-group">
                         <i class="fas fa-lock"></i>
                         <input type="password" name="confirm-password" id="confirm-password"
                             placeholder="Xác nhận mật khẩu" required>
+                    </div>
+                    <!-- Số nhà, tên đường -->
+                    <div class="input-group">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" name="street" id="street" placeholder="Số nhà, tên đường" required>
+                    </div>
+
+                    <!-- Tỉnh/Thành phố -->
+                    <div class="input-group">
+                        <i class="fas fa-city"></i>
+                        <select name="province" id="province" required>
+                            <option value="">Chọn tỉnh/thành phố</option>
+                            <option value="HCM">Hồ Chí Minh</option>
+                            <option value="Hà Nội">Hà Nội</option>
+                            <option value="Đà Nẵng">Đà Nẵng</option>
+                            <!-- Thêm các tỉnh thành khác nếu cần -->
+                        </select>
+                    </div>
+
+                    <!-- Quận/Huyện -->
+                    <div class="input-group">
+                        <i class="fas fa-map"></i>
+                        <select name="district" id="district" required>
+                            <option value="">Chọn quận/huyện</option>
+                        </select>
                     </div>
                 </div>
                 <button type="submit">Đăng ký</button>
@@ -100,6 +122,27 @@
     <script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
 
     <script>
+        const districtData = {
+            "HCM": ["Quận 1", "Quận 2", "Quận 3", "Thủ Đức", "Gò Vấp"],
+            "Hà Nội": ["Ba Đình", "Hoàn Kiếm", "Hai Bà Trưng", "Cầu Giấy"],
+            "Đà Nẵng": ["Hải Châu", "Thanh Khê", "Ngũ Hành Sơn"]
+            // Thêm các tỉnh/thành và quận/huyện tương ứng nếu cần
+        };
+
+        document.getElementById("province").addEventListener("change", function () {
+            const province = this.value;
+            const districtSelect = document.getElementById("district");
+            districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+
+            if (province && districtData[province]) {
+                districtData[province].forEach(function (district) {
+                    const option = document.createElement("option");
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        });
         document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("register-form").addEventListener("submit", function (e) {
                 e.preventDefault(); // Ngăn chặn hành vi submit mặc định
@@ -110,7 +153,9 @@
                 const confirmPassword = document.getElementById("confirm-password").value;
                 const username = document.getElementById("username").value.trim();
                 const email = document.getElementById("email").value.trim();
-                const address = document.getElementById("address").value.trim();
+                const street = document.getElementById("street").value.trim();
+                const province = document.getElementById("province").value;
+                const district = document.getElementById("district").value;
 
                 // Kiểm tra dữ liệu đầu vào
                 if (username === "") {
@@ -140,8 +185,16 @@
                     return;
                 }
 
-                if (address === "") {
-                    alert("Địa chỉ không được để trống!");
+                if (street === "") {
+                    alert("Vui lòng nhập số nhà, tên đường!");
+                    return;
+                }
+                if (province === "") {
+                    alert("Vui lòng chọn tỉnh/thành phố!");
+                    return;
+                }
+                if (district === "") {
+                    alert("Vui lòng chọn quận/huyện!");
                     return;
                 }
 
@@ -164,9 +217,11 @@
                         fullname: fullname,
                         email: email,
                         phone: phone,
-                        address: address,
+                        street: street,
+                        province: province,
+                        district: district,
                         password: password,
-                        "confirm-password": confirmPassword  // Match the parameter name with server
+                        "confirm-password": confirmPassword
                     },
                     dataType: "json",  // Explicitly expect JSON response
                     success: function (res) {

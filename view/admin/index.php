@@ -1,13 +1,15 @@
 <?php
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/roleDB.php";
 
 // Check if user is logged in and has admin privileges
 $isLoggedIn = isset($_SESSION['username']) && isset($_SESSION['role']);
 $username = $isLoggedIn ? $_SESSION['username'] : '';
 $role = $isLoggedIn ? $_SESSION['role'] : '';
-
-$isAdmin = $isLoggedIn && ($role == 'R001'|| $role == 'R002');
+$functionDetail = roleDB::getAllFunctionDetailByRoleID($role);
+$functionIDs = array_column($functionDetail, 'FunctionID');
+$isAdmin = $isLoggedIn && ($role);
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +22,7 @@ $isAdmin = $isLoggedIn && ($role == 'R001'|| $role == 'R002');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminHome.css">
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/adminForm.css">
-    <link rel="stylesheet" href="/webbantruyen/view/layout/css/login.css">
+    <!-- <link rel="stylesheet" href="/webbantruyen/view/layout/css/loginAdmin.css"> -->
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/btnLoginAdmin.css">
     <link rel="stylesheet" href="/webbantruyen/view/layout/css/overlay.css">
  
@@ -56,23 +58,48 @@ $isAdmin = $isLoggedIn && ($role == 'R001'|| $role == 'R002');
         <nav class="sidebar">
             <h3>Chức năng</h3>
             <ul>
-                <li onclick="checkLoginAndSwitch('tc', '<?= $role ?>')" id="TC"><a>Trang chủ</a></li>
-                <li onclick="checkLoginAndSwitch('tk', '<?= $role ?>')" id="QLTK"><a>Quản lý tài khoản</a></li>
-                <li onclick="checkLoginAndSwitch('nv', '<?= $role ?>')" id="QLVN"><a>Quản lý nhân viên</a></li>
-                <li onclick="checkLoginAndSwitch('kh', '<?= $role ?>')" id="QLKH"><a>Quản lý khách hàng</a></li>
-                <li onclick="checkLoginAndSwitch('sp', '<?= $role ?>')" id="QLSP"><a>Quản lý sản phẩm</a></li>
-                <li onclick="checkLoginAndSwitch('km', '<?= $role ?>')" id="QLKM"><a>Quản lý khuyến mãi</a></li>
-                <li onclick="checkLoginAndSwitch('tl', '<?= $role ?>')" id="QLCL"><a>Thể loại truyện</a></li>
-                <li onclick="checkLoginAndHienThiHoaDon()" id="QLHD"><a>Hóa đơn bán</a></li>
-                <li onclick="checkLoginAndSwitch('hdn', '<?= $role ?>')" id="QLHDN"><a>Hóa đơn nhập</a></li>
-                <li onclick="checkLoginAndSwitch('ncc', '<?= $role ?>')" id="QLHDB"><a>Quản lý nhà cung cấp</a></li>
-                <li onclick="checkLoginAndSwitch('pq', '<?= $role ?>')" class="QLQ"><a>Phân quyền</a></li>
-                <li onclick="checkLoginAndSwitch('role', '<?= $role ?>')" class="QLQ"><a>ROLE</a></li>
-                <li onclick="checkLoginAndLoadStatistics()" id="S"><a>Thống kê</a></li>
+                <?php if (in_array('F001', $functionIDs)): ?>
+                    <li onclick="checkLoginAndSwitch('tk')" id="QLTK"><a>Quản lý tài khoản</a></li>
+                <?php endif; ?>
 
-                <?php if ($isLoggedIn): ?>
-                    <li><a href="/webbantruyen/view/layout/page/logout_admin.php"
-                            onclick="return confirm('Bạn có chắc muốn đăng xuất?');">Đăng xuất</a></li>
+                <?php if (in_array('F005', $functionIDs)): ?>
+                    <li onclick="checkLoginAndSwitch('nv')" id="QLVN"><a>Quản lý nhân viên</a></li>
+                <?php endif; ?>
+
+                <?php if (in_array('F006', $functionIDs)): ?>
+                    <li onclick="checkLoginAndSwitch('kh')" id="QLKH"><a>Quản lý khách hàng</a></li>
+                <?php endif; ?>
+
+                <?php if (in_array('F002', $functionIDs)): ?>
+                    <li onclick="checkLoginAndSwitch('sp')" id="QLSP"><a>Quản lý sản phẩm</a></li>
+                <?php endif; ?>
+
+                <?php if (in_array('F009', $functionIDs)): ?>
+                    <li onclick="checkLoginAndSwitch('km')" id="QLKM"><a>Quản lý khuyến mãi</a></li>
+                <?php endif; ?>
+
+                <?php if (in_array('F008', $functionIDs)): ?>
+                    <li onclick="checkLoginAndSwitch('cl')" id="QLCL"><a>Chủng loại truyện</a></li>
+                <?php endif; ?>
+
+                <?php if (in_array('F004', $functionIDs)): ?>
+                    <li onclick="checkLoginAndHienThiHoaDon()" id="QLHD"><a>Hóa đơn bán</a></li>
+                <?php endif; ?>
+
+                <?php if (in_array('F003', $functionIDs)): ?>
+                    <li onclick="checkLoginAndSwitch('hdn')" id="QLHDN"><a>Hóa đơn nhập</a></li>
+                <?php endif; ?>
+
+                <?php if (in_array('F010', $functionIDs)): ?>
+                    <li onclick="checkLoginAndSwitch('ncc')" id="QLHDB"><a>Quản lý nhà cung cấp</a></li>
+                <?php endif; ?>
+
+                <?php if (in_array('F007', $functionIDs)): ?>
+                    <li onclick="checkLoginAndSwitch('role')" class="QLQ"><a>Phân quyền</a></li>
+                <?php endif; ?>
+
+                <?php if (in_array('F011', $functionIDs)): ?>
+                    <li onclick="checkLoginAndLoadStatistics()" id="S"><a>Thống kê</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

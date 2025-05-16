@@ -125,7 +125,7 @@
 </div>
 
 <link rel="stylesheet" href="/webbantruyen/view/layout/css/statistics.css">
-<link rel="stylesheet" href="/webantruyen/view/layout/css/statistics2.css">
+<!-- <link rel="stylesheet" href="/webantruyen/view/layout/css/statistics2.css"> -->
 
 <script>
     // Đoạn mã JavaScript cho file statistics.php

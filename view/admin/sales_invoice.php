@@ -4,8 +4,15 @@
     
     <div class="search-container">
         <div class="search-row">
-            <input type="text" id="search-input" class="search-input" placeholder="Tìm kiếm theo mã hóa đơn, tên khách hàng hoặc tên sản phẩm">
-            <input type="text" id="address-input" class="search-input" placeholder="Tìm kiếm theo địa chỉ">
+            <select id="province-select" class="search-input">
+                <option value="">Chọn tỉnh/thành phố</option>
+                <!-- Các tỉnh/thành sẽ được load vào đây -->
+            </select>
+
+            <select id="district-select" class="search-input" disabled>
+                <option value="">Chọn quận/huyện</option>
+                <!-- Các quận/huyện sẽ được load dựa trên tỉnh/thành -->
+            </select>
         </div>
         <div class="date-row">
             <div class="date-input-group">
@@ -27,8 +34,50 @@
     </div>
 </div>
 <link rel="stylesheet" href="/webbantruyen/view/layout/css/sales_invoice.css">
-
 <script>
+    let provinces = {
+        "Hà Nội": ["Ba Đình", "Hoàn Kiếm", "Tây Hồ", "Đống Đa", "Hai Bà Trưng", "Cầu Giấy"],
+        "HCM": ["Quận 1", "Quận 2", "Quận 3", "Quận 4", "Quận 5", "Quận 10"],
+        "Đà Nẵng": ["Hải Châu", "Thanh Khê", "Sơn Trà", "Ngũ Hành Sơn"]
+        // Thêm các tỉnh/thành khác nếu cần
+    };
+
+    function populateProvinces() {
+        const provinceSelect = document.getElementById("province-select");
+        for (const province in provinces) {
+            const option = document.createElement("option");
+            option.value = province;
+            option.textContent = province;
+            provinceSelect.appendChild(option);
+        }
+    }
+
+    function populateDistricts(province) {
+        const districtSelect = document.getElementById("district-select");
+        districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>'; // reset
+
+        if (!province || !provinces[province]) {
+            districtSelect.disabled = true;
+            return;
+        }
+
+        provinces[province].forEach(district => {
+            const option = document.createElement("option");
+            option.value = district;
+            option.textContent = district;
+            districtSelect.appendChild(option);
+        });
+
+        districtSelect.disabled = false;
+    }
+    populateProvinces();
+    document.getElementById("province-select").addEventListener("change", function() {
+        const selectedProvince = this.value;
+        populateDistricts(selectedProvince);
+    });
+</script>
+<script>
+    
 // Kiểm tra nếu jQuery tồn tại
 if (typeof jQuery === 'undefined') {
     console.error("jQuery không được tìm thấy. Vui lòng thêm thư viện jQuery vào trang web.");
@@ -52,8 +101,8 @@ if (typeof jQuery === 'undefined') {
     }
 
     // Hiển thị danh sách hóa đơn
-    function loadInvoices(search = "", start_date = "", end_date = "", address = "") {
-        console.log("Hàm loadInvoices được gọi với các tham số:", { search, start_date, end_date, address });
+    function loadInvoices(province = "", start_date = "", end_date = "", district = "") {
+        console.log("Hàm loadInvoices được gọi với các tham số:", { province, start_date, end_date, district });
         
         const invoiceList = document.getElementById("invoice-list");
         if (!invoiceList) {
@@ -68,10 +117,10 @@ if (typeof jQuery === 'undefined') {
             url: "/webbantruyen/handle/getSalesInvoices.php",
             type: "GET",
             data: { 
-                search: search, 
+                province: province, 
                 start_date: start_date, 
                 end_date: end_date,
-                address: address
+                district: district
             },
             dataType: "html",
             success: function(response) {
@@ -110,34 +159,34 @@ if (typeof jQuery === 'undefined') {
 
     // Tìm kiếm hóa đơn
     function searchInvoices() {
-        const searchInput = document.getElementById("search-input");
+        const provinceSelect = document.getElementById("province-select");
         const startDateInput = document.getElementById("start-date");
         const endDateInput = document.getElementById("end-date");
-        const addressInput = document.getElementById("address-input");
+        const districtSelect = document.getElementById("district-select");
         
-        if (searchInput && startDateInput && endDateInput && addressInput) {
-            const searchValue = searchInput.value.trim();
+        if (provinceSelect && startDateInput && endDateInput && districtSelect) {
+            const provinceValue = provinceSelect.value;
             const startDate = startDateInput.value;
             const endDate = endDateInput.value;
-            const addressValue = addressInput.value.trim();
+            const districtValue = districtSelect.value;
             
             console.log("Đang tìm kiếm hóa đơn với các thông số:", { 
-                searchValue, 
+                provinceValue, 
                 startDate, 
                 endDate,
-                addressValue 
+                districtValue 
             });
             
-            loadInvoices(searchValue, startDate, endDate, addressValue);
+            loadInvoices(provinceValue, startDate, endDate, districtValue);
         }
     }
 
     // Đặt lại bộ lọc
     function resetFilters() {
-        document.getElementById("search-input").value = "";
+        document.getElementById("province-select").value = "";
         document.getElementById("start-date").value = "";
         document.getElementById("end-date").value = "";
-        document.getElementById("address-input").value = "";
+        document.getElementById("district-select").value = "";
         
         // Tải lại danh sách hóa đơn ban đầu
         loadInvoices();
@@ -171,6 +220,7 @@ if (typeof jQuery === 'undefined') {
             }
         });
     });
+    
 
     // Đảm bảo các hàm có sẵn trong phạm vi toàn cục
     window.loadInvoices = loadInvoices;
@@ -178,4 +228,5 @@ if (typeof jQuery === 'undefined') {
     window.resetFilters = resetFilters;
     window.printInvoice = printInvoice;
 }
+
 </script>

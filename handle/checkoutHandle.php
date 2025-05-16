@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             $_SESSION['last_salesID'] = $data['salesID'];
+            $_SESSION['cart'] = [];
             echo json_encode(["success" => True, "message" => "Thêm hóa đơn thành công!", 'data' => $data]);
         }
         else {

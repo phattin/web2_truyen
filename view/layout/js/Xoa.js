@@ -74,26 +74,33 @@ function XoaRole(x){
     });
 }
 
-function XoaNV(ID){
+function xoaNV(ID){
     $.ajax({
-    type: "GET",
-    url: "../../handle/delete_employee.php",
-    data: { EmployeeID: ID },
+    type: "POST",
+    url: "../../handle/deleteHandle.php",
+    data: { employeeID: ID },
     dataType: "json",
     success: function (response) {
         console.log(response);
         if (response.status==="success") {
-            alert("Xóa thành công");
-            
+            alert("Xóa thành công nhân viên và tài khoản");
+            const row = document.querySelector(`#employee-row-${id}`);
+            if (row)
+                row.remove();
         } else {
-            alert("Có lỗi xảy ra, vui lòng thử lại sau: " + response.message);
+            alert(response.message);
         }
-        location.reload();
     },
+    error: function (xhr, status, error) {
+                console.error("Lỗi AJAX: ", error);  // Log lỗi khi gặp sự cố với Ajax
+                console.log("Phản hồi từ server (error): ", xhr.responseText); // Log thêm thông tin từ server
+                alert("Có lỗi xảy ra, vui lòng thử lại sau: " + xhr.responseText);
+    }
     });
+
 }
 
-function XoaTK(X){
+function xoaTK(X){
     $.ajax({
     type: "GET",
     url: "../../handle/delete_account.php",
@@ -103,10 +110,12 @@ function XoaTK(X){
         console.log(response);
         if (response.status==="success") {
             alert("Xóa thành công");
+            const row = document.querySelector(`#account-row-${id}`);
+            if (row)
+                row.remove();
         } else {
-            alert("Có lỗi xảy ra, vui lòng thử lại sau: " + response.message);
+            alert(response.message);
         }
-        location.reload();
     },
     });
 }

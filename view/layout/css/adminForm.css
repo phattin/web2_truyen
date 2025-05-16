@@ -76,6 +76,7 @@
 
 .right-panel input[type="text"],
 .right-panel input[type="number"],
+.right-panel input[type="password"],
 .right-panel input[type="date"],
 .right-panel input[type="email"],
 .right-panel select{

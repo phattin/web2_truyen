@@ -402,7 +402,6 @@ function ChitietNV(x){
                         <p><strong>Gender:</strong>${response.Gender}</p>
                         <p><strong>Salary:</strong>${response.salary}</p>
                         <p><strong>StartDate:</strong>${response.startDate}</p>
-                        <p><strong>isDeleted:</strong>${response.isDeleted}</p>
                     
                 </div>
                 `  

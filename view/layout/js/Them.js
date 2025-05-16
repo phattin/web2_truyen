@@ -19,16 +19,17 @@ function themKM(){
 }
 
 // Them Tai Khoan
-function ThemTK(){
+function themTK(){
     $("#overlay-chucnang").css("display","block");
-    $("#Function").load("/webbantruyen/view/admin/ThemTK.php");
-}   
+    $("#Function").css("display","block");
+    $("#Function").load("/webbantruyen/view/admin/themTK.php");
+}  
 
 
 // Them Nhan Vien
-function ThemNV(){
+function themNV(){
     $("#overlay-chucnang").css("display","block");
-    $("#Function").load("/webbantruyen/view/admin/ThemNV.php");
+    $("#Function").load("/webbantruyen/view/admin/themNV.php");
 }   
 
 

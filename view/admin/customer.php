@@ -1,5 +1,25 @@
 <?php
-echo "
+session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/roleDB.php";
+
+$isLoggedIn = isset($_SESSION['username']) && isset($_SESSION['role']);
+$username = $isLoggedIn ? $_SESSION['username'] : '';
+$role = $isLoggedIn ? $_SESSION['role'] : '';
+$functionDetail = roleDB::getAllFunctionDetailByRoleID($role);
+// Phân quyền F006 - quản lý khách hàng
+$canView = $canEdit = $canLock = false;
+
+foreach ($functionDetail as $function) {
+    if ($function["FunctionID"] === "F006") {
+        if ($function["Option"] === "Xem")  $canView = true;
+        if ($function["Option"] === "Sửa")  $canEdit = true;
+        if ($function["Option"] === "Xóa") $canLock = true;
+    }
+}
+
+if ($canView) {
+    echo "
     <table class='product-admin-table'>
         <tr>
             <th>Mã khách hàng</th>
@@ -12,38 +32,45 @@ echo "
             <th>Thao tác</th>
         </tr>";
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/customerDB.php";
-$customers = customerDB::getAllCustomer();
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/customerDB.php";
+    $customers = customerDB::getAllCustomer();
 
-foreach ($customers as $customer) {
-    if ($customer["CustomerID"] !== "PR000") {
-        $isBlocked = $customer["IsBlocked"] == 1;
+    foreach ($customers as $customer) {
+        if ($customer["CustomerID"] !== "PR000") {
+            $isBlocked = $customer["IsBlocked"] == 1;
 
-        echo "<tr id='customer-row-" . $customer["CustomerID"] . "'>
-                <td>" . $customer["CustomerID"] . "</td>
-                <td>" . $customer["Fullname"] . "</td>
-                <td>" . $customer["Username"] . "</td>
-                <td>" . $customer["Email"] . "</td>
-                <td>" . $customer["Address"] . "</td>
-                <td>" . $customer["Phone"] . "</td>
-                <td>" . $customer["TotalSpending"] . "</td>
-                <td class='function-icon'>
-                    <i class='fa-regular fa-pen-to-square edit-icon' onclick='suaKH(`" . $customer["CustomerID"] . "`)'></i>
-                    <i class='fa-solid fa-lock lock-icon' 
-                        style='display: " . ($isBlocked ? "inline-block" : "none") . ";' 
-                    ></i>
-                    <i class='fa-solid fa-unlock unlock-icon' 
-                        style='display: " . (!$isBlocked ? "inline-block" : "none") . ";' 
-                    ></i>
-                </td>
-            </tr>";
+            echo "<tr id='customer-row-" . $customer["CustomerID"] . "'>
+                    <td>" . htmlspecialchars($customer["CustomerID"]) . "</td>
+                    <td>" . htmlspecialchars($customer["Fullname"]) . "</td>
+                    <td>" . htmlspecialchars($customer["Username"]) . "</td>
+                    <td>" . htmlspecialchars($customer["Email"]) . "</td>
+                    <td>" . htmlspecialchars($customer["Address"]) . "</td>
+                    <td>" . htmlspecialchars($customer["Phone"]) . "</td>
+                    <td>" . htmlspecialchars($customer["TotalSpending"]) . "</td>
+                    <td class='function-icon'>";
+            
+            if ($canEdit) {
+                echo "<i class='fa-regular fa-pen-to-square edit-icon' onclick='suaKH(`" . $customer["CustomerID"] . "`)'></i>";
+            }
+
+            if ($canLock) {
+                echo "<i class='fa-solid fa-lock lock-icon' 
+                        style='display: " . ($isBlocked ? "inline-block" : "none") . ";'></i>
+                      <i class='fa-solid fa-unlock unlock-icon' 
+                        style='display: " . (!$isBlocked ? "inline-block" : "none") . ";'></i>";
+            }
+
+            echo "</td></tr>";
+        }
     }
+    echo "</table>";
 }
-echo "</table>";
 ?>
+
+<?php if ($canLock): ?>
 <script>
 $(document).ready(function () {
-    // Bấm lock
+    // Mở khóa
     $(".unlock-icon").on("click", function () {
         const customerID = $(this).closest("tr").attr("id").replace("customer-row-", "");
         $.ajax({
@@ -70,7 +97,7 @@ $(document).ready(function () {
         });
     });
 
-    // Bấm unlock
+    // Khóa
     $(".lock-icon").on("click", function () {
         const customerID = $(this).closest("tr").attr("id").replace("customer-row-", "");
         $.ajax({
@@ -98,3 +125,4 @@ $(document).ready(function () {
     });
 });
 </script>
+<?php endif; ?>

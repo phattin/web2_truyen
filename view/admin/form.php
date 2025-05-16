@@ -61,40 +61,46 @@
         
     }
 // chi tiet TK 
-if(isset($_POST["Username"])) {
-        $Username = $_POST["Username"];
+if (isset($_POST["username"])) {
+    $username = $_POST["username"];
 
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
-        $conn = connectDB::getConnection();
-        $sql_data='SELECT * FROM `account` WHERE `Username` ="'.$Username.'";';
-        $result_sql=$conn->query( $sql_data );
-        while($row=$result_sql->fetch_assoc()){
-            $username = $row["Username"];
-            $Password = $row["Password"];
-            $RoleID = $row["RoleID"];
-            $EmployeeID = $row["EmployeeID"];
-            $isDeleted = isset($row["IsDeleted"]) ? (int) $row["IsDeleted"] : 0;
-        };
- 
-        header('Content-Type: application/json');
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/accountDB.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/roleDB.php";
+    $conn = connectDB::getConnection();
 
+    // Lấy thông tin account theo username (không lấy password)
+    $account = accountDB::getAccountByUsername($username);
+
+    if ($account) {
+        $username = $account["Username"];
+        $employeeID = $account["EmployeeID"];
+        $roleID = $account["RoleID"];
+    } else {
+        // Nếu không tìm thấy hoặc lỗi
         echo json_encode([
-            "username" => $username,
-            "Password" => $Password,
-            "RoleID" => $RoleID,
-            "EmployeeID" => $EmployeeID,
-            "isDeleted" => $isDeleted,
+            "success" => false,
+            "message" => "Không tìm thấy tài khoản hoặc đã bị xoá"
         ]);
+        exit;
     }
 
+    header('Content-Type: application/json');
+    echo json_encode([
+        "success" => true,
+        "username" => $username,
+        "employeeID" => $employeeID,
+        "allRole" => roleDB::getAllRole(),
+        "roleID" => $roleID
+    ]);
+}
 
 //chitiet NV  
-    if(isset($_POST["EmployeeID"])) {
-        $EmployeeID = $_POST["EmployeeID"];
+    if(isset($_POST["employee_id"])) {
+        $EmployeeID = $_POST["employee_id"];
 
         require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
         $conn = connectDB::getConnection();
-        $sql_data='SELECT * FROM `employee` WHERE `EmployeeID` ="'.$EmployeeID.'";';
+        $sql_data='SELECT * FROM `employee` WHERE `EmployeeID` ="'.$EmployeeID.'" AND `IsDeleted` = 0;';
         $result_sql=$conn->query( $sql_data );
         while($row=$result_sql->fetch_assoc()){
             $employeeID = $row["EmployeeID"];

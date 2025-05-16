@@ -1,104 +1,132 @@
 <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
-<h2 style='text-align:center; margin:30px;'>Thêm khuyến mãi</h2>
-<form id="product-add-form" class="product-add-form">
+<h2 style='text-align:center; margin:30px;'>Thêm nhân viên</h2>
+<form id="employee-add-form" class="product-add-form">
     <div class="form-content" style='display:block'>
         <div class="right-panel">
             <div style="display: none;">
-                <label for="promotionID">Mã khuyến mãi:</label>
+                <label for="employeeID">Mã nhân viên:</label>
                 <?php 
-                    require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/promotionDB.php";
-                    echo '<input type="text" id="promotionID" name="promotionID" value="'.promotionDB::getNewPromotionID().'" readonly>';
+                    require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/employeeDB.php";
+                    echo '<input type="text" id="employeeID" name="employeeID" value="'.employeeDB::getNewEmployeeID().'" readonly>';
                 ?>
             </div>
             <div>
-                <label for="promotionName">Tên khuyến mãi:</label>
-                <input type="text" id="promotionName" name="promotionName">
+                <label for="fullname">Họ tên:</label>
+                <input type="text" id="fullname" name="fullname">
             </div>
             <div>
-                <label for="discount">Giá trị giảm (%):</label>
-                <input type="number" id="discount" name="discount" min="1" max="100">
+                <label for="gender">Giới tính:</label>
+                <select id="gender" name="gender">
+                    <option value="">--Chọn giới tính--</option>
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                </select>
             </div>
             <div>
-                <label for="startDate">Ngày bắt đầu:</label>
+                <label for="birthDay">Ngày sinh:</label>
+                <input type="date" id="birthDay" name="birthDay">
+            </div>
+            <div>
+                <label for="phone">Số điện thoại:</label>
+                <input type="text" id="phone" name="phone">
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div>
+                <label for="address">Địa chỉ:</label>
+                <input type="text" id="address" name="address">
+            </div>
+            <div>
+                <label for="salary">Lương:</label>
+                <input type="number" id="salary" name="salary" min="0">
+            </div>
+            <div>
+                <label for="startDate">Ngày vào làm:</label>
                 <input type="date" id="startDate" name="startDate">
-            </div>
-            <div>
-                <label for="endDate">Ngày kết thúc:</label>
-                <input type="date" id="endDate" name="endDate">
             </div>
         </div>
     </div>
     <div class="product-form-button">
-        <button type="button" id="add-promotion-submit-btn" class="add-product-submit-btn blue-btn">Thêm</button>
-        <input type="reset" value ="Reset" class="reset-btn blue-btn">
+        <button type="button" id="add-employee-submit-btn" class="add-product-submit-btn blue-btn">Thêm</button>
+        <input type="reset" value="Reset" class="reset-btn blue-btn">
     </div>
 </form>
 
 <script>
-    $("#add-promotion-submit-btn").on("click", function (e) {
+    $("#add-employee-submit-btn").on("click", function (e) {
         e.preventDefault();
-        const promotionID = $("#promotionID").val();
-        const promotionName = $("#promotionName").val();
-        const discount = $("#discount").val();
-        const startDate = formatDate($("#startDate").val());
-        const endDate = formatDate($("#endDate").val());
 
-        if (!promotionName || !discount || !startDate || !endDate) {
+        const employeeID = $("#employeeID").val();
+        const fullname = $("#fullname").val();
+        const gender = $("#gender").val();
+        const birthDay = formatDate($("#birthDay").val());
+        const phone = $("#phone").val();
+        const email = $("#email").val();
+        const address = $("#address").val();
+        const salary = $("#salary").val();
+        const startDate = formatDate($("#startDate").val());
+
+        if (!fullname || !gender || !birthDay || !phone || !email || !address || !salary || !startDate) {
             alert("Vui lòng điền đầy đủ thông tin!");
             return;
         }
 
-        if (discount <= 0 || discount > 100) {
-            alert("Giá trị giảm phải nằm trong khoảng 1-100!");
-            return;
-        }
-
-        if (new Date(startDate) > new Date(endDate)) {
-            alert("Ngày kết thúc phải sau hoặc bằng ngày bắt đầu!");
+        if (salary < 0) {
+            alert("Lương phải lớn hơn hoặc bằng 0!");
             return;
         }
 
         $.ajax({
             type: "POST",
-            url: "/webbantruyen/handle/addPromotion.php",
+            url: "/webbantruyen/handle/addEmployee.php",
             data: {
-                promotionID,
-                promotionName,
-                discount,
-                startDate,
-                endDate
+                employeeID,
+                fullname,
+                gender,
+                birthDay,
+                phone,
+                email,
+                address,
+                salary,
+                startDate
             },
             dataType: "json",
             success: function (response) {
                 console.log("response:", response);
                 if (response.success) {
-                    alert("Thêm khuyến mãi thành công!");
+                    alert("Thêm nhân viên thành công!");
 
                     const table = document.querySelector(".product-admin-table");
                     const row = table.insertRow(-1);
-                    row.id = "promotion-row-" + promotionID;
+                    row.id = "employee-row-" + employeeID;
 
-                    row.insertCell(0).innerText = promotionID;
-                    row.insertCell(1).innerText = promotionName;
-                    row.insertCell(2).innerText = discount;
-                    row.insertCell(3).innerText = startDate;
-                    row.insertCell(4).innerText = endDate;
+                    row.insertCell(0).innerText = employeeID;
+                    row.insertCell(1).innerText = fullname;
+                    row.insertCell(2).innerText = gender;
+                    row.insertCell(3).innerText = birthDay;
+                    row.insertCell(4).innerText = phone;
+                    row.insertCell(5).innerText = email;
+                    row.insertCell(6).innerText = address;
+                    row.insertCell(7).innerText = salary;
+                    row.insertCell(8).innerText = startDate;
 
                     const actions = `
-                        <i class='fa-regular fa-pen-to-square edit-icon' onclick='suaKM("${promotionID}")'></i>
-                        <i class='fa-regular fa-trash-can delete-icon' onclick='xoaKM("${promotionID}")'></i>
+                        <i class='fa-regular fa-pen-to-square edit-icon' onclick='suaNV("${employeeID}")'></i>
+                        <i class='fa-regular fa-trash-can delete-icon' onclick='xoaNV("${employeeID}")'></i>
                     `;
-                    const cell = row.insertCell(5);
+                    const cell = row.insertCell(9);
                     cell.innerHTML = actions;
                     cell.classList.add("function-icon");
+
                     Close_ChucNang();
                 } else {
-                    alert("Thêm khuyến mãi thất bại: " + response.message);
+                    alert("Thêm nhân viên thất bại: " + response.message);
                 }
             },
             error: function (xhr, status, error) {
                 console.error("Lỗi Ajax:", error);
-                console.log("Phản hồi từ server:", xhr.responseText); // Xem lỗi thật
                 alert("Lỗi: " + error);
             }
         });
@@ -112,7 +140,7 @@
     function formatDate(dateStr) {
         const date = new Date(dateStr);
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng từ 0-11
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }

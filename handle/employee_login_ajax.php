@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = trim($_POST['password'] ?? '');
     
     // Tìm kiếm trong bảng employee và account
-    $sql_employee = "SELECT a.Username, a.Password, a.RoleID, 'employee' as UserType, a.IsDeleted 
+    $sql_employee = "SELECT a.Username, a.Password, a.RoleID, 'employee' as UserType, e.IsDeleted 
                      FROM employee e 
                      JOIN account a ON e.EmployeeID = a.EmployeeID 
                      WHERE e.Email = ? OR a.Username = ?";
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['userType'] = $user['UserType'];
 
         // Xác định URL chuyển hướng dựa vào role
-        if ($user['RoleID'] == 'R001' || $user['RoleID'] == 'R002') {
+        if ($user['RoleID'] !== 'R003') {
             $redirectURL = "/webbantruyen/index.php?page=admin";
         } else {
             $redirectURL = "/webbantruyen/index.php";

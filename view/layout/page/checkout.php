@@ -40,12 +40,41 @@ if (isset($_POST['productsCheckout']) && isset($_POST['totalAllPrice'])) {
                     <label for="oldPhone">Số điện thoại của tài khoản</label> <br />
                     <input type="radio" id="newPhone" name="phoneShip" value="newPhone" style="width: 10px" />
                     <label for="newPhone">Số điện thoại khác</label><br />
-                    <label for="address-payment">Địa chỉ: <span style="color:red">(*)</span></label><br />
-                    <input type="text" id="address-payment" placeholder="Nhập địa chỉ" value="<?= $customer['Address'] ?>" required /><br />
+                    <label>Địa chỉ: <span style="color:red">(*)</span></label><br />
+
+                    <input type="text" id="address-payment" placeholder="Nhập địa chỉ" value="<?= $customer['Address'] ?>" required readonly /><br />
+
                     <input type="radio" id="oldAddress" name="AddressShip" value="oldAddress" style="width: 10px" checked />
                     <label for="oldAddress">Địa chỉ của tài khoản</label> <br />
+
                     <input type="radio" id="newAddress" name="AddressShip" value="newAddress" style="width: 10px" />
                     <label for="newAddress">Địa chỉ khác</label><br />
+
+                    <!-- Phần nhập chi tiết địa chỉ khi chọn địa chỉ khác -->
+                    <div id="detailed-address" style="display:none; margin-top: 10px;">
+
+                        <label for="province">Tỉnh/Thành phố: <span style="color:red">(*)</span></label><br />
+                        <select id="province" name="province">
+                            <option value="">-- Chọn tỉnh/thành phố --</option>
+                            <option value="Hanoi">Hà Nội</option>
+                            <option value="HCM">Hồ Chí Minh</option>
+                            <option value="Danang">Đà Nẵng</option>
+                            <!-- Thêm tỉnh/thành khác nếu cần -->
+                        </select><br />
+
+                        <label for="district">Quận/Huyện: <span style="color:red">(*)</span></label><br />
+                        <select id="district" name="district" disabled>
+                            <option value="">-- Chọn quận/huyện --</option>
+                        </select><br />
+
+                        <label for="ward" style="display: none;">Phường/Xã: <span style="color:red">(*)</span></label><br />
+                        <select style="display: none;" id="ward" name="ward" disabled>
+                            <option value="">-- Chọn phường/xã --</option>
+                        </select><br />
+
+                        <label for="specific-address">Địa chỉ cụ thể: <span style="color:red">(*)</span></label><br />
+                        <input type="text" id="specific-address" placeholder="Nhập địa chỉ cụ thể" /><br />
+                    </div>
                     <label for="note-payment">Ghi chú đơn hàng (tùy chọn)</label> <br />
                     <textarea id="note-payment"
                         placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay địa chỉ giao hàng chi tiết"></textarea>
@@ -150,6 +179,112 @@ if (isset($_POST['productsCheckout']) && isset($_POST['totalAllPrice'])) {
     </div>
     <script src="/webbantruyen/view/layout/js/jquery-3.7.1.min.js"></script>
     <script>
+        const addressInput = document.getElementById("address-payment");
+        const oldAddressRadio = document.getElementById("oldAddress");
+        const newAddressRadio = document.getElementById("newAddress");
+        const detailedAddressDiv = document.getElementById("detailed-address");
+
+        const customerAddress = "<?= $customer['Address'] ?>"; // Địa chỉ của tài khoản
+
+        function updateAddressInput() {
+            if (oldAddressRadio.checked) {
+                // Địa chỉ của tài khoản
+                addressInput.value = customerAddress;
+                addressInput.readOnly = true;
+                detailedAddressDiv.style.display = "none";
+                addressInput.style.display = "block";
+
+                // Reset các select input chi tiết địa chỉ
+                document.getElementById("province").value = "";
+                document.getElementById("district").innerHTML = '<option value="">-- Chọn quận/huyện --</option>';
+                document.getElementById("district").disabled = true;
+                document.getElementById("ward").innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+                document.getElementById("ward").disabled = true;
+                document.getElementById("specific-address").value = "";
+
+            } else {
+                // Địa chỉ khác
+                addressInput.style.display = "none";
+                addressInput.value = "";
+                addressInput.readOnly = false;
+                detailedAddressDiv.style.display = "block";
+            }
+        }
+
+        // Gọi khi trang tải lần đầu
+        updateAddressInput();
+
+        // Lắng nghe sự kiện thay đổi radio
+        oldAddressRadio.addEventListener("change", updateAddressInput);
+        newAddressRadio.addEventListener("change", updateAddressInput);
+
+        // --- Ví dụ load quận/huyện theo tỉnh ---
+        // Dữ liệu mẫu để demo, bạn thay bằng dữ liệu thực tế hoặc ajax call nếu cần
+        const districtsByProvince = {
+            Hanoi: ["Ba Đình", "Hoàn Kiếm", "Đống Đa", "Cầu Giấy"],
+            HCM: ["Quận 1", "Quận 3", "Quận 10", "Bình Thạnh"],
+            Danang: ["Hải Châu", "Thanh Khê", "Liên Chiểu"]
+        };
+
+        const wardsByDistrict = {
+            "Ba Đình": ["Phúc Xá", "Trúc Bạch", "Vĩnh Phúc"],
+            "Hoàn Kiếm": ["Phúc Tân", "Hàng Trống", "Hàng Bạc"],
+            "Đống Đa": ["Ô Chợ Dừa", "Kim Liên", "Khâm Thiên"],
+            "Cầu Giấy": ["Dịch Vọng", "Nghĩa Đô", "Yên Hòa"],
+
+            "Quận 1": ["Bến Nghé", "Bến Thành", "Cầu Ông Lãnh"],
+            "Quận 3": ["Ward 1", "Ward 2", "Ward 3"],
+            "Quận 10": ["Ward 10-1", "Ward 10-2"],
+            "Bình Thạnh": ["Ward B1", "Ward B2"],
+
+            "Hải Châu": ["Thạch Thang", "Hải Châu 1"],
+            "Thanh Khê": ["Thanh Khê Đông", "Thanh Khê Tây"],
+            "Liên Chiểu": ["Hòa Khánh Bắc", "Hòa Khánh Nam"]
+        };
+
+        const provinceSelect = document.getElementById("province");
+        const districtSelect = document.getElementById("district");
+        const wardSelect = document.getElementById("ward");
+
+        // Khi chọn tỉnh/thành
+        provinceSelect.addEventListener("change", () => {
+            const province = provinceSelect.value;
+            if (province && districtsByProvince[province]) {
+                districtSelect.disabled = false;
+                districtSelect.innerHTML = '<option value="">-- Chọn quận/huyện --</option>';
+                districtsByProvince[province].forEach(district => {
+                    const opt = document.createElement("option");
+                    opt.value = district;
+                    opt.textContent = district;
+                    districtSelect.appendChild(opt);
+                });
+            } else {
+                districtSelect.disabled = true;
+                districtSelect.innerHTML = '<option value="">-- Chọn quận/huyện --</option>';
+                wardSelect.disabled = true;
+                wardSelect.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+            }
+            wardSelect.disabled = true;
+            wardSelect.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+        });
+
+        // Khi chọn quận/huyện
+        districtSelect.addEventListener("change", () => {
+            const district = districtSelect.value;
+            if (district && wardsByDistrict[district]) {
+                wardSelect.disabled = false;
+                wardSelect.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+                wardsByDistrict[district].forEach(ward => {
+                    const opt = document.createElement("option");
+                    opt.value = ward;
+                    opt.textContent = ward;
+                    wardSelect.appendChild(opt);
+                });
+            } else {
+                wardSelect.disabled = true;
+                wardSelect.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+            }
+        });
         
         const COD = document.querySelector("#cash-on-delivery");
         const atmOptions = document.getElementById("atm-options");
@@ -191,24 +326,20 @@ if (isset($_POST['productsCheckout']) && isset($_POST['totalAllPrice'])) {
         oldPhoneRadio.addEventListener("change", updatePhoneInput);
         newPhoneRadio.addEventListener("change", updatePhoneInput);
 
-        //Lua chon address
-        
-        const addressInput = document.getElementById("address-payment");
-        const oldAddressRadio = document.getElementById("oldAddress");
-        const newAddressRadio = document.getElementById("newAddress");
-        console.log(oldAddressRadio, newAddressRadio);
-        const customerAddress = "<?= $customer['Address'] ?>"; // Lấy số điện thoại từ PHP
+        // //Lua chon address
+        // console.log(oldAddressRadio, newAddressRadio);
+        // const customerAddress = "<?= $customer['Address'] ?>"; // Lấy số điện thoại từ PHP
 
 
-        function updateAddressInput() {
-            if (oldAddressRadio.checked) {
-                addressInput.value = customerAddress;
-                addressInput.readOnly = true;
-            } else {
-                addressInput.value = "";
-                addressInput.readOnly = false;
-            }
-        }
+        // function updateAddressInput() {
+        //     if (oldAddressRadio.checked) {
+        //         addressInput.value = customerAddress;
+        //         addressInput.readOnly = true;
+        //     } else {
+        //         addressInput.value = "";
+        //         addressInput.readOnly = false;
+        //     }
+        // }
 
         // Gọi khi trang tải lần đầu
         updateAddressInput();
@@ -253,6 +384,15 @@ if (isset($_POST['productsCheckout']) && isset($_POST['totalAllPrice'])) {
         $(document).on("click",'.submit-payment-btn', function (event) {
         event.preventDefault();
         // Lấy giá trị 
+        const provinceSelect = document.getElementById("province");
+        const districtSelect = document.getElementById("district");
+        const detailAddressInput = document.getElementById("specific-address");
+        const oldAddressRadio = document.getElementById("oldAddress");
+        const newAddressRadio = document.getElementById("newAddress");
+        if ((provinceSelect.value === "" || districtSelect.value === "" || detailAddressInput.value === "") && newAddressRadio.checked) {
+            alert("Vui lòng nhập đầy đủ địa chỉ");
+            return;
+        }
         const salesID = "<?= $saleID ?>"; // Lấy mã hóa đơn từ PHP
         const phone = document.getElementById("phone-payment").value;
         const address = document.getElementById("address-payment").value;
@@ -264,9 +404,14 @@ if (isset($_POST['productsCheckout']) && isset($_POST['totalAllPrice'])) {
         const selectedOption = select.options[select.selectedIndex];
         const promotionID = selectedOption.value;
         const customerID = "<?= $customer['CustomerID'] ?>"; // Lấy mã khách hàng từ PHP
+        const address2 = detailAddressInput.value + ", " + districtSelect.value + ", " + provinceSelect.value;
 
         // Kiểm tra xem tất cả các trường đã được điền chưa
-        if (phone === "" || address === "") {
+        if (phone === "") {
+            alert("Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+        if (oldAddressRadio.checked && address === "") {
             alert("Vui lòng điền đầy đủ thông tin!");
             return;
         }
@@ -284,7 +429,7 @@ if (isset($_POST['productsCheckout']) && isset($_POST['totalAllPrice'])) {
                 productsCheckout: JSON.stringify(<?= json_encode($productsCheckout) ?>),
                 totalPrice: totalPrice,
                 phone: phone,
-                address: address,
+                address: oldAddressRadio.checked ? address : address2,
                 note: note,
                 paymentMethod: paymentMethod,
                 date: date,
