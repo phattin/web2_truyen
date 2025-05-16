@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 16, 2025 lúc 07:58 AM
+-- Thời gian đã tạo: Th5 16, 2025 lúc 08:36 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -31,16 +31,16 @@ CREATE TABLE `account` (
   `Username` varchar(50) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `EmployeeID` varchar(10) NOT NULL,
-  `RoleID` varchar(10) NOT NULL,
-  `IsDeleted` int(1) NOT NULL
+  `RoleID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `account`
 --
 
-INSERT INTO `account` (`Username`, `Password`, `EmployeeID`, `RoleID`, `IsDeleted`) VALUES
-('phattin', '$2y$10$LGxvas5xpea.HEvxLjVXxug4AdQaJnP5txgiDer2wNf2Fjy4W2KCy', 'E002', 'R001', 0);
+INSERT INTO `account` (`Username`, `Password`, `EmployeeID`, `RoleID`) VALUES
+('phattin', '$2y$10$LGxvas5xpea.HEvxLjVXxug4AdQaJnP5txgiDer2wNf2Fjy4W2KCy', 'E002', 'R001'),
+('thanhthinh', '$2y$10$yazozBFHRM3iUq6KIUy.7utB.7lQTi0UnA4yoLiT2q.pzhzCs4ldq', 'E003', 'R004');
 
 -- --------------------------------------------------------
 
@@ -86,7 +86,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Password`, `Email`, `Address`, `Phone`, `TotalSpending`, `IsBlocked`) VALUES
-('C005', 'Nguyen Thang', 'thang', '$2y$10$OdZFhQio0aHXl719tt7Fb.Nje69MZSRwVvAP2C35svbuxHOW.AlJW', 'thang@gmail.com', '12345', '0987456123', 0, 0);
+('C005', 'Nguyen Thang', 'thang', '$2y$10$OdZFhQio0aHXl719tt7Fb.Nje69MZSRwVvAP2C35svbuxHOW.AlJW', 'thang@gmail.com', '12345', '0987456123', 0, 0),
+('C006', 'Tung Thien', 'tungthien', '$2y$10$qSc.hbEQ.E2vk5H/.vm2lO2A2CEJeTnd4ErGEo4MkOhUUZxKySLGC', 'thien@gmail.com', '123, Quận 2, Hồ Chí Minh', '0987123444', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -112,8 +113,9 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`EmployeeID`, `Fullname`, `BirthDay`, `Phone`, `Email`, `Address`, `Gender`, `Salary`, `StartDate`, `IsDeleted`) VALUES
-('E001', 'Trần Văn B', '1990-05-20', '0981234567', 'tranvanb@gmail.com', 'Hồ Chí Minh', 'Nam', 7000000, '2024-01-01', 0),
-('E002', 'Phát Tín', '2005-01-01', '0987654123', 'phattin@gmail.com', 'abc', 'Nam', 10000000, '2024-12-12', 0);
+('E001', 'Trần Văn A', '1990-05-20', '0981234567', 'tranvanb@gmail.com', 'Hồ Chí Minh', 'Nam', 700000, '2024-01-01', 1),
+('E002', 'Phát Tín', '2005-01-01', '0987654123', 'phattin@gmail.com', 'abc', 'Nam', 10000000, '2024-12-12', 0),
+('E003', 'Thanh Thinh', '2005-10-12', '0978456321', 'thinh@gmail.com', '123/123', 'Nam', 10000000, '2025-05-16', 0);
 
 -- --------------------------------------------------------
 
@@ -160,6 +162,16 @@ CREATE TABLE `function_detail` (
 --
 
 INSERT INTO `function_detail` (`RoleID`, `FunctionID`, `Option`) VALUES
+('R002', 'F001', 'Xem'),
+('R002', 'F001', 'Thêm'),
+('R002', 'F002', 'Xem'),
+('R004', 'F002', 'Xem'),
+('R004', 'F002', 'Thêm'),
+('R004', 'F002', 'Sửa'),
+('R004', 'F002', 'Xóa'),
+('R004', 'F003', 'Xem'),
+('R004', 'F003', 'Thêm'),
+('R004', 'F003', 'Sửa'),
 ('R001', 'F001', 'Xem'),
 ('R001', 'F001', 'Thêm'),
 ('R001', 'F001', 'Sửa'),
@@ -172,7 +184,6 @@ INSERT INTO `function_detail` (`RoleID`, `FunctionID`, `Option`) VALUES
 ('R001', 'F003', 'Thêm'),
 ('R001', 'F003', 'Sửa'),
 ('R001', 'F004', 'Xem'),
-('R001', 'F004', 'Sửa'),
 ('R001', 'F005', 'Xem'),
 ('R001', 'F005', 'Thêm'),
 ('R001', 'F005', 'Sửa'),
@@ -471,7 +482,8 @@ CREATE TABLE `role` (
 INSERT INTO `role` (`RoleID`, `RoleName`) VALUES
 ('R001', 'Admin'),
 ('R002', 'Nhân viên'),
-('R003', 'Khách hàng');
+('R003', 'Khách hàng'),
+('R004', 'Nhân viên nhập hàng');
 
 -- --------------------------------------------------------
 
@@ -497,8 +509,9 @@ CREATE TABLE `sales_invoice` (
 --
 
 INSERT INTO `sales_invoice` (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`, `PromotionID`, `TotalPrice`, `PaymentMethod`, `Note`, `Status`) VALUES
-('SI002', 'C005', '0987456123', '12345', '2025-05-16', 'PR001', 156600, 'Tiền mặt', '', 'Chưa xác nhận'),
-('SI003', 'C005', '0987456123', '12345', '2025-05-16', 'PR000', 239750, 'Tiền mặt', '', 'Chưa xác nhận');
+('SI002', 'C005', '0987456123', '123ABC, Quận 5, HCM', '2025-05-16', 'PR001', 156600, 'Tiền mặt', '', 'Chưa xác nhận'),
+('SI003', 'C005', '0987456123', '12345, Quận 1, HCM', '2025-05-16', 'PR000', 239750, 'Tiền mặt', '', 'Chưa xác nhận'),
+('SI004', 'C006', '0987123444', '123A, Quận 10, HCM', '2025-05-16', 'PR000', 144000, 'Tiền mặt', '', 'Chưa xác nhận');
 
 -- --------------------------------------------------------
 
@@ -524,7 +537,9 @@ INSERT INTO `sales_invoice_detail` (`SalesID`, `ProductID`, `Quantity`, `Price`,
 ('SI002', 'P003', 1, 51750, 51750),
 ('SI003', 'P001', 2, 44000, 88000),
 ('SI003', 'P002', 1, 100000, 100000),
-('SI003', 'P003', 1, 51750, 51750);
+('SI003', 'P003', 1, 51750, 51750),
+('SI004', 'P001', 1, 44000, 44000),
+('SI004', 'P002', 1, 100000, 100000);
 
 -- --------------------------------------------------------
 
