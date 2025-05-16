@@ -14,12 +14,13 @@ function ChitietSP(x){
             $("#Function").css("display","none"); 
             $("#ChiTiet").html(
                 `
-                <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
+                <input type="button" value="X" class="close-btn" onclick="Close_Chitiet()">
                 <div class="chitiet-box">
                     <div class="image-box"><img src="/webbantruyen/view/layout/images/${response.productImg}";height="100%";width:"90%";></div>
                     <div class="info-box">
                         <p><strong>Mã sản phẩm:</strong> ${response.productID}</p>
                         <p><strong>Tên truyện:</strong> ${response.productName}</p>
+                        <p><strong>Chủng loại:</strong> ${response.categoryName}</p>
                         <p><strong>Tác giả:</strong> ${response.author}</p>
                         <p><strong>NXB:</strong> ${response.publisher}</p>
                         <p><strong>Kho:</strong> ${response.quantity}</p>
@@ -59,7 +60,7 @@ function ChitietHDN(importID){
             });
             $("#ChiTiet").html(
                 `
-                <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
+                <input type="button" value="X" class="close-btn" onclick="Close_Chitiet()">
                 <h2 style='text-align:center; margin:30px;'>Chi tiết hóa đơn nhập</h2>
                 <div class="chitiet-box" style="display:block">
                     <div class="info-box" style="width:100%">
@@ -85,7 +86,7 @@ function Close_Chitiet(){
     $("#overlay-chucnang").css("display","none");    
     $("#overlay-chitiet").css("display","none");
 }
-function Close_ChucNang(){
+function Close_Chitiet(){
     $("#overlay-chucnang").css("display","none");    
     $("#overlay-chitiet").css("display","none");
 }
@@ -438,8 +439,8 @@ function ChitietKH(x){
                         <p><strong>status:</strong>${response.status}</p>
                     </div>
                 </div>
-                <input type="button" value="Sửa" class="blue-btn" onclick="Close_ChucNang()">
-                <input type="button" value="Xóa" class="blue-btn" onclick="Close_ChucNang()">
+                <input type="button" value="Sửa" class="blue-btn" onclick="Close_Chitiet()">
+                <input type="button" value="Xóa" class="blue-btn" onclick="Close_Chitiet()">
                 `  
             );        
         }

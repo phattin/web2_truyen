@@ -7,6 +7,7 @@ header('Content-Type: application/json');
 $productID = $_POST['productID'] ?? null;
 $productName = $_POST['productName'] ?? null;
 $productImg = $_POST['productImg'] ?? null; // Nếu là link ảnh/text
+$categoryID = $_POST['categoryID'] ?? null;
 $author = $_POST['author'] ?? null;
 $publisher = $_POST['publisher'] ?? null;
 $description = $_POST['description'] ?? null;
@@ -30,6 +31,7 @@ $result = $productDB -> addProduct(
     $productID,
     $productName,
     $productImg,
+    $categoryID,
     $author,
     $publisher,
     $quantity,

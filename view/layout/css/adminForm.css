@@ -77,6 +77,7 @@
 .right-panel input[type="text"],
 .right-panel input[type="number"],
 .right-panel input[type="date"],
+.right-panel input[type="email"],
 .right-panel select{
     grid-column: 2; /* Input nằm ở cột thứ hai */
     padding: 8px;
