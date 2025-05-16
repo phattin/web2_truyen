@@ -220,6 +220,29 @@ td {
     transform: scale(1.2);
 }
 
+.function-icon .lock-icon {
+    padding: 0 5px;
+    color: red;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.function-icon .lock-icon:hover {
+    color: #ff0000;
+    transform: scale(1.2);
+}
+
+.function-icon .unlock-icon {
+    padding: 0 5px;
+    color: #28a745;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.function-icon .unlock-icon:hover {
+    color: #218838;
+    transform: scale(1.2);
+}
 .close-btn {
     background-color: red;
     color: white;

@@ -1,5 +1,5 @@
 <?php
-session_start();/*
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/connectDB.php";
 
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
@@ -35,7 +35,6 @@ if ($result->num_rows > 0) {
 
 $stmt->close();
 $conn->close();
-*/
 $IDrole="R001";
 ?>
 
@@ -54,7 +53,7 @@ $IDrole="R001";
 
 <body onload='CheckRole("<?= $GLOBALS["IDrole"] ?>")'>
     <div class="container">
-        <header style="display:none;">
+        <header>
             <h2>Xin chào <?php echo htmlspecialchars($username); ?>!</h2>
         </header>
         <nav class="sidebar">
