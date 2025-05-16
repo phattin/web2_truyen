@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 15, 2025 lúc 10:08 AM
+-- Thời gian đã tạo: Th5 16, 2025 lúc 07:23 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -86,9 +86,7 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Password`, `Email`, `Address`, `Phone`, `TotalSpending`, `IsDeleted`) VALUES
-('C001', 'Nguyễn Văn A', 'kh01', '', 'nguyenvana@gmail.com', 'Hà Nội', '0987654321', 1500000, 0),
-('C003', 'Nguyen Phat Tin', 'phattin123', '', 'phattin123@gmail.com', 'abc', '0987654321', 0, 0),
-('C004', 'Phat Tin', 'tin', '', 'tin@gmail.com', '123456', '0987654321', 0, 0);
+('C005', 'Nguyen Thang', 'thang', '$2y$10$OdZFhQio0aHXl719tt7Fb.Nje69MZSRwVvAP2C35svbuxHOW.AlJW', 'thang@gmail.com', '12345', '0987456123', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -483,20 +481,24 @@ INSERT INTO `role` (`RoleID`, `RoleName`) VALUES
 
 CREATE TABLE `sales_invoice` (
   `SalesID` varchar(10) NOT NULL,
-  `EmployeeID` varchar(10) NOT NULL,
   `CustomerID` varchar(10) NOT NULL,
+  `Phone` varchar(12) NOT NULL,
+  `Address` varchar(255) NOT NULL,
   `Date` date NOT NULL,
   `PromotionID` varchar(10) NOT NULL,
   `TotalPrice` int(10) NOT NULL,
-  `IsDeleted` int(1) NOT NULL
+  `PaymentMethod` varchar(255) NOT NULL,
+  `Note` varchar(500) NOT NULL,
+  `Status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `sales_invoice`
 --
 
-INSERT INTO `sales_invoice` (`SalesID`, `EmployeeID`, `CustomerID`, `Date`, `PromotionID`, `TotalPrice`, `IsDeleted`) VALUES
-('SI001', 'E001', 'C001', '2025-03-15', 'PR000', 1350000, 0);
+INSERT INTO `sales_invoice` (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`, `PromotionID`, `TotalPrice`, `PaymentMethod`, `Note`, `Status`) VALUES
+('SI002', 'C005', '0987456123', '12345', '2025-05-16', 'PR001', 156600, 'Tiền mặt', '', 'Chưa xác nhận'),
+('SI003', 'C005', '0987456123', '12345', '2025-05-16', 'PR000', 239750, 'Tiền mặt', '', 'Chưa xác nhận');
 
 -- --------------------------------------------------------
 
@@ -505,7 +507,6 @@ INSERT INTO `sales_invoice` (`SalesID`, `EmployeeID`, `CustomerID`, `Date`, `Pro
 --
 
 CREATE TABLE `sales_invoice_detail` (
-  `SalesDetailID` varchar(10) NOT NULL,
   `SalesID` varchar(10) NOT NULL,
   `ProductID` varchar(10) NOT NULL,
   `Quantity` int(11) NOT NULL,
@@ -517,9 +518,13 @@ CREATE TABLE `sales_invoice_detail` (
 -- Đang đổ dữ liệu cho bảng `sales_invoice_detail`
 --
 
-INSERT INTO `sales_invoice_detail` (`SalesDetailID`, `SalesID`, `ProductID`, `Quantity`, `Price`, `TotalPrice`) VALUES
-('SD001', 'SI001', 'P001', 2, 50000, 100000),
-('SD002', 'SI001', 'P002', 1, 45000, 45000);
+INSERT INTO `sales_invoice_detail` (`SalesID`, `ProductID`, `Quantity`, `Price`, `TotalPrice`) VALUES
+('SI002', 'P001', 1, 44000, 44000),
+('SI002', 'P002', 1, 100000, 100000),
+('SI002', 'P003', 1, 51750, 51750),
+('SI003', 'P001', 2, 44000, 88000),
+('SI003', 'P002', 1, 100000, 100000),
+('SI003', 'P003', 1, 51750, 51750);
 
 -- --------------------------------------------------------
 
@@ -650,14 +655,12 @@ ALTER TABLE `role`
 ALTER TABLE `sales_invoice`
   ADD PRIMARY KEY (`SalesID`),
   ADD KEY `fk_customer_sales` (`CustomerID`),
-  ADD KEY `fk_employee_sales` (`EmployeeID`),
   ADD KEY `fk_promotion` (`PromotionID`);
 
 --
 -- Chỉ mục cho bảng `sales_invoice_detail`
 --
 ALTER TABLE `sales_invoice_detail`
-  ADD PRIMARY KEY (`SalesDetailID`),
   ADD KEY `fk_sales` (`SalesID`),
   ADD KEY `fk_product_sales` (`ProductID`);
 
@@ -718,7 +721,6 @@ ALTER TABLE `product`
 --
 ALTER TABLE `sales_invoice`
   ADD CONSTRAINT `fk_customer_sales` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`CustomerID`),
-  ADD CONSTRAINT `fk_employee_sales` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`),
   ADD CONSTRAINT `fk_promotion` FOREIGN KEY (`PromotionID`) REFERENCES `promotion` (`PromotionID`);
 
 --
