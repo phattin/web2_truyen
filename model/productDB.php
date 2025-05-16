@@ -181,7 +181,7 @@
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "UPDATE product SET ProductName = ?, ProductImg = ?, Category = ?, Author = ?, Publisher = ?, Quantity = ?, ImportPrice = ? , ROS = ?, `Description` = ?, SupplierID = ?, `IsDeleted` = ? 
+            $strSQL = "UPDATE product SET ProductName = ?, ProductImg = ?, CategoryID = ?, Author = ?, Publisher = ?, Quantity = ?, ImportPrice = ? , ROS = ?, `Description` = ?, SupplierID = ?, `IsDeleted` = ? 
                        WHERE ProductID = ?";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);

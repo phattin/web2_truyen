@@ -62,8 +62,17 @@ function editSP(product_id){
                                     htmlContent += `<option value="${supplier.SupplierID}" ${selected}>${supplier.SupplierName}</option>`;
                                 });
                 htmlContent +=`</select>
-                            </div>
-                        </div>
+                            </div>`
+                htmlContent +=`<div>
+                                <label for="category">Nhà cung cấp:</label>
+                                <select id="category" name="category">`;
+                                    response.allCategory.forEach(category => {
+                                    const selected = category.CategoryID === response.categoryID ? "selected" : "";
+                                    htmlContent += `<option value="${category.CategoryID}" ${selected}>${category.CategoryName}</option>`;
+                                });
+                htmlContent +=`</select>
+                            </div>`
+            htmlContent +=`</div>
                     </div>
                     <div class="product-form-button">
                         <button type="button" id="add-product-submit-btn" class="add-product-submit-btn blue-btn">Sửa</button>
@@ -98,6 +107,7 @@ function editSP(product_id){
                         const productID = $("#productID").val();
                         const productName = $("#productName").val();
                         const productImg = document.getElementById("image-upload").files[0]?.name || "${response.productImg}";
+                        const categoryID = $("#category").val();
                         const author = $("#author").val();
                         const publisher = $("#publisher").val();
                         const description = $("#description").val();
@@ -142,6 +152,7 @@ function editSP(product_id){
                             productID,
                             productName,
                             productImg,
+                            categoryID,
                             author,
                             publisher,
                             description,
@@ -314,8 +325,8 @@ function SuaRole(x){
                 `
                 <h2>Chỉnh sửa quyền ${response[0].RoleName} </h2>
                 <input type="button" value="X" class="blue-btn" onclick="Close_ChucNang()">
-                <form action="../../handle/edit_role.php" method="POST">
-                <input type="hidden" name="RoleID" value="${response[0].RoleID}">
+                <form id="role-form" class="product-add-form">
+                <input type="hidden" id="RoleID" name="RoleID" value="${response[0].RoleID}">
                 <table>
                     <tr>
                         <th>Tên chức năng </th>
@@ -343,7 +354,7 @@ function SuaRole(x){
                         <td><input type='checkbox' name='XemHDN' value='Xem'></input></td>
                         <td><input type='checkbox' name='THDN' value='Thêm'></input></td>   
                         <td><input type='checkbox' name='SHDN' value='Sửa'></input></td>
-                        <td><input type='checkbox' name='XHDN' value='Xóa'></input></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <th>Quản lý hóa đơn bán  </th>
@@ -362,7 +373,7 @@ function SuaRole(x){
                     <tr>
                         <th>Quản lý khách hàng</th>
                         <td><input type='checkbox' name='XemKH' value='Xem'></input></td>
-                        <td><input type='checkbox' name='TKH' value='Thêm'></input></td>
+                        <td></td>
                         <td><input type='checkbox' name='SKH' value='Sửa'></input></td>
                         <td><input type='checkbox' name='XKH' value='Xóa'></input></td>
                     <tr>
@@ -380,7 +391,7 @@ function SuaRole(x){
                     </tr>
                     <tr>
                         <th>Quản lý khuyến mãi</th>
-                        <td></td>
+                        <td><input type='checkbox' name='XemKM' value='Xem'></input></td>
                         <td><input type='checkbox' name='TKM' value='Thêm'></input></td>
                         <td><input type='checkbox' name='SKM' value='Sửa'></input></td>
                         <td><input type='checkbox' name='XKM' value='Xóa'></input></td>
@@ -400,7 +411,7 @@ function SuaRole(x){
                         <td></td>
                     </tr>
                 </table>
-                <input type="submit" value="Xác Nhận Sửa" class="blue-btn SQ">
+                <input type="button" value="Xác Nhận Sửa" class="blue-btn SQ" onclick="SubmitEditRole()">
                 </form>
                 `  
             );        
@@ -543,6 +554,149 @@ function SuaRole(x){
             }
             });
             
+        }
+    });
+}
+
+// Hàm xử lý khi người dùng nhấn "Xác Nhận Sửa"
+function SubmitEditRole() {
+    var RoleID = $("#RoleID").val();
+    var permissions = [];
+
+    $("#role-form input[type='checkbox']:checked").each(function () {
+        var funcID = $(this).attr("name");
+        permissions.push(funcID);
+    });
+
+    console.log(permissions);
+
+    $.ajax({
+        type: "POST",
+        url: "/webbantruyen/handle/edit_role.php",
+        data: JSON.stringify({
+            RoleID: RoleID,
+            Permissions: permissions
+        }),
+        contentType: "application/json",   // <-- Quan trọng
+        dataType: "json",
+        success: function (res) {
+            console.log(res);
+            alert(res.message);
+            Close_ChucNang();
+        },
+        error: function (xhr) {
+            console.log(xhr.responseText);
+            alert("Lỗi: " + xhr.statusText);
+        }
+    });
+}
+
+function suaKH(customerID) {
+    $("#overlay-chucnang").css("display", "block");
+    $("#Function").css("display", "block");
+
+    $.ajax({
+        type: "POST",
+        url: "/webbantruyen/view/admin/form.php", // file trả về dữ liệu khách hàng
+        data: { customer_id: customerID },
+        dataType: "json",
+        success: function(response) {
+            console.log({ response });
+
+            let htmlContent = `
+                <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
+                <h2 style='text-align:center; margin:30px;'>Sửa thông tin khách hàng</h2>
+                <form id="customer-edit-form" class="product-add-form">
+                    <div class="form-content" style="display:block">
+                        <div class="right-panel">
+                            <div style="display: none;">
+                                <label for="customerID">Mã khách hàng:</label>
+                                <input type="text" id="customerID" name="customerID" value="${response.customerID}" readonly>
+                            </div>
+                            <div>
+                                <label for="fullname">Họ tên:</label>
+                                <input type="text" id="fullname" name="fullname" value="${response.fullname}">
+                            </div>
+                            <div>
+                                <label for="username">Tên đăng nhập:</label>
+                                <input type="text" id="username" name="username" value="${response.username}" readonly>
+                            </div>
+                            <div>
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" value="${response.email}">
+                            </div>
+                            <div>
+                                <label for="address">Địa chỉ:</label>
+                                <input type="text" id="address" name="address" value="${response.address}">
+                            </div>
+                            <div>
+                                <label for="phone">SĐT:</label>
+                                <input type="text" id="phone" name="phone" value="${response.phone}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-form-button">
+                        <button type="button" id="edit-customer-submit-btn" class="add-product-submit-btn blue-btn">Sửa</button>
+                        <input type="reset" value="Reset" class="reset-btn blue-btn">
+                    </div>
+                </form>
+
+                <script>
+                    $("#edit-customer-submit-btn").on("click", function (e) {
+                        e.preventDefault();
+                        const customerID = $("#customerID").val();
+                        const fullname = $("#fullname").val();
+                        const email = $("#email").val();
+                        const address = $("#address").val();
+                        const phone = $("#phone").val();
+
+                        if (!fullname || !email || !address || !phone) {
+                            alert("Vui lòng điền đầy đủ thông tin!");
+                            return;
+                        }
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/webbantruyen/handle/editCustomer.php",
+                            data: {
+                                customerID,
+                                fullname,
+                                email,
+                                address,
+                                phone
+                            },
+                            dataType: "json",
+                            success: function (response) {
+                                if (response.success) {
+                                    alert("Cập nhật thông tin khách hàng thành công!");
+
+                                    const row = document.querySelector("#customer-row-" + customerID);
+                                    if (row) {
+                                        row.children[1].textContent = fullname;
+                                        row.children[3].textContent = email;
+                                        row.children[4].textContent = address;
+                                        row.children[5].textContent = phone;
+                                    }
+
+                                    Close_ChucNang();
+                                } else {
+                                    alert("Sửa thất bại: " + response.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Lỗi Ajax:", error);
+                                alert("Lỗi: " + error);
+                            }
+                        });
+                    });
+                </script>
+            `;
+
+            $("#Function").html(htmlContent);
+        },
+        error: function(xhr, status, error) {
+            console.error("Lỗi Ajax khi lấy dữ liệu:", error);
+            alert("Không thể lấy thông tin khách hàng!");
         }
     });
 }

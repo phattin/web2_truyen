@@ -5,6 +5,7 @@
 
         require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/productDB.php";
         require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/supplierDB.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/categoryDB.php";
         $product = productDB::getProductByID($productID);
         $productID = $product["ProductID"];
         $productName = $product["ProductName"];
@@ -13,6 +14,8 @@
         $publisher = $product["Publisher"];
         $quantity = $product["Quantity"];
         $importPrice = $product["ImportPrice"];
+        $categoryID = $product["CategoryID"];
+        $categoryName = categoryDB::getCategoryByID($categoryID);
         $ros = $product["ROS"];
         $description = $product["Description"];
         $supplierID = $product["SupplierID"];
@@ -25,11 +28,14 @@
             "author" => $author,
             "publisher" => $publisher,
             "quantity" => $quantity,
+            "categoryID" => $categoryID,
+            "categoryName" => $categoryName["CategoryName"],
             "importPrice" => $importPrice,
             "ros" => $ros,
             "description" => $description,
             "supplierID" => $supplierID,
             "allSupplier" => $allSuppliers,
+            "allCategory" => categoryDB::getAllCategory(),
         ]);
     }
 
@@ -45,7 +51,7 @@
         while($row=$result_sql->fetch_assoc()){
             $data[] = [
                 "RoleName" => $row["RoleName"],
-                "RoleID" => $row["RoleID"],
+                "RoleID" => $roleID,
                 "FunctionID" => $row["FunctionID"],
                 "Option" => $row["Option"],
             ];
@@ -195,6 +201,46 @@ if(isset($_POST["Username"])) {
             "discount" => $discount,
             "startDate" => $startDate,
             "endDate" => $endDate
+        ]);
+    }
+
+    if(isset($_POST["promotion_id"])) {
+        $promotionID = $_POST["promotion_id"];
+
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/promotionDB.php";
+        $promotion = promotionDB::getPromotionByID($promotionID);
+        $promotionID = $promotion["PromotionID"];
+        $promotionName = $promotion["PromotionName"];
+        $discount = $promotion["Discount"];
+        $startDate = $promotion["StartDate"];
+        $endDate = $promotion["EndDate"];
+        echo json_encode([
+            "promotionID" => $promotionID,
+            "promotionName" => $promotionName,
+            "discount" => $discount,
+            "startDate" => $startDate,
+            "endDate" => $endDate
+        ]);
+    }
+
+    if(isset($_POST["customer_id"])) {
+        $customerID = $_POST["customer_id"];
+
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/customerDB.php";
+        $customer = customerDB::getCustomerByID($customerID);
+        $customerID = $customer["CustomerID"];
+        $fullname = $customer["Fullname"];
+        $username = $customer["Username"];
+        $phone = $customer["Phone"];
+        $email = $customer["Email"];
+        $address = $customer["Address"];
+        echo json_encode([
+            "customerID" => $customerID,
+            "fullname" => $fullname,
+            "username" => $username,
+            "phone" => $phone,
+            "email" => $email,
+            "address" => $address
         ]);
     }
         
