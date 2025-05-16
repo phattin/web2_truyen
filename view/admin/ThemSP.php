@@ -59,6 +59,18 @@
                         ?>
                     </select>
                 </div>
+                <div>
+                    <label for="category">Chủng loại:</label>
+                    <select id="category" name="category">
+                        <?php
+                        require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/categoryDB.php";
+                        $categorys = categoryDB::getAllCategory();
+                        foreach ($categorys as $category) {
+                            echo "<option value='" . $category["CategoryID"] . "'>" . $category["CategoryName"] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="product-form-button">
@@ -95,6 +107,7 @@
             const productID = $("#productID").val();
             const productName = $("#productName").val();
             const productImg = document.getElementById("image-upload").files[0]?.name || "";
+            const categoryID = $("#category").val();
             const author = $("#author").val();
             const publisher = $("#publisher").val();
             const description = $("#description").val();
@@ -137,6 +150,7 @@
                 productID,
                 productName,
                 productImg,
+                categoryID,
                 author,
                 publisher,
                 description,

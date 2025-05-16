@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = trim($_POST['password'] ?? '');
 
     // Xác định nơi để tìm kiếm người dùng (đầu tiên thử trong bảng customer)
-    $sql_customer = "SELECT Username, Password, 'customer' as UserType, IsDeleted 
+    $sql_customer = "SELECT Username, Password, 'customer' as UserType, IsBlocked 
                      FROM customer 
                      WHERE Email = ? OR Username = ?";
                      
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $result_customer->fetch_assoc();
         
         // Kiểm tra xem tài khoản có bị xóa không
-        if ($user['IsDeleted'] == 1) {
+        if ($user['IsBlocked'] == 1) {
             echo json_encode([
                 "success" => false,
                 "message" => "Tài khoản này đã bị vô hiệu hóa! Vui lòng liên hệ quản trị viên để được hỗ trợ."

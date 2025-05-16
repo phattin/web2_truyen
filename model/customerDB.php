@@ -79,6 +79,30 @@
         
             return $customer;
         }
+
+        public static function updateCustomer($customerID, $fullname, $email, $address, $phone) {
+            $conn = connectDB::getConnection();  // Sửa lại dùng connectDB
+            $stmt = mysqli_prepare($conn, "UPDATE customer SET Fullname = ?, Email = ?, Address = ?, Phone = ? WHERE CustomerID = ?");
+            mysqli_stmt_bind_param($stmt, "sssss", $fullname, $email, $address, $phone, $customerID);
+
+            $success = mysqli_stmt_execute($stmt);
+
+            mysqli_stmt_close($stmt);
+            connectDB::closeConnection($conn);
+            return $success;
+        }
+
+        public static function setIsBlocked($customerID, $islocked) {
+            $conn = connectDB::getConnection();  // Sửa lại dùng connectDB
+            $stmt = mysqli_prepare($conn, "UPDATE customer SET IsBlocked = ? WHERE CustomerID = ?");
+            mysqli_stmt_bind_param($stmt, "is", $islocked, $customerID);
+
+            $success = mysqli_stmt_execute($stmt);
+
+            mysqli_stmt_close($stmt);
+            connectDB::closeConnection($conn);
+            return $success;
+        }
         
     }
 ?>

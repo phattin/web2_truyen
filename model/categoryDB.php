@@ -9,7 +9,7 @@
     class categoryDB {
         private static $conn;
 
-        // Lấy toàn bộ danh mục
+        // Lấy toàn bộ chủng loại
         public static function getAllCategory() {
             $conn = connectDB::getConnection();
             $strSQL = 'SELECT * FROM category';
@@ -24,7 +24,7 @@
             return $categoryList;
         }
 
-        // Thêm danh mục mới
+        // Thêm chủng loại mới
         public function addCategory($id, $name) {
             $conn = connectDB::getConnection();
             $strSQL = "INSERT INTO category (CategoryID, CategoryName) VALUES (?, ?)";
@@ -38,7 +38,7 @@
             return $success;
         }
 
-        // Cập nhật danh mục
+        // Cập nhật chủng loại
         public function updateCategory($id, $name) {
             $conn = connectDB::getConnection();
             $strSQL = "UPDATE category SET CategoryName = ? WHERE CategoryID = ?";
@@ -56,7 +56,7 @@
             return $success;
         }
 
-        // Lấy danh mục của 1 sản phẩm
+        // Lấy chủng loại của 1 sản phẩm
         public static function getCategoriesOfProduct($productID) {
             $conn = connectDB::getConnection();
 
@@ -77,6 +77,33 @@
 
             connectDB::closeConnection($conn);
             return $categoryList;
+        }
+
+        // Lấy chủng loại theo ID
+        public static function getCategoryByID($id) {
+            $conn = connectDB::getConnection();
+
+            $strSQL = "SELECT * FROM category WHERE CategoryID = ?";
+            $stmt = $conn->prepare($strSQL);
+
+            if (!$stmt) {
+                die("Lỗi chuẩn bị SQL: " . $conn->error);
+            }
+
+            $stmt->bind_param("s", $id);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            $category = null;
+
+            if ($result->num_rows > 0) {
+                $category = $result->fetch_assoc();
+            }
+
+            $stmt->close();
+            connectDB::closeConnection($conn);
+
+            return $category;
         }
     }
 ?>
