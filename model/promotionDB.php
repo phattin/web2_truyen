@@ -40,6 +40,30 @@ class promotionDB {
         return $promotionList;
     }
 
+    // Lấy tất cả khuyến mãi còn hạn
+    public static function getValidPromotions() {
+        $conn = connectDB::getConnection();
+        $today = date('Y-m-d'); // Lấy ngày hiện tại theo định dạng yyyy-mm-dd
+
+        $sql = "SELECT * FROM promotion 
+                WHERE IsDeleted = 0 
+                AND EndDate >= ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $today);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $validPromotions = [];
+        while ($row = $result->fetch_assoc()) {
+            $validPromotions[] = $row;
+        }
+
+        $stmt->close();
+        connectDB::closeConnection($conn);
+        return $validPromotions;
+    }
+
+
     // Lấy khuyến mãi theo ID
     public static function getPromotionByID($promotionID) {
         $conn = connectDB::getConnection();

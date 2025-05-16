@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let cartCount = 0; // Biến đếm sản phẩm trong giỏ
 
     // Lấy số lượng sản phẩm trong giỏ hàng từ session khi load trang
-    fetch("view/page/get_cart_count.php")
+    fetch("/webbantruyen/view/layout/page/get_cart_count.php")
         .then(response => response.json())
         .then(data => {
             if (data.cart_count !== undefined) {
@@ -62,6 +62,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Hàm cập nhật số lượng sản phẩm trên icon giỏ hàng
     function updateCartCount() {
+        if (!cartIcon) return; // Nếu không tìm thấy phần tử, thoát luôn tránh lỗi
+
         let cartBadge = cartIcon.querySelector(".cart-count");
         if (!cartBadge) {
             cartBadge = document.createElement("span");

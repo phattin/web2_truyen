@@ -26,10 +26,7 @@
             // Mở database
             $conn = connectDB::getConnection();
     
-            $strSQL = 'SELECT customer.*, account.* 
-                       FROM customer
-                       JOIN account ON customer.Username = account.Username
-                       WHERE customer.Username = ?';
+            $strSQL = 'SELECT * FROM customer WHERE Username = ?';
         
             // Chuẩn bị câu lệnh SQL
             if ($stmt = mysqli_prepare($conn, $strSQL)) {
@@ -58,10 +55,7 @@
             // Mở database
             $conn = connectDB::getConnection();
     
-            $strSQL = 'SELECT customer.*, account.* 
-                       FROM customer
-                       JOIN account ON customer.Username = account.Username
-                       WHERE customer.CustomerID = ?';
+            $strSQL = 'SELECT * FROM customer WHERE CustomerID = ?';
         
             // Chuẩn bị câu lệnh SQL
             if ($stmt = mysqli_prepare($conn, $strSQL)) {

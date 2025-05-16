@@ -8,4 +8,12 @@ Array
             [quantity] => 1
         )
 
+    [1] => Array
+        (
+            [id] => P002
+            [name] => Truyện Conan
+            [price] => 100000
+            [quantity] => 2
+        )
+
 )

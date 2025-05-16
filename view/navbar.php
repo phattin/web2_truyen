@@ -9,7 +9,7 @@ $categories = categoryDB::getAllCategory();
     <div class="container">
         <ul>
             <li>
-                <div class="menu-item active" data-page="home" onclick="setActive(this)">Tất cả</div>
+                <div class="menu-item" data-page="home" onclick="setActive(this)">Tất cả</div>
             </li>
             <li class="dropdown">
                 <div class="menu-item">Thể loại ▼</div>

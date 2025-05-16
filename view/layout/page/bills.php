@@ -21,6 +21,25 @@
     echo "<script>console.log(".json_encode($details).")</script>";
 ?>
 
+<style>
+@media print {
+    @page {
+        margin: 0;
+        size: auto;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    /* Ẩn header/footer của trình duyệt nếu có thể */
+    html, body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+</style>
+
 <link rel="stylesheet" href="/webbantruyen/view/layout/css/bills.css">
 <div class="bills-page">
     <div class="bills-box">
