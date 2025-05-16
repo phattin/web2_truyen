@@ -40,6 +40,21 @@ class roleDB {
         return $roleList;
     }
 
+    //Kiểm tra có quyền nào đã sử dụng trong tài khoản chưa
+    public static function checkRoleUsed($roleID) {
+        $conn = connectDB::getConnection();
+        $sql = "SELECT * FROM account WHERE RoleID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $roleID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $isUsed = false;
+        if ($result->num_rows > 0) {
+            $isUsed = true;
+        }
+        connectDB::closeConnection($conn);
+        return $isUsed;
+    }
     public static function getRoleByID($roleID) {
         $conn = connectDB::getConnection();
         $strSQL = "SELECT * FROM role WHERE RoleID = ?";
@@ -53,6 +68,32 @@ class roleDB {
         }
         connectDB::closeConnection($conn);
         return $role;
+    }
+
+    public static function getRoleIDByUsername($username) {
+        $conn = connectDB::getConnection();
+        $strSQL = "SELECT RoleID FROM account WHERE Username = ?";
+        $stmt = $conn->prepare($strSQL);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $roleID = null;
+        if ($result->num_rows > 0) {
+            $roleID = $result->fetch_assoc()['RoleID'];
+        }
+        connectDB::closeConnection($conn);
+        return $roleID;
+    }
+
+    public static function removeRole($roleID) {
+        $conn = connectDB::getConnection();
+        $sql = "Delete from role WHERE RoleID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $roleID);
+        $success = $stmt->execute();
+
+        connectDB::closeConnection($conn);
+        return $success;
     }
 
     public static function getAllFunctionDetailByRoleID($roleID) {

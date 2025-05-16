@@ -30,7 +30,7 @@ function Switch(x){
             $("#admin-content").load("/webbantruyen/view/admin/import.php");
             break;
         case 'ncc':
-            // $("#admin-content").load("/webbantruyen/view/admin/supplier.php");
+            $("#admin-content").load("/webbantruyen/view/admin/supplier.php");
             break;
         case 'pq':
             $("#admin-content").load("/webbantruyen/view/admin/permissions.php", function () {

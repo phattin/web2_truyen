@@ -88,6 +88,32 @@
             return $success;
         }
 
+        public static function updateStatus($salesID, $status) {
+            // Mở kết nối database
+            $conn = ConnectDB::getConnection();
+
+            // Lệnh SQL cập nhật trường Status cho SalesID tương ứng
+            $strSQL = "UPDATE sales_invoice SET `Status` = ? WHERE SalesID = ?";
+
+            // Chuẩn bị câu lệnh
+            $stmt = $conn->prepare($strSQL);
+            if (!$stmt) {
+                die("Lỗi chuẩn bị SQL: " . $conn->error);
+            }
+
+            // Bind tham số: status (string), salesID (string)
+            $stmt->bind_param("ss", $status, $salesID);
+
+            // Thực thi câu lệnh
+            $success = $stmt->execute();
+
+            // Đóng câu lệnh và kết nối
+            $stmt->close();
+            ConnectDB::closeConnection($conn);
+
+            return $success;
+        }
+
         // Lấy mã hóa đơn +1
         public static function getIncreaseSalesInvoiceID() {
             //Mở database

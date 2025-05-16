@@ -54,12 +54,40 @@ function xoaKM(id) {
     }
 }
 
+function xoaNCC(id) {
+    if (confirm("Bạn có chắc chắn muốn xóa nhà cung cấp này không?")) {
+        $.ajax({
+            url: "/webbantruyen/handle/deleteHandle.php",
+            type: "POST",
+            data: { supplierID: id },
+            success: function (response) {
+                console.log(response)
+                if (response.success) {
+                    alert("Xóa nhà cung cấp thành công");
+                    // Xóa dòng tương ứng trong bảng
+                    const row = document.querySelector(`#supplier-row-${id}`);
+                    if (row) {
+                        row.remove();
+                    }
+                } else {
+                    alert("Có lỗi xảy ra, vui lòng thử lại sau: " + response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Lỗi AJAX: ", error);  // Log lỗi khi gặp sự cố với Ajax
+                console.log("Phản hồi từ server (error): ", xhr.responseText); // Log thêm thông tin từ server
+                alert("Có lỗi xảy ra, vui lòng thử lại sau: " + xhr.responseText);
+            }
+        });
+    }
+}
+
 function XoaRole(x){
     console.log(x);
     $.ajax({
-        type: "GET",
-        url: "../../handle/delete_role.php",
-        data: { RoleID: x },
+        type: "POST",
+        url: "/webbantruyen/handle/deleteHandle.php",
+        data: { roleID: x },
         dataType: "json",
         success: function (response) {
             console.log(response);
@@ -69,8 +97,12 @@ function XoaRole(x){
             } else {
                 alert("Có lỗi xảy ra, vui lòng thử lại sau: " + response.message);
             }
-            location.reload();
         },
+        error: function (xhr, status, error) {
+                console.error("Lỗi AJAX: ", error);  // Log lỗi khi gặp sự cố với Ajax
+                console.log("Phản hồi từ server (error): ", xhr.responseText); // Log thêm thông tin từ server
+                alert("Có lỗi xảy ra, vui lòng thử lại sau: " + xhr.responseText);
+        }
     });
 }
 

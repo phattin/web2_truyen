@@ -173,6 +173,15 @@ if (isset($_POST['productsCheckout']) && isset($_POST['totalAllPrice'])) {
                 </div>
                 <div class="payment-submit-background">
                     <button type="submit" class="submit-payment-btn">Thanh toán</button>
+                    <button onclick='window.location.href = "/webbantruyen/index.php";' style='background-color:rgb(248, 63, 63);
+                                    color: white;
+                                    border: none;
+                                    padding: 10px 20px;
+                                    font-size: 16px;
+                                    font-weight: bold;
+                                    border-radius: 5px;
+                                    cursor: pointer;'>
+                                Quay về trang chủ</button>
                 </div>
             </form>
         </div>

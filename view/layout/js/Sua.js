@@ -64,7 +64,7 @@ function editSP(product_id){
                 htmlContent +=`</select>
                             </div>`
                 htmlContent +=`<div>
-                                <label for="category">Nhà cung cấp:</label>
+                                <label for="category">Chủng loại:</label>
                                 <select id="category" name="category">`;
                                     response.allCategory.forEach(category => {
                                     const selected = category.CategoryID === response.categoryID ? "selected" : "";
@@ -192,6 +192,113 @@ function editSP(product_id){
         }
     });
 }
+
+function suaNCC(supplierID) {
+    $("#overlay-chucnang").css("display", "block");
+    $("#Function").css("display", "block");
+
+    $.ajax({
+        type: "POST",
+        url: "/webbantruyen/view/admin/form.php", // file trả về dữ liệu nhà cung cấp
+        data: { supplier_id: supplierID },
+        dataType: "json",
+        success: function(response) {
+            console.log({ response });
+
+            let htmlContent = `
+                <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
+                <h2 style='text-align:center; margin:30px;'>Sửa nhà cung cấp</h2>
+                <form id="supplier-edit-form" class="product-add-form">
+                    <div class="form-content" style="display:block">
+                        <div class="right-panel">
+                            <div style="display: none;">
+                                <label for="supplierID">Mã nhà cung cấp:</label>
+                                <input type="text" id="supplierID" name="supplierID" value="${response.supplierID}" readonly>
+                            </div>
+                            <div>
+                                <label for="supplierName">Tên nhà cung cấp:</label>
+                                <input type="text" id="supplierName" name="supplierName" value="${response.supplierName}">
+                            </div>
+                            <div>
+                                <label for="phone">Số điện thoại:</label>
+                                <input type="text" id="phone" name="phone" value="${response.phone}">
+                            </div>
+                            <div>
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" value="${response.email}">
+                            </div>
+                            <div>
+                                <label for="address">Địa chỉ:</label>
+                                <input type="text" id="address" name="address" value="${response.address}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-form-button">
+                        <button type="button" id="edit-supplier-submit-btn" class="add-product-submit-btn blue-btn">Sửa</button>
+                        <input type="reset" value="Reset" class="reset-btn blue-btn">
+                    </div>
+                </form>
+
+                <script>
+                    $("#edit-supplier-submit-btn").on("click", function (e) {
+                        e.preventDefault();
+                        const supplierID = $("#supplierID").val();
+                        const supplierName = $("#supplierName").val();
+                        const phone = $("#phone").val();
+                        const email = $("#email").val();
+                        const address = $("#address").val();
+
+                        if (!supplierName || !phone || !email || !address) {
+                            alert("Vui lòng điền đầy đủ thông tin!");
+                            return;
+                        }
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/webbantruyen/handle/editSupplier.php",
+                            data: {
+                                supplierID,
+                                supplierName,
+                                phone,
+                                email,
+                                address
+                            },
+                            dataType: "json",
+                            success: function (response) {
+                                if (response.success) {
+                                    alert("Sửa nhà cung cấp thành công!");
+
+                                    const row = document.querySelector("#supplier-row-" + supplierID);
+                                    if (row) {
+                                        row.children[1].textContent = supplierName;
+                                        row.children[2].textContent = phone;
+                                        row.children[3].textContent = email;
+                                        row.children[4].textContent = address;
+                                    }
+
+                                    Close_ChucNang();
+                                } else {
+                                    alert("Sửa thất bại: " + response.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Lỗi Ajax:", error);
+                                alert("Lỗi: " + error);
+                            }
+                        });
+                    });
+                </script>
+            `;
+
+            $("#Function").html(htmlContent);
+        },
+        error: function(xhr, status, error) {
+            console.error("Lỗi Ajax khi lấy dữ liệu:", error);
+            alert("Không thể lấy thông tin nhà cung cấp!");
+        }
+    });
+}
+
 
 function suaKM(promotionID) {
     $("#overlay-chucnang").css("display", "block");
@@ -382,7 +489,7 @@ function SuaRole(x){
                         <td><input type='checkbox' name='TQ' value='Thêm'></input></td>
                         <td><input type='checkbox' name='SQ' value='Sửa'></input></td>
                         <td><input type='checkbox' name='XQ' value='Xóa'></input></td>
-                    <tr>
+                    <tr style="display:none">
                         <th>Quản lý chủng loại</th>
                         <td><input type='checkbox' name='XemCL' value='Xem'></input></td>
                         <td><input type='checkbox' name='TCL' value='Thêm'></input></td>

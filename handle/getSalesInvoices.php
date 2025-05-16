@@ -50,7 +50,7 @@ if (!empty($conditions)) {
 }
 
 $sql = "
-    SELECT si.SalesID, c.FullName, c.Username, si.Address, c.Phone, si.Date, si.PromotionID, si.TotalPrice 
+    SELECT si.Status, si.SalesID, c.FullName, c.Username, si.Address, c.Phone, si.Date, si.PromotionID, si.TotalPrice 
     FROM sales_invoice si
     LEFT JOIN customer c ON si.CustomerID = c.CustomerID
     $base_condition
@@ -127,8 +127,24 @@ if ($result && $result->num_rows > 0) {
         $stmt->close();
 
         echo "<div class='invoice-actions'>";
-        echo "<button class='btn-print' onclick='printInvoice(\"" . $salesID . "\")'>In hóa đơn</button>";
-        echo "</div>";
+        $status = $row['Status'];
+        $status_options = [
+            'Chưa xác nhận',
+            'Đã xác nhận',
+            'Đã giao thành công',
+            'Đã hủy'
+        ];
+
+        // Nếu trạng thái là 'Đã giao thành công' hoặc 'Đã hủy' thì disable select
+        $disable_select = ($status === 'Đã giao thành công' || $status === 'Đã hủy') ? "disabled" : "";
+
+        echo "<select id='status_$salesID' class='status-select' data-current-status='" . htmlspecialchars($status) . "' onchange='updateStatus(\"$salesID\", this.value, this)' $disable_select>";
+        foreach ($status_options as $option) {
+            $selected = ($option === $status) ? "selected" : "";
+            echo "<option value='$option' $selected>$option</option>";
+        }
+        echo "</select>";
+        echo "<button style='margin-left:20px;' class='btn-print' onclick='printInvoice(\"" . $salesID . "\")'>In hóa đơn</button>";
         echo "</div>";
     }
 } else {

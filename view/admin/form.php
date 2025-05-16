@@ -210,6 +210,29 @@ if (isset($_POST["username"])) {
         ]);
     }
 
+    // Chi tiết nhà cung cấp
+if (isset($_POST["supplier_id"])) {
+    $supplierID = $_POST["supplier_id"];
+
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/supplierDB.php";
+    $supplier = supplierDB::getSupplierByID($supplierID);
+
+    if ($supplier) {
+        echo json_encode([
+            "supplierID" => $supplier["SupplierID"],
+            "supplierName" => $supplier["SupplierName"],
+            "phone" => $supplier["Phone"],
+            "email" => $supplier["Email"],
+            "address" => $supplier["Address"]
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "message" => "Không tìm thấy nhà cung cấp"
+        ]);
+    }
+}
+
     if(isset($_POST["promotion_id"])) {
         $promotionID = $_POST["promotion_id"];
 

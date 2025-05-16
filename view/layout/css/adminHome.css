@@ -125,7 +125,8 @@ main {
     color: black;
     border-radius: 20px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
+    height: 100vh;
+    overflow: auto;
 }
 
 h3 {
@@ -382,6 +383,8 @@ td {
 
 .sales-invoice-container {
     padding: 20px;
+    height: 100%;
+    overflow: auto;
 }
 
 .search-container {

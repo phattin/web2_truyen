@@ -83,7 +83,92 @@ if (session_status() === PHP_SESSION_NONE)
         ?>
     </ul>
 </div>
+<script>
+    
+    const cartIcon = document.getElementById("cart-icon");
+    const isLoggedIn = !!document.querySelector(".user-menu"); // Kiểm tra user đăng nhập
+    function addToCart(button) {
+                if (!isLoggedIn) {
+                    alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
+                    window.location.href = "index.php?page=login";
+                    return;
+                }
 
+                const productItem = button.closest(".product-item");
+                const form = button.closest("form");
+                const formData = new FormData(form);
+
+                fetch("view/layout/page/cart.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        cartCount = data.cart_count;
+                        updateCartCount();
+
+                        cartIcon.classList.add("shake");
+                        setTimeout(() => {
+                            cartIcon.classList.remove("shake");
+                        }, 500);
+
+                        showFlyEffect(productItem);
+                    } else {
+                        alert(data.message || "Có lỗi xảy ra khi thêm vào giỏ hàng.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi:", error);
+                    alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
+                });
+    }
+    // Hàm cập nhật số lượng sản phẩm trên icon giỏ hàng
+    function updateCartCount() {
+        if (!cartIcon) return; // Nếu không tìm thấy phần tử, thoát luôn tránh lỗi
+
+        let cartBadge = cartIcon.querySelector(".cart-count");
+        if (!cartBadge) {
+            cartBadge = document.createElement("span");
+            cartBadge.classList.add("cart-count");
+            cartIcon.appendChild(cartBadge);
+        }
+        cartBadge.textContent = cartCount;
+    }
+
+    // Hiệu ứng hình ảnh bay vào giỏ hàng
+    function showFlyEffect(productItem) {
+        const productImage = productItem.querySelector("img");
+        if (productImage && cartIcon) {
+            const flyImage = productImage.cloneNode(true);
+            const rect = productImage.getBoundingClientRect();
+
+            flyImage.style.position = "fixed";
+            flyImage.style.top = `${rect.top}px`;
+            flyImage.style.left = `${rect.left}px`;
+            flyImage.style.width = `${rect.width}px`;
+            flyImage.style.height = `${rect.height}px`;
+            flyImage.style.transition = "all 1s ease-in-out";
+            flyImage.style.zIndex = "9999";
+
+            document.body.appendChild(flyImage);
+
+            const cartRect = cartIcon.getBoundingClientRect();
+
+            setTimeout(() => {
+                flyImage.style.top = `${cartRect.top}px`;
+                flyImage.style.left = `${cartRect.left}px`;
+                flyImage.style.width = "30px";
+                flyImage.style.height = "30px";
+                flyImage.style.opacity = "0.5";
+            }, 100);
+
+            flyImage.addEventListener("transitionend", () => {
+                flyImage.remove();
+            });
+        }
+    }
+</script>
 <?php
 $response = ob_get_clean();
 echo $response;

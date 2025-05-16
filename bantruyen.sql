@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 16, 2025 lúc 08:36 PM
+-- Thời gian đã tạo: Th5 17, 2025 lúc 01:36 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -482,7 +482,6 @@ CREATE TABLE `role` (
 INSERT INTO `role` (`RoleID`, `RoleName`) VALUES
 ('R001', 'Admin'),
 ('R002', 'Nhân viên'),
-('R003', 'Khách hàng'),
 ('R004', 'Nhân viên nhập hàng');
 
 -- --------------------------------------------------------
@@ -509,9 +508,9 @@ CREATE TABLE `sales_invoice` (
 --
 
 INSERT INTO `sales_invoice` (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`, `PromotionID`, `TotalPrice`, `PaymentMethod`, `Note`, `Status`) VALUES
-('SI002', 'C005', '0987456123', '123ABC, Quận 5, HCM', '2025-05-16', 'PR001', 156600, 'Tiền mặt', '', 'Chưa xác nhận'),
-('SI003', 'C005', '0987456123', '12345, Quận 1, HCM', '2025-05-16', 'PR000', 239750, 'Tiền mặt', '', 'Chưa xác nhận'),
-('SI004', 'C006', '0987123444', '123A, Quận 10, HCM', '2025-05-16', 'PR000', 144000, 'Tiền mặt', '', 'Chưa xác nhận');
+('SI002', 'C005', '0987456123', '123ABC, Quận 5, HCM', '2025-05-16', 'PR001', 156600, 'Tiền mặt', '', 'Đã hủy'),
+('SI003', 'C005', '0987456123', '12345, Quận 1, HCM', '2025-05-16', 'PR000', 239750, 'Tiền mặt', '', 'Đã giao thành công'),
+('SI004', 'C006', '0987123444', '123A, Quận 10, HCM', '2025-05-16', 'PR000', 144000, 'Tiền mặt', '', 'Đã giao thành công');
 
 -- --------------------------------------------------------
 
@@ -563,14 +562,14 @@ CREATE TABLE `supplier` (
 INSERT INTO `supplier` (`SupplierID`, `SupplierName`, `Phone`, `Email`, `Address`, `IsDeleted`) VALUES
 ('S001', 'Nhà cung cấp A', '0123456789', 'nhaccA@gmail.com', 'Hà Nội', 0),
 ('S002', 'Nhà cung cấp B', '0987654321', 'nhaccB@gmail.com', 'TP. Hồ Chí Minh', 0),
-('S003', 'Nhà cung cấp 3', '', '', '', 0),
+('S003', 'Nhà cung cấp 3', '0987654111', 'nhacc3@gmail.com', 'Đà Nẵng', 0),
 ('S004', 'Nhà cung cấp 4', '', '', '', 0),
 ('S005', 'Nhà cung cấp 5', '', '', '', 0),
 ('S006', 'Nhà cung cấp 6', '', '', '', 0),
 ('S007', 'Nhà cung cấp 7', '', '', '', 0),
 ('S008', 'Nhà cung cấp 8', '', '', '', 0),
 ('S009', 'Nhà cung cấp 9', '', '', '', 0),
-('S010', 'Nhà cung cấp 10', '', '', '', 0);
+('S010', 'Nhà cung cấp 10', '', '', '', 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ

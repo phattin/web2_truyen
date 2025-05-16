@@ -35,12 +35,13 @@
 </div>
 <link rel="stylesheet" href="/webbantruyen/view/layout/css/sales_invoice.css">
 <script>
-    let provinces = {
+    if (typeof provinces === 'undefined') {
+    var provinces = {
         "Hà Nội": ["Ba Đình", "Hoàn Kiếm", "Tây Hồ", "Đống Đa", "Hai Bà Trưng", "Cầu Giấy"],
         "HCM": ["Quận 1", "Quận 2", "Quận 3", "Quận 4", "Quận 5", "Quận 10"],
         "Đà Nẵng": ["Hải Châu", "Thanh Khê", "Sơn Trà", "Ngũ Hành Sơn"]
-        // Thêm các tỉnh/thành khác nếu cần
     };
+}
 
     function populateProvinces() {
         const provinceSelect = document.getElementById("province-select");
@@ -153,6 +154,57 @@ if (typeof jQuery === 'undefined') {
             },
             complete: function() {
                 console.log("Yêu cầu AJAX đã hoàn thành");
+            }
+        });
+    }
+    if(typeof statusOrder === 'undefined') {
+        var statusOrder = [
+            'Chưa xác nhận',
+            'Đã xác nhận',
+            'Đã giao thành công',
+            'Đã hủy'
+        ];
+    }
+
+    function updateStatus(salesID, newStatus, selectElement) {
+        const currentStatus = $(selectElement).data('current-status');
+
+        // Kiểm tra thứ tự trạng thái
+        if (statusOrder.indexOf(newStatus) < statusOrder.indexOf(currentStatus)) {
+            alert("Không thể cập nhật trạng thái ngược lại!");
+            // Reset lại select về trạng thái cũ
+            $(selectElement).val(currentStatus);
+            return;
+        }
+
+        if (!confirm("Bạn có chắc muốn cập nhật trạng thái?")) {
+            // Người dùng hủy thì reset về trạng thái cũ
+            $(selectElement).val(currentStatus);
+            return;
+        }
+
+        $.ajax({
+            url: "/webbantruyen/handle/update_status.php",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                sales_id: salesID,
+                status: newStatus
+            }),
+            success: function(response) {
+                alert("Cập nhật trạng thái thành công!");
+                // Cập nhật lại data-current-status cho select
+                $(selectElement).data('current-status', newStatus);
+                // Nếu newStatus là trạng thái cuối cùng thì disable select
+                if (newStatus === 'Đã giao thành công' || newStatus === 'Đã hủy') {
+                    $(selectElement).prop('disabled', true);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("Lỗi khi cập nhật trạng thái!");
+                console.error(error);
+                // Reset lại select về trạng thái cũ nếu lỗi
+                $(selectElement).val(currentStatus);
             }
         });
     }

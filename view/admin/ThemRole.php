@@ -36,6 +36,7 @@
                     <td><input type='checkbox' name='XemHDN' value='Xem'></input></td>
                     <td><input type='checkbox' name='THDN' value='Thêm'></input></td>   
                     <td><input type='checkbox' name='SHDN' value='Sửa'></input></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>Quản lý hóa đơn bán</th>
@@ -54,6 +55,8 @@
                 <tr>
                     <th>Quản lý khách hàng</th>
                     <td><input type='checkbox' name='XemKH' value='Xem'></input></td>
+                    <td></td>
+                    <td></td>
                     <td><input type='checkbox' name='SKH' value='Sửa'></input></td>
                 <tr>
                     <th>Quản lý Quyền</th>
@@ -61,7 +64,7 @@
                     <td><input type='checkbox' name='TQ' value='Thêm'></input></td>
                     <td><input type='checkbox' name='SQ' value='Sửa'></input></td>
                     <td><input type='checkbox' name='XQ' value='Xóa'></input></td>
-                <tr>
+                <tr style="display:none">
                     <th>Quản lý chủng loại</th>
                     <td><input type='checkbox' name='XemCL' value='Xem'></input></td>
                     <td><input type='checkbox' name='TCL' value='Thêm'></input></td>

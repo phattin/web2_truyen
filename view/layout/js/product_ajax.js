@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  
   //Click navbar
   $(".menu-item").on("click", function (event) {
     event.preventDefault();
@@ -44,7 +45,7 @@ $(document).ready(function () {
                                               ) )
                                             ).toLocaleString("vi-VN")}">
                                             <input type="hidden" name="quantity" value="1">
-                                            <button type="button" class="btn-add-to-cart" data-id="${
+                                            <button type="button" class="btn-add-to-cart"  onclick="addToCart(this)" data-id="${
                                               product.ProductID
                                             }">Thêm vào giỏ hàng</button>
                                         </form>
@@ -76,7 +77,8 @@ $(document).ready(function () {
                 "</li>";
             htmlContent += s;
           }
-          htmlContent +=
+          if (total_pages > 1 && response.current_page < total_pages)
+            htmlContent +=
             '<li class="btn-pagination" data-page="${page}" data-page_number="2">&gt;</li>';
           htmlContent += `</ul></div>`;
         }
@@ -140,7 +142,7 @@ $(document).ready(function () {
                                               ) )
                                             ).toLocaleString("vi-VN")}">
                                             <input type="hidden" name="quantity" value="1">
-                                            <button type="button" class="btn-add-to-cart" data-id="${
+                                            <button type="button" class="btn-add-to-cart"  onclick="addToCart(this)" data-id="${
                                               product.ProductID
                                             }">Thêm vào giỏ hàng</button>
                                         </form>
@@ -172,7 +174,8 @@ $(document).ready(function () {
                 "</li>";
             htmlContent += s;
           }
-          htmlContent +=
+          if (total_pages > 1 && response.current_page < total_pages)
+            htmlContent +=
             '<li class="btn-pagination" data-page="${page}" data-page_number="2">&gt;</li>';
           htmlContent += `</ul></div>`;
         }
@@ -236,7 +239,7 @@ $(document).ready(function () {
                                               ) )
                                             ).toLocaleString("vi-VN")}">
                                             <input type="hidden" name="quantity" value="1">
-                                            <button type="button" class="btn-add-to-cart" data-id="${
+                                            <button type="button" class="btn-add-to-cart"  onclick="addToCart(this)" data-id="${
                                               product.ProductID
                                             }">Thêm vào giỏ hàng</button>
                                         </form>
@@ -268,7 +271,8 @@ $(document).ready(function () {
                 "</li>";
             htmlContent += s;
           }
-          htmlContent +=
+          if (total_pages > 1 && response.current_page < total_pages)
+            htmlContent +=
             '<li class="btn-pagination" data-page="${page}" data-page_number="2">&gt;</li>';
           htmlContent += `</ul></div>`;
         }
@@ -342,7 +346,7 @@ $(document).ready(function () {
                                               ) )
                                             ).toLocaleString("vi-VN")}">
                                             <input type="hidden" name="quantity" value="1">
-                                            <button type="button" class="btn-add-to-cart" data-id="${
+                                            <button type="button" class="btn-add-to-cart"  onclick="addToCart(this)" data-id="${
                                               product.ProductID
                                             }">Thêm vào giỏ hàng</button>
                                         </form>
@@ -370,9 +374,10 @@ $(document).ready(function () {
 
           // Nút Next nếu không phải trang cuối
           if (page_number < total_pages)
-            htmlContent += `<li class="btn-pagination" data-page="${page}" data-page_number="${
-              page_number + 1
-            }">&gt;</li>`;
+            if (total_pages > 1 && response.current_page < total_pages)
+              htmlContent += `<li class="btn-pagination" data-page="${page}" data-page_number="${
+                page_number + 1
+              }">&gt;</li>`;
           htmlContent += `</ul></div>`;
         }
         // Duyệt qua từng sản phẩm trong response và tạo HTML cho chúng
@@ -550,7 +555,8 @@ $(document).ready(function () {
                   "</li>";
               htmlContent += s;
             }
-            htmlContent +=
+            if (total_pages > 1 && response.current_page < total_pages)
+              htmlContent +=
               '<li class="btn-pagination" data-page="${page}" data-page_number="2">&gt;</li>';
             htmlContent += `</ul></div>`;
           }
@@ -565,4 +571,41 @@ $(document).ready(function () {
         },
       });
   });
+  const isLoggedIn = !!document.querySelector(".user-menu"); // Kiểm tra user đăng nhập
+  function addToCart(button) {
+            if (!isLoggedIn) {
+                alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
+                window.location.href = "index.php?page=login";
+                return;
+            }
+
+            const productItem = button.closest(".product-item");
+            const form = button.closest("form");
+            const formData = new FormData(form);
+
+            fetch("view/layout/page/cart.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    cartCount = data.cart_count;
+                    updateCartCount();
+
+                    cartIcon.classList.add("shake");
+                    setTimeout(() => {
+                        cartIcon.classList.remove("shake");
+                    }, 500);
+
+                    showFlyEffect(productItem);
+                } else {
+                    alert(data.message || "Có lỗi xảy ra khi thêm vào giỏ hàng.");
+                }
+            })
+            .catch(error => {
+                console.error("Lỗi:", error);
+                alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
+            });
+  }
 });

@@ -79,7 +79,7 @@ $isAdmin = $isLoggedIn && ($role);
                 <?php endif; ?>
 
                 <?php if (in_array('F008', $functionIDs)): ?>
-                    <li onclick="checkLoginAndSwitch('cl')" id="QLCL"><a>Chủng loại truyện</a></li>
+                    <!-- <li onclick="checkLoginAndSwitch('cl')" style="display:none" id="QLCL"><a>Chủng loại truyện</a></li> -->
                 <?php endif; ?>
 
                 <?php if (in_array('F004', $functionIDs)): ?>

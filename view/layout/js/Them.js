@@ -29,7 +29,15 @@ function themTK(){
 // Them Nhan Vien
 function themNV(){
     $("#overlay-chucnang").css("display","block");
+    $("#Function").css("display","block");
     $("#Function").load("/webbantruyen/view/admin/themNV.php");
+}   
+
+// Them Nhan Vien
+function themNCC(){
+    $("#overlay-chucnang").css("display","block");
+    $("#Function").css("display","block");
+    $("#Function").load("/webbantruyen/view/admin/themNCC.php");
 }   
 
 
@@ -43,5 +51,6 @@ function ThemKH(){
 // Thêm Role
 function ThemRole(){
     $("#overlay-chucnang").css("display","block");
+    $("#Function").css("display","block");
     $("#Function").load("/webbantruyen/view/admin/ThemRole.php");
 }
