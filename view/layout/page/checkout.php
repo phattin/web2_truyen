@@ -2,14 +2,15 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webbantruyen/model/customerDB.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/webbantruyen/model/salesInvoiceDB.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/webbantruyen/model/promotionDB.php';
 // Kiểm tra nếu có dữ liệu từ form
 if (isset($_POST['productsCheckout']) && isset($_POST['totalAllPrice'])) {
     $productsCheckout = json_decode($_POST['productsCheckout'], true); // Chuyển chuỗi JSON thành mảng
     $totalAllPrice = $_POST['totalAllPrice'];
     $saleID = salesInvoiceDB::getIncreaseSalesInvoiceID(); // Lấy mã hóa đơn mới
 }
-if (isset($_SESSION['username']))
     $customer = customerDB::getCustomerByUsername($_SESSION['username']);
+    $promotions = promotionDB::getValidPromotions();
 
 ?>
 <!DOCTYPE html>
@@ -96,8 +97,19 @@ if (isset($_SESSION['username']))
                         </tr>
                         <tr>
                             <td colspan="2">Khuyến mãi:</td>
-                            <td id="idKhuyenMai" style="display: none;">PR00</td>
-                            <td id="tenKhuyenMai">Không</td>
+                            <td colspan="2">
+                                <select id="selectKhuyenMai" onchange="chonKhuyenMai()">
+                                    <?php foreach ($promotions as $promo): ?>
+                                        <option 
+                                            value="<?= $promo['PromotionID'] ?>" 
+                                            data-name="<?= $promo['PromotionName'] ?>" 
+                                            data-discount="<?= $promo['Discount'] ?>"
+                                        >
+                                            <?= $promo['PromotionName'] ?> (Giảm <?= $promo['Discount'] ?>%)
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2">Tổng đơn:</td>
@@ -205,6 +217,37 @@ if (isset($_SESSION['username']))
         oldAddressRadio.addEventListener("change", updateAddressInput);
         newAddressRadio.addEventListener("change", updateAddressInput);
 
+        function chonKhuyenMai() {
+            var select = document.getElementById("selectKhuyenMai");
+            var selectedOption = select.options[select.selectedIndex];
+            var discountPercent = parseFloat(selectedOption.text.match(/(\d+)%/)[1]); // Lấy phần trăm giảm từ chuỗi
+            var promotionID = selectedOption.value;
+
+            var totalElement = document.querySelector(".payment-total-product-price-value");
+            var total = parseFloat(totalElement.innerText.replace(/\./g, '')); // Bỏ dấu chấm rồi parse số
+
+            var discountAmount = total * (discountPercent / 100);
+            var finalTotal = Math.round(total - discountAmount);
+
+            // Cập nhật tổng đơn sau khuyến mãi
+            document.querySelector(".payment-total-price-value").innerText = numberWithDots(finalTotal) + " VND";
+
+            // Lưu ID khuyến mãi nếu cần
+            var promotionIDElement = document.getElementById("idKhuyenMai");
+            if (!promotionIDElement) {
+                promotionIDElement = document.createElement("span");
+                promotionIDElement.id = "idKhuyenMai";
+                promotionIDElement.style.display = "none";
+                document.body.appendChild(promotionIDElement);
+            }
+            promotionIDElement.innerText = promotionID;
+        }
+
+        // Hàm format số có dấu chấm phân cách hàng nghìn
+        function numberWithDots(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
     </script>
     <script>
         $(document).on("click",'.submit-payment-btn', function (event) {
@@ -215,9 +258,11 @@ if (isset($_SESSION['username']))
         const address = document.getElementById("address-payment").value;
         const note = document.getElementById("note-payment").value || '';
         const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-        const totalPrice = "<?= $totalAllPrice ?>"; // Lấy giá trị tổng tiền từ PHP
+        const totalPrice = parseFloat( document.querySelector(".payment-total-price-value").innerText.replace(/\./g, ''))
         const date = document.querySelector(".payment-date").innerText;
-        const promotionID = document.getElementById("idKhuyenMai").innerText.trim(); 
+        const select = document.getElementById("selectKhuyenMai");
+        const selectedOption = select.options[select.selectedIndex];
+        const promotionID = selectedOption.value;
         const customerID = "<?= $customer['CustomerID'] ?>"; // Lấy mã khách hàng từ PHP
 
         // Kiểm tra xem tất cả các trường đã được điền chưa

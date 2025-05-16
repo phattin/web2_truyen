@@ -53,7 +53,7 @@
             //Mở database
             $conn = ConnectDB::getConnection();
             //Lệnh sql
-            $strSQL = "INSERT INTO sales_invoice (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`, `PromotionID`, `TotalPrice`, `PaymentMethod`, `Note`, ` IsDeleted`) 
+            $strSQL = "INSERT INTO sales_invoice (`SalesID`, `CustomerID`, `Phone`, `Address`, `Date`, `PromotionID`, `TotalPrice`, `PaymentMethod`, `Note`, `Status`) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             //Thực hiện sql
             $stmt = $conn->prepare($strSQL);
