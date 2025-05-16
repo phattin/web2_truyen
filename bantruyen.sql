@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 16, 2025 lúc 07:23 AM
+-- Thời gian đã tạo: Th5 16, 2025 lúc 07:58 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -78,14 +78,14 @@ CREATE TABLE `customer` (
   `Address` varchar(255) NOT NULL,
   `Phone` varchar(25) NOT NULL,
   `TotalSpending` double NOT NULL,
-  `IsDeleted` int(1) NOT NULL
+  `IsBlocked` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `customer`
 --
 
-INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Password`, `Email`, `Address`, `Phone`, `TotalSpending`, `IsDeleted`) VALUES
+INSERT INTO `customer` (`CustomerID`, `Fullname`, `Username`, `Password`, `Email`, `Address`, `Phone`, `TotalSpending`, `IsBlocked`) VALUES
 ('C005', 'Nguyen Thang', 'thang', '$2y$10$OdZFhQio0aHXl719tt7Fb.Nje69MZSRwVvAP2C35svbuxHOW.AlJW', 'thang@gmail.com', '12345', '0987456123', 0, 0);
 
 -- --------------------------------------------------------

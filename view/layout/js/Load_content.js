@@ -19,7 +19,7 @@ function Switch(x,y){
             });
             break;
         case 'kh':
-            $("#admin-content").load("/webbantruyen/view/admin/guest.php", function () {
+            $("#admin-content").load("/webbantruyen/view/admin/customer.php", function () {
                  setTimeout(function () {
                     CheckRole(y);
                 }, 50)});
