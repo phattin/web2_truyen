@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . "/webbantruyen/model/productDB.php"; // File thao tác DB
 $file_path = $_SERVER["DOCUMENT_ROOT"] . "/webbantruyen/model/salesInvoiceDB.php";
 if (file_exists($file_path)) 
     require_once $file_path;
@@ -39,8 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if(!salesInvoiceDetailDB::addSalesInvoiceDetail($data['salesID'], $data['productID'], $data['quantity'], $data['price'], $data['totalPrice'])){
                     // Nếu thêm chi tiết hóa đơn thất bại, in ra thông báo lỗi
                     echo json_encode(["success" => False, "message" => 'Lỗi: Không thể thêm chi tiết hóa đơn với ID sản phẩm: '.$data["productID"]]);
+
                     exit;
                 }
+                // Cập nhật số lượng sản phẩm trong kho
+                $productDB = new productDB();
+                $productDB->updateProductQuantity($data['productID'], -abs($data['quantity']));
             }
             $_SESSION['last_salesID'] = $data['salesID'];
             $_SESSION['cart'] = [];

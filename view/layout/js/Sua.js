@@ -827,7 +827,7 @@ function suaTK(username) {
                         <div class="right-panel">
                             <div>
                                 <label for="username">Tên đăng nhập:</label>
-                                <input type="text" id="username" name="username" value="${response.username}" >
+                                <input type="text" id="username" name="username" value="${response.username}" readonly>
                             </div>
                             <div style="display: none;">
                                 <label for="password">Mật khẩu:</label>
