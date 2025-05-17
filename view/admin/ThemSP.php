@@ -1,7 +1,7 @@
-
+    
     <input type="button" value="X" class="close-btn" onclick="Close_ChucNang()">
     <h2 style='text-align:center; margin:30px;'>Thêm sản phẩm</h2>
-    <form id="product-add-form" class="product-add-form">
+    <form id="product-add-form" class="product-add-form" enctype="multipart/form-data">
         <div class="form-content">
             <div class="left-panel">
                 <div class="image-upload-container">
@@ -141,24 +141,15 @@
                 alert("Tên NXB không hợp lệ!");
                 return;
             }
-
+            const formData = new FormData(document.getElementById("product-add-form"));
+            formData.append("action", "addProduct"); // Nếu cần thêm hành động cụ thể
 
             $.ajax({
             type: "POST",
             url: "/webbantruyen/handle/addProduct.php",
-            data: {
-                productID,
-                productName,
-                productImg,
-                categoryID,
-                author,
-                publisher,
-                description,
-                quantity,
-                importPrice,
-                ros,
-                supplierID,
-            },
+            data: formData,
+            contentType: false,
+            processData: false,
             dataType: "json",
             success: function (response) {
                 console.log("response:", response);
