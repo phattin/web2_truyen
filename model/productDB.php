@@ -216,6 +216,25 @@
         
             return $success;
         }
+
+        public function deleteProduct($id) {
+            //Mở database
+            $conn = ConnectDB::getConnection();
+            //Lệnh sql
+            $strSQL = "DELETE FROM product WHERE ProductID = ?";
+            //Thực hiện sql
+            $stmt = $conn->prepare($strSQL);
+            if (!$stmt) 
+                die("Lỗi chuẩn bị SQL: " . $conn->error);
+            $stmt->bind_param("s", $id);
+            //Thực hiện chức năng
+            $success = $stmt->execute();
+            //Đóng kết nối
+            $stmt->close();
+            ConnectDB::closeConnection($conn);
+        
+            return $success;
+        }
         
         // Lấy tổng số sản phẩm sau khi lọc
         public function getTotalFilteredProducts($minPrice = null, $maxPrice = null, $categories = [], $search = '') {
@@ -274,6 +293,38 @@
             $stmt->close();
 
             return $row['total'];
+        }
+
+        // Kiểm tra sản phẩm đã từng được sử dụng (bán hoặc nhập) chưa
+        public static function isProductUsed($productID) {
+            $conn = connectDB::getConnection();
+
+            $sql = "SELECT 1 FROM sales_invoice_detail WHERE ProductID = ? LIMIT 1";
+            $stmt = $conn->prepare($sql);
+            if (!$stmt) die("Lỗi chuẩn bị SQL: " . $conn->error);
+            $stmt->bind_param("s", $productID);
+            $stmt->execute();
+            $stmt->store_result();
+            $usedInSales = $stmt->num_rows > 0;
+            $stmt->close();
+
+            if ($usedInSales) {
+                connectDB::closeConnection($conn);
+                return true;
+            }
+
+            $sql = "SELECT 1 FROM import_invoice_detail WHERE ProductID = ? LIMIT 1";
+            $stmt = $conn->prepare($sql);
+            if (!$stmt) die("Lỗi chuẩn bị SQL: " . $conn->error);
+            $stmt->bind_param("s", $productID);
+            $stmt->execute();
+            $stmt->store_result();
+            $usedInImport = $stmt->num_rows > 0;
+            $stmt->close();
+
+            connectDB::closeConnection($conn);
+
+            return $usedInImport;
         }
 
 

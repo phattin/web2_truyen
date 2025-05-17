@@ -1,7 +1,7 @@
 function deleteSP(id) {
     if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
         $.ajax({
-            url: "/webbantruyen/handle/deleteProduct.php",
+            url: "/webbantruyen/handle/deleteHandle.php",
             type: "POST",
             data: { productID: id },
             success: function (response) {
@@ -20,7 +20,7 @@ function deleteSP(id) {
             error: function (xhr, status, error) {
                 console.error("Lỗi AJAX: ", error);  // Log lỗi khi gặp sự cố với Ajax
                 console.log("Phản hồi từ server (error): ", xhr.responseText); // Log thêm thông tin từ server
-                alert("Có lỗi xảy ra, vui lòng thử lại sau: " + xhr.responseText);
+                console.log("Có lỗi xảy ra, vui lòng thử lại sau: " + xhr.responseText);
             }
         });
     }

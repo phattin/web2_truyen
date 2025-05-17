@@ -21,7 +21,12 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
 if ($productID) {
     // Xóa sản phẩm
     $productDB = new productDB();
-    $result = $productDB->removeProduct($productID);
+    if (productDB::isProductUsed($productID)) {
+        $result = $productDB->removeProduct($productID);
+    }
+    else {
+        $result = $productDB->deleteProduct($productID);
+    }
 
     if ($result) {
         echo json_encode(["success" => true]);
